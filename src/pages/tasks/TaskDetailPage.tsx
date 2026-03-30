@@ -164,9 +164,18 @@ export function TaskDetailPage() {
     (task?.assigned_user?.id != null && Number(task.assigned_user.id) === uid);
   // Manager can only delegate tasks in their own area — not tasks sent to a different area
   const managerOwnsTask = isManager && !taskAssignedToSelf && (
-    !task?.assigned_to_area_id ||
-    Number(task.assigned_to_area_id) === Number(user?.area_id) ||
-    Number(task?.area_id) === Number(user?.area_id)
+    // No area restriction (personal task)
+    (!task?.assigned_to_area_id && !task?.area_id) ||
+    // Manager is the manager of the task's area (via relation)
+    Number(task?.area?.manager_user_id) === uid ||
+    Number(task?.area?.manager?.id) === uid ||
+    Number(task?.assigned_area?.manager_user_id) === uid ||
+    Number(task?.assigned_area?.manager?.id) === uid ||
+    // Fallback: area_id matches if it's set on the user
+    (!!user?.area_id && (
+      Number(task?.assigned_to_area_id) === Number(user.area_id) ||
+      Number(task?.area_id) === Number(user.area_id)
+    ))
   );
   const canDelegate = !terminal.includes(task?.status as string) && (isSuperAdmin || managerOwnsTask);
   const isParticipant = isResponsible || isCreator || isSuperAdmin || isManager;
