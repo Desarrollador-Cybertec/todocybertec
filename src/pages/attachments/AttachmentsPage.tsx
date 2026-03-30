@@ -115,10 +115,10 @@ export function AttachmentsPage() {
     <PageTransition>
       <div className="mx-auto max-w-6xl space-y-6">
         {/* Header */}
-        <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-5 shadow-sm">
+        <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-6 py-5 shadow-sm">
           <div>
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Adjuntos</h2>
-            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Adjuntos</h2>
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Vista general de archivos adjuntos por área.
             </p>
           </div>
@@ -126,7 +126,7 @@ export function AttachmentsPage() {
             <select
               value={selectedAreaId ?? ''}
               onChange={(e) => { setSelectedAreaId(e.target.value ? Number(e.target.value) : null); setPage(1); }}
-              className="rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none"
+              className="rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none"
             >
               <option value="">Seleccionar área</option>
               {areas.map((a) => (
@@ -137,30 +137,30 @@ export function AttachmentsPage() {
         </FadeIn>
 
         {!selectedAreaId ? (
-          <FadeIn className="flex flex-col items-center justify-center rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 py-16 shadow-sm">
-            <HiOutlinePaperClip className="mb-3 h-12 w-12 text-gray-300 dark:text-gray-600" />
-            <p className="text-sm text-gray-500 dark:text-gray-400">Selecciona un área para ver sus adjuntos.</p>
+          <FadeIn className="flex flex-col items-center justify-center rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito py-16 shadow-sm">
+            <HiOutlinePaperClip className="mb-3 h-12 w-12 text-slate-300 dark:text-slate-600" />
+            <p className="text-sm text-slate-500 dark:text-slate-400">Selecciona un área para ver sus adjuntos.</p>
           </FadeIn>
         ) : loading ? (
           <SkeletonList />
         ) : (
-          <FadeIn className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
+          <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
             {/* Toolbar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-gray-100 dark:border-gray-800 px-6 py-4">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-white/5 px-6 py-4">
               <div className="flex items-center gap-2">
-                <HiOutlinePaperClip className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100">
+                <HiOutlinePaperClip className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
+                <h3 className="font-semibold text-slate-900 dark:text-white">
                   {total} archivo{total !== 1 ? 's' : ''}
                 </h3>
               </div>
               <div className="relative">
-                <HiOutlineSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                <HiOutlineSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Buscar por nombre…"
-                  className="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 py-2 pl-9 pr-4 text-sm text-gray-900 dark:text-gray-100 focus:border-blue-500 focus:outline-none"
+                  className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 py-2 pl-9 pr-4 text-sm text-slate-900 dark:text-white focus:border-cyber-radar focus:outline-none"
                 />
               </div>
             </div>
@@ -168,13 +168,13 @@ export function AttachmentsPage() {
             {/* Table */}
             {filtered.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-12 text-center">
-                <HiOutlinePaperClip className="mb-2 h-10 w-10 text-gray-300 dark:text-gray-600" />
-                <p className="text-sm text-gray-500 dark:text-gray-400">No hay archivos disponibles.</p>
+                <HiOutlinePaperClip className="mb-2 h-10 w-10 text-slate-300 dark:text-slate-600" />
+                <p className="text-sm text-slate-500 dark:text-slate-400">No hay archivos disponibles.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-sm">
-                  <thead className="border-b border-gray-100 dark:border-gray-800 text-xs uppercase tracking-wider text-gray-400 dark:text-gray-500">
+                  <thead className="border-b border-slate-200 dark:border-white/5 text-xs uppercase tracking-wider text-slate-400 dark:text-slate-500">
                     <tr>
                       <th className="px-6 py-3 font-medium">Archivo</th>
                       <th className="px-6 py-3 font-medium">Tipo</th>
@@ -186,39 +186,39 @@ export function AttachmentsPage() {
                       <th className="px-6 py-3 font-medium">Acciones</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50 dark:divide-gray-800">
+                  <tbody className="divide-y divide-slate-50 dark:divide-white/5">
                     {filtered.map((a) => (
-                      <tr key={a.id} className="transition-colors hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                      <tr key={a.id} className="transition-colors hover:bg-slate-50 dark:hover:bg-white/5/50">
                         <td className="px-6 py-3">
                           <div className="flex items-center gap-3">
-                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gray-50 dark:bg-gray-800">
+                            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50 dark:bg-white/5">
                               {isImage(a.extension) ? (
-                                <HiOutlinePhotograph className="h-4 w-4 text-indigo-500 dark:text-indigo-400" />
+                                <HiOutlinePhotograph className="h-4 w-4 text-cyber-navy dark:text-cyber-radar-light" />
                               ) : (
-                                <HiOutlineDocumentText className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                                <HiOutlineDocumentText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                               )}
                             </div>
                             <div className="min-w-0">
-                              <p className="truncate font-medium text-gray-900 dark:text-gray-100" title={a.original_name}>
+                              <p className="truncate font-medium text-slate-900 dark:text-white" title={a.original_name}>
                                 {a.original_name}
                               </p>
-                              <p className="text-xs text-gray-400 dark:text-gray-500">.{a.extension}</p>
+                              <p className="text-xs text-slate-400 dark:text-slate-500">.{a.extension}</p>
                             </div>
                           </div>
                         </td>
-                        <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{a.mime_type}</td>
-                        <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{formatBytes(a.size_processed ?? a.size_original)}</td>
-                        <td className="px-6 py-3 text-gray-700 dark:text-gray-300">{a.uploader?.name ?? 'Desconocido'}</td>
+                        <td className="px-6 py-3 text-slate-500 dark:text-slate-400">{a.mime_type}</td>
+                        <td className="px-6 py-3 text-slate-500 dark:text-slate-400">{formatBytes(a.size_processed ?? a.size_original)}</td>
+                        <td className="px-6 py-3 text-slate-700 dark:text-slate-300">{a.uploader?.name ?? 'Desconocido'}</td>
                         <td className="px-6 py-3">
                           {a.task_id ? (
-                            <Link to={`/tasks/${a.task_id}`} className="text-blue-600 dark:text-blue-400 hover:underline">
+                            <Link to={`/tasks/${a.task_id}`} className="text-cyber-radar dark:text-cyber-radar-light hover:underline">
                               Tarea #{a.task_id}
                             </Link>
                           ) : (
-                            <span className="text-gray-400 dark:text-gray-500">Área</span>
+                            <span className="text-slate-400 dark:text-slate-500">Área</span>
                           )}
                         </td>
-                        <td className="px-6 py-3 text-gray-500 dark:text-gray-400">{formatDate(a.created_at)}</td>
+                        <td className="px-6 py-3 text-slate-500 dark:text-slate-400">{formatDate(a.created_at)}</td>
                         <td className="px-6 py-3">
                           <Badge
                             variant={a.processing_status === 'ready' ? 'green' : a.processing_status === 'failed' ? 'red' : 'amber'}
@@ -234,7 +234,7 @@ export function AttachmentsPage() {
                                 <button
                                   type="button"
                                   onClick={() => setPreviewAttachment(a)}
-                                  className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-blue-600 dark:hover:text-blue-400"
+                                  className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
                                   title="Ver"
                                 >
                                   <HiOutlineEye className="h-4 w-4" />
@@ -242,7 +242,7 @@ export function AttachmentsPage() {
                                 <button
                                   type="button"
                                   onClick={() => handleDownload(a.id)}
-                                  className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-green-600 dark:hover:text-green-400"
+                                  className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-green-600 dark:hover:text-green-400"
                                   title="Descargar"
                                 >
                                   <HiOutlineDownload className="h-4 w-4" />
@@ -252,7 +252,7 @@ export function AttachmentsPage() {
                             <button
                               type="button"
                               onClick={() => setDeleteTarget(a)}
-                              className="rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-red-600 dark:hover:text-red-400"
+                              className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-red-600 dark:hover:text-red-400"
                               title="Eliminar"
                             >
                               <HiOutlineTrash className="h-4 w-4" />
@@ -268,8 +268,8 @@ export function AttachmentsPage() {
 
             {/* Pagination */}
             {lastPage > 1 && (
-              <div className="flex items-center justify-between border-t border-gray-100 dark:border-gray-800 px-6 py-3">
-                <p className="text-xs text-gray-400 dark:text-gray-500">
+              <div className="flex items-center justify-between border-t border-slate-200 dark:border-white/5 px-6 py-3">
+                <p className="text-xs text-slate-400 dark:text-slate-500">
                   Página {page} de {lastPage} · {total} archivo{total !== 1 ? 's' : ''}
                 </p>
                 <div className="flex gap-1">
@@ -277,7 +277,7 @@ export function AttachmentsPage() {
                     type="button"
                     onClick={() => setPage((p) => Math.max(1, p - 1))}
                     disabled={page <= 1}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700 p-1.5 text-gray-500 dark:text-gray-400 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="rounded-lg border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-white/5"
                   >
                     <HiOutlineChevronLeft className="h-4 w-4" />
                   </button>
@@ -285,7 +285,7 @@ export function AttachmentsPage() {
                     type="button"
                     onClick={() => setPage((p) => Math.min(lastPage, p + 1))}
                     disabled={page >= lastPage}
-                    className="rounded-lg border border-gray-200 dark:border-gray-700 p-1.5 text-gray-500 dark:text-gray-400 disabled:opacity-30 hover:bg-gray-50 dark:hover:bg-gray-800"
+                    className="rounded-lg border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-white/5"
                   >
                     <HiOutlineChevronRight className="h-4 w-4" />
                   </button>

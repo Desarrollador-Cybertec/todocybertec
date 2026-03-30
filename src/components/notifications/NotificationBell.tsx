@@ -80,7 +80,7 @@ export function NotificationBell() {
       <button
         ref={bellRef}
         onClick={() => setIsOpen(!isOpen)}
-        className="relative inline-flex items-center justify-center p-2 text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
+        className="relative inline-flex items-center justify-center p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"
         title="Notificaciones"
       >
         <HiOutlineBell className="h-6 w-6" />
@@ -100,7 +100,7 @@ export function NotificationBell() {
             maxHeight: Math.min(maxPanelHeight, 520),
             zIndex: 9999,
           }}
-          className="bg-white dark:bg-gray-900 rounded-lg shadow-xl border border-gray-200 dark:border-gray-700 flex flex-col overflow-hidden"
+          className="bg-white dark:bg-cyber-grafito rounded-lg shadow-xl border border-slate-200 dark:border-white/10 flex flex-col overflow-hidden"
         >
           <NotificationPanel onClose={() => setIsOpen(false)} />
         </div>,

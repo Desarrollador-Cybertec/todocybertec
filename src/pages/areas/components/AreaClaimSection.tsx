@@ -30,19 +30,19 @@ export function AreaClaimSection({ areaId, onClaimed }: AreaClaimSectionProps) {
   };
 
   return (
-    <FadeIn delay={0.05} className="mt-6 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
-      <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">Reclamar trabajador</h3>
+    <FadeIn delay={0.05} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+      <h3 className="mb-3 font-semibold text-slate-900 dark:text-white">Reclamar trabajador</h3>
       <AnimatePresence>
         {claimError && (
           <SlideDown>
-            <div className="mb-3 flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-2 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+            <div className="mb-3 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-2 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
               <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {claimError}
             </div>
           </SlideDown>
         )}
         {claimSuccess && (
           <SlideDown>
-            <div className="mb-3 flex items-center gap-2 rounded-xl bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
+            <div className="mb-3 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
               <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {claimSuccess}
             </div>
           </SlideDown>
@@ -54,9 +54,9 @@ export function AreaClaimSection({ areaId, onClaimed }: AreaClaimSectionProps) {
           value={claimUserId}
           onChange={(e) => setClaimUserId(e.target.value)}
           placeholder="ID del trabajador"
-          className="flex-1 rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="flex-1 rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
         />
-        <button type="button" onClick={handleClaim} className="rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98]">
+        <button type="button" onClick={handleClaim} className="rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-cyber-radar-light active:scale-[0.98]">
           Reclamar
         </button>
       </div>

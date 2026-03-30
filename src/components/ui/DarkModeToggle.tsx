@@ -9,7 +9,7 @@ export function DarkModeToggle() {
     <button
       type="button"
       onClick={toggle}
-      className="fixed bottom-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-full bg-white shadow-lg ring-1 ring-gray-200 transition-colors hover:bg-gray-100 dark:bg-gray-800 dark:ring-gray-700 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
+      className="fixed bottom-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-sm bg-cyber-navy shadow-lg shadow-cyber-navy/30 ring-1 ring-white/10 transition-colors hover:bg-cyber-navy-light dark:bg-cyber-radar dark:shadow-cyber-radar/30 dark:ring-cyber-radar/30 dark:hover:bg-cyber-radar-light text-white"
       aria-label={dark ? 'Activar modo claro' : 'Activar modo oscuro'}
     >
       <AnimatePresence mode="wait" initial={false}>
@@ -21,7 +21,7 @@ export function DarkModeToggle() {
             exit={{ rotate: 90, opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <HiOutlineSun className="h-5 w-5 text-amber-400" />
+            <HiOutlineSun className="h-5 w-5 text-white" />
           </motion.span>
         ) : (
           <motion.span
@@ -31,7 +31,7 @@ export function DarkModeToggle() {
             exit={{ rotate: -90, opacity: 0 }}
             transition={{ duration: 0.15 }}
           >
-            <HiOutlineMoon className="h-5 w-5 text-gray-600 dark:text-gray-400" />
+            <HiOutlineMoon className="h-5 w-5 text-white" />
           </motion.span>
         )}
       </AnimatePresence>

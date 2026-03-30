@@ -37,7 +37,7 @@ export function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-slate-50 dark:from-gray-950 via-blue-50 dark:via-gray-900 to-indigo-50 dark:to-indigo-950 px-4">
+    <div className="login-dot-grid flex min-h-screen items-center justify-center bg-slate-50 dark:bg-cyber-deep px-4">
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
@@ -49,16 +49,17 @@ export function LoginPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
-            className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-500/25"
+            className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-sm bg-cyber-navy shadow-lg shadow-cyber-navy/30"
           >
-            <span className="text-2xl font-black text-white">T</span>
+            <img src="/ESCUDO.png" alt="Cybertec" className="h-10 w-10 brightness-0 invert" />
           </motion.div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 dark:text-gray-100">TAPE</h1>
-          <p className="mt-1.5 text-sm text-gray-500 dark:text-gray-400">Sistema de Gestión de Compromisos</p>
+          <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">SITAPRO</h1>
+          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema de Tareas Programadas</p>
+          <p className="mt-0.5 text-[10px] uppercase tracking-[0.15em] text-slate-300 dark:text-slate-600">Plataforma Cybertec</p>
         </div>
 
-        <div className="rounded-2xl border border-gray-200/60 dark:border-gray-700 bg-white/80 dark:bg-gray-900/80 p-8 shadow-xl shadow-gray-200/40 backdrop-blur-sm">
-          <h2 className="mb-6 text-xl font-semibold text-gray-900 dark:text-gray-100">Iniciar sesión</h2>
+        <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/40">
+          <h2 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-cyber-radar">Iniciar sesión</h2>
 
           <AnimatePresence mode="wait">
             {serverError && (
@@ -68,7 +69,7 @@ export function LoginPage() {
                 exit={{ opacity: 0, height: 0 }}
                 className="mb-4 overflow-hidden"
               >
-                <div className="flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+                <div className="flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
                   <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
                   {serverError}
                 </div>
@@ -78,17 +79,17 @@ export function LoginPage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
             <div>
-              <label htmlFor="email" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="email" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Correo electrónico
               </label>
               <div className="relative">
-                <HiOutlineMail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                <HiOutlineMail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   id="email"
                   type="email"
                   autoComplete="email"
                   {...register('email')}
-                  className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 py-2.5 pl-10 pr-4 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 py-2.5 pl-10 pr-4 text-sm text-slate-900 dark:text-slate-100 transition-all placeholder:text-slate-300 dark:placeholder:text-slate-600 focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
                   placeholder="correo@ejemplo.com"
                 />
               </div>
@@ -98,17 +99,17 @@ export function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">
+              <label htmlFor="password" className="mb-1.5 block text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
                 Contraseña
               </label>
               <div className="relative">
-                <HiOutlineLockClosed className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+                <HiOutlineLockClosed className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   id="password"
                   type="password"
                   autoComplete="current-password"
                   {...register('password')}
-                  className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 py-2.5 pl-10 pr-4 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                  className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-white/5 py-2.5 pl-10 pr-4 text-sm text-slate-900 dark:text-slate-100 transition-all placeholder:text-slate-300 dark:placeholder:text-slate-600 focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
                   placeholder="••••••••"
                 />
               </div>
@@ -120,7 +121,7 @@ export function LoginPage() {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-blue-500/25 transition-all hover:shadow-lg hover:shadow-blue-500/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-black uppercase tracking-widest text-white shadow-lg shadow-cyber-radar/25 transition-all hover:bg-cyber-radar-light hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
             >
               {isSubmitting ? (
                 <>
@@ -132,6 +133,11 @@ export function LoginPage() {
               )}
             </button>
           </form>
+
+          <div className="mt-4 flex flex-col items-center gap-0 border-t border-slate-100 dark:border-white/5 pt-4">
+            <p className="text-[9px] uppercase tracking-widest text-slate-400 dark:text-white/25">Powered by</p>
+            <img src="/hero-logo.png" alt="Cybertec" className="-mt-2 h-30 w-auto opacity-50 dark:opacity-40 brightness-0 dark:brightness-100" />
+          </div>
         </div>
       </motion.div>
     </div>

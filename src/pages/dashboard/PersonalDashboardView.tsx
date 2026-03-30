@@ -152,7 +152,7 @@ export function PersonalDashboardView() {
   const inReviewCount = useMemo(() => data?.tasks_by_status?.[TaskStatus.IN_REVIEW] ?? 0, [data]);
 
   if (loading) return <SkeletonDashboard />;
-  if (!data) return <p className="text-gray-500 dark:text-gray-400">No se pudo cargar el dashboard.</p>;
+  if (!data) return <p className="text-slate-500 dark:text-slate-400">No se pudo cargar el dashboard.</p>;
 
   const attentionCount = urgentTasks.length;
   const firstName = user?.name?.split(' ')[0] ?? '';
@@ -160,13 +160,13 @@ export function PersonalDashboardView() {
   return (
     <div className="space-y-6">
       {/* Hero greeting */}
-      <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 px-6 py-5 shadow-sm">
+      <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-6 py-5 shadow-sm">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Hola, {firstName} <span className="inline-block animate-[wave_1.8s_ease-in-out_infinite] origin-[70%_70%]">👋</span>
           </h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-            Tienes <span className="font-semibold text-gray-900 dark:text-gray-100">{data.active_tasks ?? 0} tareas activas</span>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            Tienes <span className="font-semibold text-slate-900 dark:text-white">{data.active_tasks ?? 0} tareas activas</span>
             {attentionCount > 0 && (
               <> y <span className="font-semibold text-red-600 dark:text-red-400">{attentionCount} requieren atención inmediata</span></>
             )}.
@@ -175,12 +175,12 @@ export function PersonalDashboardView() {
         <div className="flex items-center gap-3">
           <Link
             to="/tasks/create"
-            className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-5 py-2.5 text-sm font-medium text-white shadow-md shadow-blue-500/25 transition-all hover:shadow-lg hover:shadow-blue-500/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
             <HiOutlinePlus className="h-4 w-4" />
             Nueva tarea
           </Link>
-          <div className="w-px h-8 bg-gray-200 dark:bg-gray-700" />
+          <div className="w-px h-8 bg-slate-200 dark:bg-white/10" />
           <NotificationBell />
         </div>
       </FadeIn>
@@ -188,20 +188,20 @@ export function PersonalDashboardView() {
       {/* Lo importante hoy + Resumen rápido */}
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Lo importante hoy - 3 cols */}
-        <FadeIn delay={0.05} className="lg:col-span-3 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
-          <div className="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 px-6 py-4">
+        <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
+          <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-6 py-4">
             <span className="text-xl">🔥</span>
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Lo importante hoy</h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">Empieza por estas tareas para evitar atrasos.</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white">Lo importante hoy</h3>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Empieza por estas tareas para evitar atrasos.</p>
             </div>
           </div>
-          <div className="divide-y divide-gray-50 dark:divide-gray-800 px-6">
+          <div className="divide-y divide-slate-50 dark:divide-white/5 px-6">
             {urgentTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <HiOutlineCheckCircle className="mb-2 h-10 w-10 text-green-400" />
-                <p className="text-sm font-medium text-gray-600 dark:text-gray-400">¡Todo al día!</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">No tienes tareas urgentes pendientes.</p>
+                <p className="text-sm font-medium text-slate-600 dark:text-slate-400">¡Todo al día!</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500">No tienes tareas urgentes pendientes.</p>
               </div>
             ) : (
               urgentTasks.slice(0, 4).map((t) => (
@@ -213,16 +213,16 @@ export function PersonalDashboardView() {
 
         {/* Resumen rápido - 2 cols */}
         <FadeIn delay={0.1} className="lg:col-span-2 space-y-6">
-          <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
-            <h3 className="mb-4 font-semibold text-gray-900 dark:text-gray-100">Resumen rápido</h3>
+          <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
+            <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen rápido</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/30" />
+              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
               <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-4.5 w-4.5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
               <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-4.5 w-4.5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
               <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-4.5 w-4.5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {data.due_soon_tasks > 0 && (
-              <div className="mt-4 rounded-xl bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-inset ring-amber-200 dark:ring-amber-800/60">
+              <div className="mt-4 rounded-sm bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-inset ring-amber-200 dark:ring-amber-800/60">
                 <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">Sugerencia del día</p>
                 <p className="mt-0.5 text-xs text-amber-600 dark:text-amber-400">
                   Tienes {data.due_soon_tasks} tarea{data.due_soon_tasks !== 1 ? 's' : ''} próxima{data.due_soon_tasks !== 1 ? 's' : ''} a vencer. Revisa su avance para evitar atrasos.
@@ -236,22 +236,22 @@ export function PersonalDashboardView() {
       {/* Mis tareas + Sidebar derecho */}
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Mis tareas - 3 cols */}
-        <FadeIn delay={0.15} className="lg:col-span-3 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm">
-          <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 px-6 py-4">
+        <FadeIn delay={0.15} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
             <div>
-              <h3 className="font-semibold text-gray-900 dark:text-gray-100">Mis tareas activas</h3>
-              <p className="text-xs text-gray-400 dark:text-gray-500">En progreso, en revisión, vencidas o rechazadas.</p>
+              <h3 className="font-semibold text-slate-900 dark:text-white">Mis tareas activas</h3>
+              <p className="text-xs text-slate-400 dark:text-slate-500">En progreso, en revisión, vencidas o rechazadas.</p>
             </div>
-            <Link to="/tasks" className="rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-gray-100">
+            <Link to="/tasks" className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white">
               Ver todas
             </Link>
           </div>
-          <div className="divide-y divide-gray-50 dark:divide-gray-800">
+          <div className="divide-y divide-slate-50 dark:divide-white/5">
             {myTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center px-6 py-10 text-center">
                 <HiOutlineCheckCircle className="mb-2 h-10 w-10 text-green-400" />
-                <p className="text-sm font-medium text-gray-700 dark:text-gray-300">¡Sin tareas activas!</p>
-                <p className="text-xs text-gray-400 dark:text-gray-500">No tienes tareas en curso en este momento.</p>
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">¡Sin tareas activas!</p>
+                <p className="text-xs text-slate-400 dark:text-slate-500">No tienes tareas en curso en este momento.</p>
               </div>
             ) : (
               myTasks.slice(0, 5).map((t) => (
@@ -264,24 +264,24 @@ export function PersonalDashboardView() {
         {/* Sidebar derecho - 2 cols */}
         <div className="lg:col-span-2 space-y-6">
           {/* Próximas actividades */}
-          <FadeIn delay={0.2} className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
-            <h3 className="mb-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
-              <HiOutlineCalendar className="h-4.5 w-4.5 text-indigo-500 dark:text-indigo-400" />
+          <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
+            <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+              <HiOutlineCalendar className="h-4.5 w-4.5 text-cyber-navy dark:text-cyber-radar-light" />
               Por iniciar
             </h3>
             {pendingTasks.length === 0 ? (
-              <p className="py-3 text-center text-xs text-gray-400 dark:text-gray-500">Sin tareas pendientes de inicio</p>
+              <p className="py-3 text-center text-xs text-slate-400 dark:text-slate-500">Sin tareas pendientes de inicio</p>
             ) : (
               <div className="space-y-2">
                 {pendingTasks.slice(0, 4).map((t) => (
-                  <Link key={t.id} to={`/tasks/${t.id}`} className="group flex items-center justify-between rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-100 dark:border-gray-800 p-3 transition-all hover:border-indigo-100 dark:hover:border-indigo-900 hover:bg-indigo-50 dark:hover:bg-indigo-900/30">
+                  <Link key={t.id} to={`/tasks/${t.id}`} className="group flex items-center justify-between rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-200 dark:border-white/5 p-3 transition-all hover:border-cyber-radar/20 dark:hover:border-cyber-radar/20 hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/10">
                     <div className="min-w-0 flex-1">
-                      <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100 group-hover:text-indigo-700 dark:group-hover:text-indigo-400">{t.title}</p>
-                      <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+                      <p className="truncate text-sm font-medium text-slate-900 dark:text-white group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light">{t.title}</p>
+                      <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                         {t.due_date ? `Vence ${formatRelativeDate(t.due_date)}` : 'Sin fecha límite'}
                       </p>
                     </div>
-                    <HiOutlineChevronRight className="ml-2 h-4 w-4 shrink-0 text-gray-400 dark:text-gray-500 group-hover:text-indigo-500 dark:group-hover:text-indigo-400" />
+                    <HiOutlineChevronRight className="ml-2 h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
                   </Link>
                 ))}
               </div>
@@ -289,16 +289,16 @@ export function PersonalDashboardView() {
           </FadeIn>
 
           {/* Ayuda rápida */}
-          <FadeIn delay={0.25} className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm">
-            <h3 className="mb-3 flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
-              <HiOutlineQuestionMarkCircle className="h-4.5 w-4.5 text-blue-500 dark:text-blue-400" />
+          <FadeIn delay={0.25} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
+            <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+              <HiOutlineQuestionMarkCircle className="h-4.5 w-4.5 text-cyber-radar dark:text-cyber-radar-light" />
               Ayuda rápida
             </h3>
             <div className="space-y-2">
               {TIPS.slice(0, 3).map((tip, i) => (
-                <div key={i} className="flex items-start gap-2.5 rounded-xl bg-gray-50 dark:bg-gray-800 px-3.5 py-2.5 text-gray-700 dark:text-gray-300">
+                <div key={i} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
                   <span className="mt-0.5 text-sm shrink-0">{tip.icon}</span>
-                  <p className="text-xs leading-relaxed text-gray-600 dark:text-gray-400">{tip.text}</p>
+                  <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
                 </div>
               ))}
             </div>
@@ -313,12 +313,12 @@ export function PersonalDashboardView() {
 
 function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
   return (
-    <div className={`rounded-xl border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/50 hover:bg-gray-50 dark:hover:bg-gray-800'}`}>
+    <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
       <div className="flex items-center gap-2">
         <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-        <span className="text-xs text-gray-500 dark:text-gray-400">{label}</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
       </div>
-      <p className={`mt-1.5 text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-gray-900 dark:text-gray-100'}`}>{value}</p>
+      <p className={`mt-1.5 text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
     </div>
   );
 }
@@ -328,8 +328,8 @@ function UrgentTaskRow({ task }: { task: UpcomingTask }) {
   return (
     <div className="flex items-center justify-between gap-3 py-3.5">
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">{task.title}</p>
-        <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+        <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{task.title}</p>
+        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
           {isOverdue ? (
             <span className="font-medium text-red-600 dark:text-red-400">Vencida · {formatRelativeDate(task.due_date)}</span>
           ) : (
@@ -341,10 +341,10 @@ function UrgentTaskRow({ task }: { task: UpcomingTask }) {
         </div>
       </div>
       <div className="flex shrink-0 items-center gap-2">
-        <Link to={`/tasks/${task.id}`} className="rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-3 py-1.5 text-xs font-medium text-gray-600 dark:text-gray-400 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">
+        <Link to={`/tasks/${task.id}`} className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
           <HiOutlineEye className="inline h-3.5 w-3.5" /> Ver
         </Link>
-        <Link to={`/tasks/${task.id}`} className="rounded-lg bg-blue-600 px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700">
+        <Link to={`/tasks/${task.id}`} className="rounded-lg bg-cyber-radar px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-cyber-radar-light">
           <HiOutlineLightningBolt className="inline h-3.5 w-3.5" /> Resolver
         </Link>
       </div>
@@ -356,8 +356,8 @@ function TaskRow({ task }: { task: UpcomingTask }) {
   return (
     <div className="flex items-center justify-between gap-3 px-6 py-3.5">
       <div className="min-w-0 flex-1">
-        <p className="truncate text-sm font-medium text-gray-900 dark:text-gray-100">{task.title}</p>
-        <p className="mt-0.5 text-xs text-gray-500 dark:text-gray-400">
+        <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{task.title}</p>
+        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
           {task.due_date ? formatRelativeDate(task.due_date) : 'Sin fecha límite'}
         </p>
         <div className="mt-1.5 flex flex-wrap items-center gap-1.5">
@@ -367,7 +367,7 @@ function TaskRow({ task }: { task: UpcomingTask }) {
       </div>
       <Link
         to={`/tasks/${task.id}`}
-        className="shrink-0 rounded-lg bg-blue-600 px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-blue-700"
+        className="shrink-0 rounded-lg bg-cyber-radar px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-cyber-radar-light"
       >
         Actualizar
       </Link>

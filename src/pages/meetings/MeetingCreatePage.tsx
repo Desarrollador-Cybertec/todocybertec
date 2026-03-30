@@ -85,16 +85,16 @@ export function MeetingCreatePage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-2xl">
-        <button type="button" onClick={() => navigate('/meetings')} className="mb-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100">
+        <button type="button" onClick={() => navigate('/meetings')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
           <HiOutlineArrowLeft className="h-4 w-4" /> Volver a reuniones
         </button>
 
-        <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">Nueva Reunión</h2>
+        <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Nueva Reunión</h2>
 
         <AnimatePresence>
           {serverError && (
             <SlideDown>
-              <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+              <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
                 <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
                 {serverError}
               </div>
@@ -103,21 +103,21 @@ export function MeetingCreatePage() {
         </AnimatePresence>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <FadeIn className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm space-y-4">
+          <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
             <div>
-              <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Título *</label>
-              <input id="title" {...register('title')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
+              <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Título *</label>
+              <input id="title" {...register('title')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
               {errors.title && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.title.message}</p>}
             </div>
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
-                <label htmlFor="meeting_date" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha *</label>
-                <input id="meeting_date" type="date" {...register('meeting_date')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
+                <label htmlFor="meeting_date" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Fecha *</label>
+                <input id="meeting_date" type="date" {...register('meeting_date')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
                 {errors.meeting_date && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.meeting_date.message}</p>}
               </div>
               <div>
-                <label htmlFor="classification" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Clasificación *</label>
-                <select id="classification" {...register('classification')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20">
+                <label htmlFor="classification" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Clasificación *</label>
+                <select id="classification" {...register('classification')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20">
                   {Object.entries(MEETING_CLASSIFICATION_LABELS).map(([value, label]) => (
                     <option key={value} value={value}>{label}</option>
                   ))}
@@ -126,29 +126,29 @@ export function MeetingCreatePage() {
               </div>
             </div>
             <div>
-              <label htmlFor="area_id" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Área</label>
+              <label htmlFor="area_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Área</label>
               {isManager ? (
-                <div className="flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300">
+                <div className="flex items-center gap-2 rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300">
                   <HiOutlineOfficeBuilding className="h-4 w-4 shrink-0 text-purple-500 dark:text-purple-400" />
                   <span>{managerArea?.name ?? 'Cargando área...'}</span>
                   <input type="hidden" {...register('area_id', { valueAsNumber: true })} />
                 </div>
               ) : (
-                <select id="area_id" {...register('area_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20">
+                <select id="area_id" {...register('area_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20">
                   <option value="">Sin área</option>
                   {areas.map((a) => <option key={a.id} value={a.id}>{a.name}</option>)}
                 </select>
               )}
             </div>
             <div>
-              <label htmlFor="notes" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Notas</label>
-              <textarea id="notes" rows={4} {...register('notes')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
+              <label htmlFor="notes" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Notas</label>
+              <textarea id="notes" rows={4} {...register('notes')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
             </div>
           </FadeIn>
 
           <div className="flex justify-end gap-3">
-            <button type="button" onClick={() => setShowLeaveModal(true)} className="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
-            <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-purple-600 to-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
+            <button type="button" onClick={() => setShowLeaveModal(true)} className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-6 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">Cancelar</button>
+            <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
               {isSubmitting ? <><Spinner size="sm" /> Creando...</> : 'Crear reunión'}
             </button>
           </div>

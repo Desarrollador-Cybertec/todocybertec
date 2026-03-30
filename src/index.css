@@ -2,6 +2,23 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
+  /* ── Cybertec Brand Palette ── */
+  --color-cyber-navy:   #181D5E;   /* Command Navy  – institutional */
+  --color-cyber-radar:  #1B92D0;   /* Radar Blue    – primary / CTA */
+  --color-cyber-grafito:#202020;   /* Grafito Táctico – surfaces    */
+
+  /* Extended palette */
+  --color-cyber-deep:   #0B1020;   /* Dark-mode page background    */
+  --color-cyber-radar-light: #2ba3e0;
+  --color-cyber-navy-light:  #232980;
+}
+
+/* ── Typography: Bahnschrift (body) ── */
+html {
+  font-family: 'Bahnschrift', 'Segoe UI', 'DIN Alternate', system-ui, -apple-system, sans-serif;
+}
+
 /* Sileo toast text colors */
 .sileo-text-light {
   color: #ffffff !important;
@@ -12,4 +29,13 @@
 
 #root {
   min-height: 100svh;
+}
+
+/* ── Login dot-grid background ── */
+.login-dot-grid {
+  background-image: radial-gradient(circle, rgba(24,29,94,0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.dark .login-dot-grid {
+  background-image: radial-gradient(circle, rgba(27,146,208,0.06) 1px, transparent 1px);
 }

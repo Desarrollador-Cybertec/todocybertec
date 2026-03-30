@@ -69,7 +69,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
   if (loading) return <SkeletonDetail />;
   if (error || !area) {
     return (
-      <div className="rounded-2xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-600 dark:text-red-400">
+      <div className="rounded-sm border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-600 dark:text-red-400">
         Error al cargar la información del área.
         <button type="button" onClick={load} className="ml-2 underline hover:text-red-800 dark:hover:text-red-200">Reintentar</button>
       </div>
@@ -77,25 +77,25 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
   }
 
   return (
-    <FadeIn className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
+    <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{area.name}</h2>
-          {area.description && <p className="mt-2 text-gray-600 dark:text-gray-400">{area.description}</p>}
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{area.name}</h2>
+          {area.description && <p className="mt-2 text-slate-600 dark:text-slate-400">{area.description}</p>}
         </div>
         <Badge variant={area.active ? 'green' : 'red'} size="md">{area.active ? 'Activa' : 'Inactiva'}</Badge>
       </div>
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         <div>
-          <p className="text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">Encargado</p>
+          <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Encargado</p>
           <div className="mt-1 flex items-center gap-2">
             {area.manager ? (
               <>
-                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-indigo-50 dark:bg-indigo-900/30 text-xs font-medium text-indigo-600 dark:text-indigo-400">{area.manager.name.charAt(0)}</span>
-                <p className="text-sm text-gray-900 dark:text-gray-100">{area.manager.name}</p>
+                <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">{area.manager.name.charAt(0)}</span>
+                <p className="text-sm text-slate-900 dark:text-white">{area.manager.name}</p>
               </>
             ) : (
-              <p className="text-sm text-gray-400 dark:text-gray-500">Sin asignar</p>
+              <p className="text-sm text-slate-400 dark:text-slate-500">Sin asignar</p>
             )}
             {isSuperadmin && (
               <button
@@ -104,7 +104,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
                   setShowManagerSelect(!showManagerSelect);
                   setSelectedManagerId(area.manager_user_id ? String(area.manager_user_id) : area.manager?.id ? String(area.manager.id) : '');
                 }}
-                className="rounded-lg bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-2 py-0.5 text-xs text-gray-500 dark:text-gray-400 transition-colors hover:bg-gray-100 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300"
+                className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-2 py-0.5 text-xs text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
               >
                 {showManagerSelect ? 'Cancelar' : area.manager ? 'Cambiar' : 'Asignar'}
               </button>
@@ -122,7 +122,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
                   <select
                     value={selectedManagerId}
                     onChange={(e) => setSelectedManagerId(e.target.value)}
-                    className="flex-1 rounded-lg bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-3 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                    className="flex-1 rounded-lg bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-3 py-1.5 text-sm focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
                   >
                     <option value="">— Seleccionar —</option>
                     {managerCandidates.map((u) => (
@@ -133,7 +133,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
                     type="button"
                     onClick={handleAssignManager}
                     disabled={!selectedManagerId || managerSaving}
-                    className="inline-flex items-center gap-1 rounded-lg bg-indigo-600 px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-indigo-700 disabled:opacity-50"
+                    className="inline-flex items-center gap-1 rounded-lg bg-cyber-navy px-3 py-1.5 text-xs font-medium text-white shadow-sm transition-all hover:bg-cyber-navy-light disabled:opacity-50"
                   >
                     {managerSaving ? <Spinner size="sm" /> : null}
                     Asignar
@@ -148,8 +148,8 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
         </div>
         {area.process_identifier && (
           <div>
-            <p className="text-xs font-medium uppercase tracking-wider text-gray-400 dark:text-gray-500">Proceso</p>
-            <p className="mt-1 text-sm text-gray-900 dark:text-gray-100">{area.process_identifier}</p>
+            <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Proceso</p>
+            <p className="mt-1 text-sm text-slate-900 dark:text-white">{area.process_identifier}</p>
           </div>
         )}
       </div>
@@ -157,7 +157,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
       <AnimatePresence>
         {managerMsg && !showManagerSelect && (
           <SlideDown>
-            <div className="mt-3 flex items-center gap-2 rounded-xl bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
+            <div className="mt-3 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
               <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {managerMsg}
             </div>
           </SlideDown>

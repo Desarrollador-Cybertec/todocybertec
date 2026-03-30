@@ -19,21 +19,21 @@ export function ConsolidatedPage() {
   if (loading) {
     return (
       <div className="space-y-6">
-        <div className="h-10 w-48 animate-pulse rounded-lg bg-gray-200 dark:bg-gray-600" />
+        <div className="h-10 w-48 animate-pulse rounded-lg bg-slate-200 dark:bg-white/10" />
         <SkeletonStatCards />
         <SkeletonTable />
       </div>
     );
   }
 
-  if (!data) return <p className="text-gray-500 dark:text-gray-400">No se pudo cargar el consolidado.</p>;
+  if (!data) return <p className="text-slate-500 dark:text-slate-400">No se pudo cargar el consolidado.</p>;
 
   const { summary } = data;
 
   const statCards = [
-    { label: 'Total', value: summary.total_tasks, bg: 'bg-gray-50 dark:bg-gray-800', text: 'text-gray-900 dark:text-gray-100' },
+    { label: 'Total', value: summary.total_tasks, bg: 'bg-slate-50 dark:bg-white/5', text: 'text-slate-900 dark:text-white' },
     { label: 'Completadas', value: summary.total_completed, bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
-    { label: 'Activas', value: summary.total_active, bg: 'bg-blue-50 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-400' },
+    { label: 'Activas', value: summary.total_active, bg: 'bg-cyber-radar/10 dark:bg-cyber-radar/10', text: 'text-cyber-radar dark:text-cyber-radar-light' },
     { label: 'Vencidas', value: summary.total_overdue, bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
     { label: 'Cumplimiento', value: `${summary.global_completion_rate}%`, bg: 'bg-amber-50 dark:bg-amber-900/30', text: 'text-amber-700 dark:text-amber-400' },
   ];
@@ -42,7 +42,7 @@ export function ConsolidatedPage() {
 
   return (
     <PageTransition>
-      <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">Dashboard Consolidado</h2>
+      <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Dashboard Consolidado</h2>
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         {statCards.map((card, i) => (
@@ -51,17 +51,17 @@ export function ConsolidatedPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
-            className={`rounded-2xl ${card.bg} p-4 text-center ring-1 ring-inset ring-gray-900/5 dark:ring-gray-100/10`}
+            className={`rounded-sm ${card.bg} p-4 text-center ring-1 ring-inset ring-slate-900/5 dark:ring-slate-100/10`}
           >
             <p className={`text-2xl font-bold ${card.text}`}>{card.value}</p>
-            <p className="mt-0.5 text-xs font-medium text-gray-500 dark:text-gray-400">{card.label}</p>
+            <p className="mt-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">{card.label}</p>
           </motion.div>
         ))}
       </div>
 
       {areas.length === 0 ? (
-        <FadeIn className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-8 text-center shadow-sm">
-          <p className="text-gray-400 dark:text-gray-500">No hay áreas con datos para mostrar.</p>
+        <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-8 text-center shadow-sm">
+          <p className="text-slate-400 dark:text-slate-500">No hay áreas con datos para mostrar.</p>
         </FadeIn>
       ) : (
         <FadeIn delay={0.2} className="space-y-3">
@@ -82,16 +82,16 @@ export function ConsolidatedPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.05 }}
-                className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-4 shadow-sm transition-colors hover:border-gray-200"
+                className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 shadow-sm transition-colors hover:border-slate-200"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-50 dark:bg-indigo-900/30 text-sm font-bold text-indigo-600 dark:text-indigo-400">
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-sm font-bold text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">
                       {area.area_name.charAt(0)}
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-gray-100">{area.area_name}</p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">
+                      <p className="font-semibold text-slate-900 dark:text-white">{area.area_name}</p>
+                      <p className="text-xs text-slate-400 dark:text-slate-500">
                         {area.manager ? `Encargado: ${area.manager}` : 'Sin encargado'}
                         {area.process_identifier ? ` · ${area.process_identifier}` : ''}
                       </p>
@@ -103,26 +103,26 @@ export function ConsolidatedPage() {
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <div className="rounded-xl bg-gray-50 dark:bg-gray-800 px-3 py-2 text-center text-gray-700 dark:text-gray-300">
-                    <p className="text-lg font-bold text-gray-900 dark:text-gray-100">{area.total}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400">Total</p>
+                  <div className="rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2 text-center text-slate-700 dark:text-slate-300">
+                    <p className="text-lg font-bold text-slate-900 dark:text-white">{area.total}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Total</p>
                   </div>
-                  <div className="rounded-xl bg-green-50/60 dark:bg-green-900/20 px-3 py-2 text-center">
+                  <div className="rounded-sm bg-green-50/60 dark:bg-green-900/20 px-3 py-2 text-center">
                     <p className="text-lg font-bold text-green-700 dark:text-green-400">{completedCount}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400">Completadas</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Completadas</p>
                   </div>
-                  <div className="rounded-xl bg-red-50/60 dark:bg-red-900/20 px-3 py-2 text-center">
-                    <p className={`text-lg font-bold ${area.overdue > 0 ? 'text-red-600 dark:text-red-400' : 'text-gray-400 dark:text-gray-500'}`}>{area.overdue}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400">Vencidas</p>
+                  <div className="rounded-sm bg-red-50/60 dark:bg-red-900/20 px-3 py-2 text-center">
+                    <p className={`text-lg font-bold ${area.overdue > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'}`}>{area.overdue}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Vencidas</p>
                   </div>
-                  <div className="rounded-xl bg-amber-50/60 dark:bg-amber-900/20 px-3 py-2 text-center">
-                    <p className={`text-lg font-bold ${area.without_progress > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-400 dark:text-gray-500'}`}>{area.without_progress}</p>
-                    <p className="text-[11px] text-gray-500 dark:text-gray-400">Sin progreso</p>
+                  <div className="rounded-sm bg-amber-50/60 dark:bg-amber-900/20 px-3 py-2 text-center">
+                    <p className={`text-lg font-bold ${area.without_progress > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'}`}>{area.without_progress}</p>
+                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Sin progreso</p>
                   </div>
                 </div>
 
                 {area.total > 0 && (
-                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-gray-100 dark:bg-gray-700">
+                  <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-slate-100 dark:bg-white/10">
                     <div
                       className="h-full rounded-full bg-linear-to-r from-green-400 to-emerald-500 transition-all duration-500"
                       style={{ width: `${Math.min(area.completion_rate, 100)}%` }}
@@ -133,23 +133,23 @@ export function ConsolidatedPage() {
                 {statusEntries.length > 0 && (
                   <div className="mt-3 flex flex-wrap gap-1.5">
                     {statusEntries.map(([status, count]) => (
-                      <span key={status} className="inline-flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
+                      <span key={status} className="inline-flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
                         <Badge variant={STATUS_BADGE_VARIANT[status] ?? 'gray'} size="sm">
                           {TASK_STATUS_LABELS[status as keyof typeof TASK_STATUS_LABELS] ?? status}
                         </Badge>
-                        <span className="font-semibold text-gray-700 dark:text-gray-300">{count}</span>
+                        <span className="font-semibold text-slate-700 dark:text-slate-300">{count}</span>
                       </span>
                     ))}
                   </div>
                 )}
 
                 {(area.oldest_pending_days != null || area.avg_days_without_update != null) && (
-                  <div className="mt-2 flex flex-wrap gap-3 text-xs text-gray-400 dark:text-gray-500">
+                  <div className="mt-2 flex flex-wrap gap-3 text-xs text-slate-400 dark:text-slate-500">
                     {area.oldest_pending_days != null && area.oldest_pending_days > 0 && (
-                      <span>Tarea más antigua: <span className="font-medium text-gray-600 dark:text-gray-400">{area.oldest_pending_days} días</span></span>
+                      <span>Tarea más antigua: <span className="font-medium text-slate-600 dark:text-slate-400">{area.oldest_pending_days} días</span></span>
                     )}
                     {area.avg_days_without_update != null && area.avg_days_without_update > 0 && (
-                      <span>Prom. sin reporte: <span className="font-medium text-gray-600 dark:text-gray-400">{area.avg_days_without_update} días</span></span>
+                      <span>Prom. sin reporte: <span className="font-medium text-slate-600 dark:text-slate-400">{area.avg_days_without_update} días</span></span>
                     )}
                   </div>
                 )}

@@ -58,7 +58,7 @@ export function ClaimWorkersPage() {
   if (!myArea) {
     return (
       <PageTransition>
-        <p className="text-gray-500 dark:text-gray-400">No se encontró tu área asignada.</p>
+        <p className="text-slate-500 dark:text-slate-400">No se encontró tu área asignada.</p>
       </PageTransition>
     );
   }
@@ -67,11 +67,11 @@ export function ClaimWorkersPage() {
     <PageTransition>
       {/* Header with area info */}
       <div className="mb-6">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Mi equipo</h2>
+        <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Mi equipo</h2>
         <div className="mt-2 flex items-center gap-2">
-          <HiOutlineUserGroup className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-          <span className="text-sm text-gray-600 dark:text-gray-400">
-            Área: <span className="font-semibold text-gray-900 dark:text-gray-100">{myArea.name}</span>
+          <HiOutlineUserGroup className="h-4 w-4 text-cyber-radar dark:text-cyber-radar-light" />
+          <span className="text-sm text-slate-600 dark:text-slate-400">
+            Área: <span className="font-semibold text-slate-900 dark:text-white">{myArea.name}</span>
           </span>
           <Badge variant={myArea.active ? 'green' : 'red'} size="sm">
             {myArea.active ? 'Activa' : 'Inactiva'}
@@ -83,7 +83,7 @@ export function ClaimWorkersPage() {
       <TeamMembersSection areaId={myArea.id} refreshKey={refreshKey} />
 
       {/* Divider */}
-      <div className="mb-8 border-t border-gray-200 dark:border-gray-700" />
+      <div className="mb-8 border-t border-slate-200 dark:border-white/10" />
 
       {/* Available workers - endpoint: GET /areas/:id/available-workers */}
       <AvailableWorkersSection areaId={myArea.id} refreshKey={refreshKey} onClaimed={handleClaimed} />

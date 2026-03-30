@@ -104,25 +104,25 @@ export function AttachmentPreviewModal({
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15 }}
-            className="relative w-full max-w-3xl rounded-2xl bg-white dark:bg-gray-900 shadow-xl overflow-hidden"
+            className="relative w-full max-w-3xl rounded-sm bg-white dark:bg-cyber-grafito shadow-xl overflow-hidden"
           >
             {/* Header */}
-            <div className="flex items-center justify-between border-b border-gray-100 dark:border-gray-800 px-6 py-4">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
               <div className="min-w-0 flex-1">
-                <h3 className="truncate text-lg font-semibold text-gray-900 dark:text-gray-100">{attachment.original_name}</h3>
-                <p className="text-xs text-gray-400 dark:text-gray-500">
+                <h3 className="truncate text-lg font-semibold text-slate-900 dark:text-white">{attachment.original_name}</h3>
+                <p className="text-xs text-slate-400 dark:text-slate-500">
                   {formatBytes(attachment.size_processed ?? attachment.size_original)} · Subido por {attachment.uploader?.name ?? 'Desconocido'}
                 </p>
               </div>
-              <button type="button" onClick={onClose} className="ml-4 rounded-lg p-1.5 text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 hover:text-gray-600 dark:hover:text-gray-300">
+              <button type="button" onClick={onClose} className="ml-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-600 dark:hover:text-slate-300">
                 <HiOutlineX className="h-5 w-5" />
               </button>
             </div>
 
             {/* Body */}
-            <div className="flex items-center justify-center bg-gray-50 dark:bg-gray-800/50 p-6" style={{ minHeight: 300 }}>
+            <div className="flex items-center justify-center bg-slate-50 dark:bg-white/5 p-6" style={{ minHeight: 300 }}>
               {loading && (
-                <div className="flex flex-col items-center gap-2 text-gray-400 dark:text-gray-500">
+                <div className="flex flex-col items-center gap-2 text-slate-400 dark:text-slate-500">
                   <HiOutlineRefresh className="h-8 w-8 animate-spin" />
                   <span className="text-sm">Cargando vista previa…</span>
                 </div>
@@ -137,14 +137,14 @@ export function AttachmentPreviewModal({
                 <img src={url} alt={attachment.original_name} className="max-h-[60vh] max-w-full rounded-lg object-contain" />
               )}
               {!loading && !error && url && !imageFile && (
-                <div className="flex flex-col items-center gap-3 text-gray-500 dark:text-gray-400">
+                <div className="flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400">
                   <HiOutlineDocumentText className="h-16 w-16" />
                   <p className="text-sm">Vista previa no disponible para este tipo de archivo.</p>
                   <a
                     href={url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+                    className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light"
                   >
                     <HiOutlineDownload className="h-4 w-4" /> Descargar archivo
                   </a>
@@ -154,7 +154,7 @@ export function AttachmentPreviewModal({
 
             {/* Footer */}
             {url && (
-              <div className="flex justify-end gap-2 border-t border-gray-100 dark:border-gray-800 px-6 py-3">
+              <div className="flex justify-end gap-2 border-t border-slate-200 dark:border-white/5 px-6 py-3">
                 <DownloadButton attachmentId={attachment.id} label="Descargar" />
               </div>
             )}
@@ -187,7 +187,7 @@ function DownloadButton({ attachmentId, label }: { attachmentId: number; label: 
       type="button"
       onClick={handleDownload}
       disabled={loading}
-      className="inline-flex items-center gap-1.5 rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+      className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light disabled:opacity-50"
     >
       <HiOutlineDownload className="h-4 w-4" />
       {loading ? 'Generando enlace…' : label}
@@ -220,20 +220,20 @@ function AttachmentThumbnail({
   }, [attachment.id, isReady, imageFile]);
 
   return (
-    <div className="group relative rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 overflow-hidden shadow-sm transition-shadow hover:shadow-md">
+    <div className="group relative rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito overflow-hidden shadow-sm transition-shadow hover:shadow-md">
       {/* Thumbnail area */}
       <button
         type="button"
         onClick={isReady ? onPreview : undefined}
         disabled={!isReady}
-        className="flex h-32 w-full items-center justify-center bg-gray-50 dark:bg-gray-800/50 disabled:cursor-not-allowed"
+        className="flex h-32 w-full items-center justify-center bg-slate-50 dark:bg-white/5 disabled:cursor-not-allowed"
       >
         {imageFile && thumbUrl ? (
           <img src={thumbUrl} alt={attachment.original_name} className="h-full w-full object-cover" />
         ) : imageFile && isReady ? (
-          <HiOutlineRefresh className="h-6 w-6 animate-spin text-gray-300 dark:text-gray-600" />
+          <HiOutlineRefresh className="h-6 w-6 animate-spin text-slate-300 dark:text-slate-600" />
         ) : (
-          <div className="flex flex-col items-center gap-1 text-gray-400 dark:text-gray-500">
+          <div className="flex flex-col items-center gap-1 text-slate-400 dark:text-slate-500">
             {imageFile ? <HiOutlinePhotograph className="h-8 w-8" /> : <HiOutlineDocumentText className="h-8 w-8" />}
             <span className="text-xs font-medium uppercase">{attachment.extension}</span>
           </div>
@@ -242,11 +242,11 @@ function AttachmentThumbnail({
 
       {/* Info */}
       <div className="px-3 py-2.5">
-        <p className="truncate text-xs font-medium text-gray-900 dark:text-gray-100" title={attachment.original_name}>
+        <p className="truncate text-xs font-medium text-slate-900 dark:text-white" title={attachment.original_name}>
           {attachment.original_name}
         </p>
         <div className="mt-1 flex items-center gap-2">
-          <span className="text-[10px] text-gray-400 dark:text-gray-500">{formatBytes(attachment.size_processed ?? attachment.size_original)}</span>
+          <span className="text-[10px] text-slate-400 dark:text-slate-500">{formatBytes(attachment.size_processed ?? attachment.size_original)}</span>
           {attachment.processing_status !== 'ready' && (
             <Badge variant={statusBadgeVariant(attachment.processing_status)} size="sm">
               {attachment.processing_status === 'pending' ? 'Pendiente' :
@@ -254,7 +254,7 @@ function AttachmentThumbnail({
             </Badge>
           )}
         </div>
-        <p className="mt-0.5 text-[10px] text-gray-400 dark:text-gray-500 truncate">
+        <p className="mt-0.5 text-[10px] text-slate-400 dark:text-slate-500 truncate">
           {attachment.uploader?.name ?? 'Desconocido'}
         </p>
       </div>
@@ -265,7 +265,7 @@ function AttachmentThumbnail({
           <button
             type="button"
             onClick={onPreview}
-            className="rounded-lg bg-white/90 dark:bg-gray-900/90 p-1.5 text-gray-600 dark:text-gray-400 shadow-sm hover:bg-white dark:hover:bg-gray-800 hover:text-blue-600 dark:hover:text-blue-400"
+            className="rounded-lg bg-white/90 dark:bg-cyber-grafito/90 p-1.5 text-slate-600 dark:text-slate-400 shadow-sm hover:bg-white dark:hover:bg-white/5 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
             title="Ver"
           >
             <HiOutlineEye className="h-4 w-4" />
@@ -274,7 +274,7 @@ function AttachmentThumbnail({
             <button
               type="button"
               onClick={onDelete}
-              className="rounded-lg bg-white/90 dark:bg-gray-900/90 p-1.5 text-gray-600 dark:text-gray-400 shadow-sm hover:bg-white dark:hover:bg-gray-800 hover:text-red-600 dark:hover:text-red-400"
+              className="rounded-lg bg-white/90 dark:bg-cyber-grafito/90 p-1.5 text-slate-600 dark:text-slate-400 shadow-sm hover:bg-white dark:hover:bg-white/5 hover:text-red-600 dark:hover:text-red-400"
               title="Eliminar"
             >
               <HiOutlineTrash className="h-4 w-4" />
@@ -345,12 +345,12 @@ export function TaskAttachmentsV2({
 
   return (
     <>
-      <FadeIn delay={0.15} className="mt-6 rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
-        <h3 className="mb-4 flex items-center gap-2 font-semibold text-gray-900 dark:text-gray-100">
-          <HiOutlinePaperClip className="h-5 w-5 text-indigo-500 dark:text-indigo-400" />
+      <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+          <HiOutlinePaperClip className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
           Adjuntos
           {hasAttachments && (
-            <span className="rounded-full bg-indigo-50 dark:bg-indigo-900/30 px-2 py-0.5 text-xs font-medium text-indigo-600 dark:text-indigo-400">
+            <span className="rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 px-2 py-0.5 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">
               {attachments.length}
             </span>
           )}
@@ -362,7 +362,7 @@ export function TaskAttachmentsV2({
         {loading ? (
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
             {Array.from({ length: 4 }).map((_, i) => (
-              <div key={i} className="h-48 animate-pulse rounded-xl bg-gray-100 dark:bg-gray-800" />
+              <div key={i} className="h-48 animate-pulse rounded-sm bg-slate-100 dark:bg-white/5" />
             ))}
           </div>
         ) : (
@@ -454,13 +454,13 @@ export function UploadFormPanelV2({
       exit={{ opacity: 0, height: 0 }}
       className="mt-4 overflow-hidden"
     >
-      <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
-        <h3 className="mb-3 font-semibold text-gray-900 dark:text-gray-100">Subir archivo</h3>
+      <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <h3 className="mb-3 font-semibold text-slate-900 dark:text-white">Subir archivo</h3>
         <div className="space-y-3">
-          <div className="flex items-center justify-center rounded-xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 p-6 transition-colors hover:border-blue-300 dark:hover:border-blue-700">
+          <div className="flex items-center justify-center rounded-sm border-2 border-dashed border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-6 transition-colors hover:border-cyber-radar/30 dark:hover:border-cyber-radar">
             <label className="flex cursor-pointer flex-col items-center gap-2 text-center">
-              <HiOutlinePaperClip className="h-8 w-8 text-gray-400 dark:text-gray-500" />
-              <span className="text-sm text-gray-600 dark:text-gray-400">
+              <HiOutlinePaperClip className="h-8 w-8 text-slate-400 dark:text-slate-500" />
+              <span className="text-sm text-slate-600 dark:text-slate-400">
                 {file ? file.name : 'Selecciona o arrastra un archivo'}
               </span>
               <input
@@ -470,12 +470,12 @@ export function UploadFormPanelV2({
                 className="hidden"
               />
               {file && (
-                <span className="text-xs text-gray-400 dark:text-gray-500">{formatBytes(file.size)}</span>
+                <span className="text-xs text-slate-400 dark:text-slate-500">{formatBytes(file.size)}</span>
               )}
             </label>
           </div>
           {fileError && <p className="text-sm text-red-500 dark:text-red-400">{fileError}</p>}
-          <p className="text-xs text-gray-400 dark:text-gray-500">
+          <p className="text-xs text-slate-400 dark:text-slate-500">
             Máx. 20 MB. Tipos: {ALLOWED_EXTENSIONS.join(', ')}
           </p>
           <div className="flex gap-2">
@@ -483,14 +483,14 @@ export function UploadFormPanelV2({
               type="button"
               onClick={handleUpload}
               disabled={!file || uploading}
-              className="rounded-xl bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+              className="rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light disabled:opacity-50"
             >
               {uploading ? 'Subiendo…' : 'Subir'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
+              className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5"
             >
               Cancelar
             </button>

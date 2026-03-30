@@ -76,7 +76,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
 
   if (error) {
     return (
-      <div className="rounded-2xl border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-600 dark:text-red-400">
+      <div className="rounded-sm border border-red-100 dark:border-red-900 bg-red-50 dark:bg-red-900/30 p-4 text-sm text-red-600 dark:text-red-400">
         {error}
         <button type="button" onClick={load} className="ml-2 underline hover:text-red-800 dark:hover:text-red-200">Reintentar</button>
       </div>
@@ -85,28 +85,28 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
 
   return (
     <FadeIn delay={0.1}>
-      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
-        <HiOutlineUserAdd className="h-5 w-5 text-blue-500 dark:text-blue-400" />
+      <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
+        <HiOutlineUserAdd className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
         Trabajadores disponibles
-        <span className="rounded-full bg-blue-50 dark:bg-blue-900/30 px-2 py-0.5 text-xs font-medium text-blue-600 dark:text-blue-400">
+        <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light">
           {workers.length}
         </span>
       </h3>
 
       {claimError && (
-        <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+        <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
           {claimError}
         </div>
       )}
 
       <div className="relative mb-4">
-        <HiOutlineSearch className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400 dark:text-gray-500" />
+        <HiOutlineSearch className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
         <input
           type="text"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscar por nombre o correo..."
-          className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 py-2.5 pl-10 pr-4 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+          className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 py-2.5 pl-10 pr-4 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
         />
       </div>
 
@@ -124,21 +124,21 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
         <StaggerList className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((worker) => (
             <StaggerItem key={worker.id}>
-              <div className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-5 shadow-sm transition-all hover:shadow-md hover:border-blue-100 dark:hover:border-blue-900">
+              <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm transition-all hover:shadow-md hover:border-cyber-radar/10 dark:hover:border-cyber-radar/20">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-blue-500 to-indigo-500 text-sm font-medium text-white">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-cyber-radar to-cyber-navy text-sm font-medium text-white">
                     {worker.name.charAt(0).toUpperCase()}
                   </div>
                   <div className="min-w-0">
-                    <p className="truncate font-semibold text-gray-900 dark:text-gray-100">{worker.name}</p>
-                    <p className="truncate text-xs text-gray-500 dark:text-gray-400">{worker.email}</p>
+                    <p className="truncate font-semibold text-slate-900 dark:text-white">{worker.name}</p>
+                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">{worker.email}</p>
                   </div>
                 </div>
                 <button
                   type="button"
                   onClick={() => handleClaim(worker.id)}
                   disabled={claimingId === worker.id}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-blue-700 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:bg-cyber-radar-light active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {claimingId === worker.id ? (
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />

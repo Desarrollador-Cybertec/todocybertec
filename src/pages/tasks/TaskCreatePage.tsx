@@ -67,7 +67,6 @@ export function TaskCreatePage() {
       requires_manager_approval: !isWorker,   // workers have personal tasks — no approval needed
       requires_completion_notification: false,
       requires_due_date: false,
-      requires_progress_report: false,
       notify_on_due: !isWorker,
       notify_on_overdue: !isWorker,
       notify_on_completion: false,
@@ -100,7 +99,6 @@ export function TaskCreatePage() {
   useEffect(() => {
     if (isPersonalTask) {
       setValue('requires_manager_approval', false);
-      setValue('requires_progress_report', false);
       setValue('notify_on_due', false);
       setValue('notify_on_overdue', false);
       setValue('notify_on_completion', false);
@@ -111,7 +109,6 @@ export function TaskCreatePage() {
   const reqAttach   = useWatch({ control, name: 'requires_attachment' });
   const reqComment  = useWatch({ control, name: 'requires_completion_comment' });
   const reqApproval = useWatch({ control, name: 'requires_manager_approval' });
-  const reqProgress = useWatch({ control, name: 'requires_progress_report' });
   const notDue        = useWatch({ control, name: 'notify_on_due' });
   const notOverdue    = useWatch({ control, name: 'notify_on_overdue' });
   const notCompletion = useWatch({ control, name: 'notify_on_completion' });
@@ -216,14 +213,14 @@ export function TaskCreatePage() {
       <div className="mx-auto max-w-6xl">
         {/* header */}
         <div className="mb-6">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Nueva Tarea</h2>
-          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">Completa los datos esenciales y crea tu tarea rápidamente.</p>
+          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Nueva Tarea</h2>
+          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">Completa los datos esenciales y crea tu tarea rápidamente.</p>
         </div>
 
         <AnimatePresence>
           {serverError && (
             <SlideDown>
-              <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+              <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
                 <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
                 {serverError}
               </div>
@@ -237,19 +234,19 @@ export function TaskCreatePage() {
             <div className="space-y-6 lg:col-span-2">
 
               {/* quick creation card */}
-              <FadeIn delay={0.05} className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm">
-                <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-gray-900 dark:text-gray-100">
+              <FadeIn delay={0.05} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+                <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
                   ⚡ Creación rápida
                 </h3>
                 <div className="space-y-4">
                   {/* title */}
                   <div>
-                    <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Título *</label>
+                    <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Título *</label>
                     <input
                       id="title"
                       {...register('title')}
                       placeholder="Ej: Enviar informe semanal"
-                      className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-all focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                      className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-all focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
                     />
                     {errors.title && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.title.message}</p>}
                   </div>
@@ -258,15 +255,15 @@ export function TaskCreatePage() {
                     {/* responsible */}
                     {isWorker ? (
                       <div>
-                        <label className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Destino</label>
+                        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Destino</label>
                         <div className="flex gap-2">
                           <button
                             type="button"
                             onClick={() => { setWorkerDest('self'); setValue('assigned_to_user_id', user?.id ?? null); setValue('external_email', ''); setValue('external_name', ''); }}
-                            className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all ${
+                            className={`flex-1 rounded-sm border px-3 py-2.5 text-sm font-medium transition-all ${
                               workerDest === 'self'
-                                ? 'border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
-                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                ? 'border-cyber-radar/30 dark:border-cyber-radar bg-cyber-radar/10 dark:bg-cyber-radar/10 text-cyber-radar dark:text-cyber-radar-light ring-1 ring-cyber-radar/20 dark:ring-cyber-radar/30'
+                                : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'
                             }`}
                           >
                             <HiOutlineUser className="mr-1 inline h-4 w-4" />
@@ -275,10 +272,10 @@ export function TaskCreatePage() {
                           <button
                             type="button"
                             onClick={() => { setWorkerDest('external'); setValue('assigned_to_user_id', null); }}
-                            className={`flex-1 rounded-xl border px-3 py-2.5 text-sm font-medium transition-all ${
+                            className={`flex-1 rounded-sm border px-3 py-2.5 text-sm font-medium transition-all ${
                               workerDest === 'external'
-                                ? 'border-blue-300 dark:border-blue-700 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 ring-1 ring-blue-200 dark:ring-blue-800'
-                                : 'border-gray-200 dark:border-gray-700 text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800'
+                                ? 'border-cyber-radar/30 dark:border-cyber-radar bg-cyber-radar/10 dark:bg-cyber-radar/10 text-cyber-radar dark:text-cyber-radar-light ring-1 ring-cyber-radar/20 dark:ring-cyber-radar/30'
+                                : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'
                             }`}
                           >
                             ✉️ Correo externo
@@ -286,8 +283,8 @@ export function TaskCreatePage() {
                         </div>
                         {workerDest === 'self' && (
                           <>
-                            <div className="mt-2 flex items-center gap-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-300">
-                              <HiOutlineUser className="h-4 w-4 text-gray-400 dark:text-gray-500" />
+                            <div className="mt-2 flex items-center gap-2 rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300">
+                              <HiOutlineUser className="h-4 w-4 text-slate-400 dark:text-slate-500" />
                               {user?.name} (tú)
                             </div>
                             <input type="hidden" {...register('assigned_to_user_id', { value: user?.id })} />
@@ -299,26 +296,26 @@ export function TaskCreatePage() {
                               type="email"
                               {...register('external_email')}
                               placeholder="correo@ejemplo.com"
-                              className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none"
+                              className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none"
                             />
                             {errors.external_email && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.external_email.message}</p>}
                             <input
                               type="text"
                               {...register('external_name')}
                               placeholder="Nombre del destinatario"
-                              className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none"
+                              className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none"
                             />
                           </div>
                         )}
                       </div>
                     ) : (
                       <div>
-                        <label htmlFor="assigned_to_user_id" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Responsable</label>
+                        <label htmlFor="assigned_to_user_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Responsable</label>
                         <select
                           id="assigned_to_user_id"
                           {...register('assigned_to_user_id', { setValueAs: (v: string) => v ? Number(v) : null })}
                           disabled={hasArea || hasExternalEmail}
-                          className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none disabled:bg-gray-50 dark:disabled:bg-gray-800 disabled:text-gray-400 dark:disabled:text-gray-500"
+                          className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none disabled:bg-slate-50 dark:disabled:bg-white/5 disabled:text-slate-400 dark:disabled:text-slate-500"
                         >
                           <option value="">Seleccionar usuario</option>
                           {availableUsers.map((u) => (
@@ -330,14 +327,14 @@ export function TaskCreatePage() {
 
                     {/* due date */}
                     <div>
-                      <label htmlFor="due_date" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Fecha límite</label>
-                      <input id="due_date" type="date" {...register('due_date')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm focus:border-blue-500 focus:outline-none" />
+                      <label htmlFor="due_date" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Fecha límite</label>
+                      <input id="due_date" type="date" {...register('due_date')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none" />
                     </div>
                   </div>
 
                   {/* priority pills */}
                   <div>
-                    <span className="mb-2 block text-sm font-medium text-gray-700 dark:text-gray-300">Prioridad</span>
+                    <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</span>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => {
                         const s = PRIORITY_STYLES[value] ?? PRIORITY_STYLES.medium;
@@ -347,9 +344,9 @@ export function TaskCreatePage() {
                             key={value}
                             type="button"
                             onClick={() => setValue('priority', value as CreateTaskFormData['priority'])}
-                            className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium ring-1 transition-all ${active ? `${s.bg} ${s.text} ${s.ring} shadow-sm` : 'bg-white dark:bg-gray-900 text-gray-500 dark:text-gray-400 ring-gray-200 dark:ring-gray-700 hover:bg-gray-50 dark:hover:bg-gray-800'}`}
+                            className={`flex items-center gap-1.5 rounded-full px-4 py-1.5 text-sm font-medium ring-1 transition-all ${active ? `${s.bg} ${s.text} ${s.ring} shadow-sm` : 'bg-white dark:bg-cyber-grafito text-slate-500 dark:text-slate-400 ring-slate-200 dark:ring-slate-700 hover:bg-slate-50 dark:hover:bg-white/5'}`}
                           >
-                            <span className={`h-2 w-2 rounded-full ${active ? s.dot : 'bg-gray-300 dark:bg-gray-600'}`} />
+                            <span className={`h-2 w-2 rounded-full ${active ? s.dot : 'bg-slate-300 dark:bg-white/10'}`} />
                             {label}
                           </button>
                         );
@@ -360,25 +357,25 @@ export function TaskCreatePage() {
                 </div>
 
                 {/* toggle advanced */}
-                <div className="mt-5 bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border-t border-gray-100 dark:border-gray-800 pt-4">
+                <div className="mt-5 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
                   {!showAdvanced && (
                     <button
                       type="button"
                       onClick={() => setShowAdvanced(true)}
-                      className="flex w-full items-center justify-between rounded-xl border border-dashed border-blue-300 dark:border-blue-700 bg-blue-50/50 dark:bg-blue-900/20 px-4 py-3 text-sm transition-all hover:bg-blue-50 dark:hover:bg-blue-900/30"
+                      className="flex w-full items-center justify-between rounded-sm border border-dashed border-cyber-radar/30 dark:border-cyber-radar bg-cyber-radar/5/50 dark:bg-cyber-radar/20/20 px-4 py-3 text-sm transition-all hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20"
                     >
                       <div className="flex items-center gap-2">
-                        <HiOutlineShieldCheck className="h-5 w-5 text-blue-500 dark:text-blue-400" />
-                        <span className="font-medium text-blue-700 dark:text-blue-400">Configurar requisitos, notificaciones y más</span>
+                        <HiOutlineShieldCheck className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
+                        <span className="font-medium text-cyber-radar dark:text-cyber-radar-light">Configurar requisitos, notificaciones y más</span>
                       </div>
-                      <span className="text-xs text-blue-400">Recomendado</span>
+                      <span className="text-xs text-cyber-radar-light">Recomendado</span>
                     </button>
                   )}
                   {showAdvanced && (
                     <button
                       type="button"
                       onClick={() => setShowAdvanced(false)}
-                      className="flex items-center gap-1.5 text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700"
+                      className="flex items-center gap-1.5 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light hover:text-cyber-radar"
                     >
                       <HiOutlineChevronDown className="h-4 w-4 rotate-180 transition-transform" />
                       Ocultar opciones avanzadas
@@ -390,7 +387,7 @@ export function TaskCreatePage() {
                       <button
                         type="submit"
                         disabled={isSubmitting}
-                        className="flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-5 py-2 text-sm font-medium text-white shadow-md shadow-blue-500/25 transition-all hover:shadow-lg active:scale-[0.98] disabled:opacity-50"
+                        className="flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-lg active:scale-[0.98] disabled:opacity-50"
                       >
                         {isSubmitting ? <><Spinner size="sm" className="border-white border-t-transparent" /> Creando...</> : 'Crear tarea'}
                       </button>
@@ -416,7 +413,6 @@ export function TaskCreatePage() {
                   reqAttach={!!reqAttach}
                   reqComment={!!reqComment}
                   reqApproval={!!reqApproval}
-                  reqProgress={!!reqProgress}
                   notDue={!!notDue}
                   notOverdue={!!notOverdue}
                   notCompletion={!!notCompletion}
@@ -434,7 +430,6 @@ export function TaskCreatePage() {
               reqAttach={!!reqAttach}
               reqComment={!!reqComment}
               reqApproval={!!reqApproval}
-              reqProgress={!!reqProgress}
             />
           </div>
         </form>

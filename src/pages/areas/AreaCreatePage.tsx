@@ -58,16 +58,16 @@ export function AreaCreatePage() {
   return (
     <PageTransition>
       <div className="mx-auto max-w-2xl">
-        <button type="button" onClick={() => navigate('/areas')} className="mb-4 flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 transition-colors hover:text-gray-900 dark:hover:text-gray-100">
+        <button type="button" onClick={() => navigate('/areas')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
           <HiOutlineArrowLeft className="h-4 w-4" /> Volver a áreas
         </button>
 
-        <h2 className="mb-6 text-2xl font-bold text-gray-900 dark:text-gray-100">Nueva Área</h2>
+        <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Nueva Área</h2>
 
         <AnimatePresence>
           {serverError && (
             <SlideDown>
-              <div className="mb-4 flex items-center gap-2 rounded-xl bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+              <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
                 <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
                 {serverError}
               </div>
@@ -76,23 +76,23 @@ export function AreaCreatePage() {
         </AnimatePresence>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <FadeIn className="rounded-2xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm space-y-4">
+          <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
             <div>
-              <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Nombre *</label>
-              <input id="name" {...register('name')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
+              <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre *</label>
+              <input id="name" {...register('name')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" />
               {errors.name && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.name.message}</p>}
             </div>
             <div>
-              <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Descripción</label>
-              <textarea id="description" rows={3} {...register('description')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
+              <label htmlFor="description" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
+              <textarea id="description" rows={3} {...register('description')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" />
             </div>
             <div>
-              <label htmlFor="process_identifier" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Identificador de proceso</label>
-              <input id="process_identifier" {...register('process_identifier')} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20" />
+              <label htmlFor="process_identifier" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Identificador de proceso</label>
+              <input id="process_identifier" {...register('process_identifier')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" />
             </div>
             <div>
-              <label htmlFor="manager_user_id" className="mb-1.5 block text-sm font-medium text-gray-700 dark:text-gray-300">Encargado</label>
-              <select id="manager_user_id" {...register('manager_user_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-xl bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600 px-4 py-2.5 text-sm transition-colors focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20">
+              <label htmlFor="manager_user_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Encargado</label>
+              <select id="manager_user_id" {...register('manager_user_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20">
                 <option value="">Sin encargado</option>
                 {users.filter((u) => u.role.slug === 'area_manager' || u.role.slug === 'superadmin').map((u) => (
                   <option key={u.id} value={u.id}>{u.name}</option>
@@ -102,8 +102,8 @@ export function AreaCreatePage() {
           </FadeIn>
 
           <div className="flex justify-end gap-3">
-            <button type="button" onClick={() => setShowLeaveModal(true)} className="rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 px-6 py-2.5 text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
-            <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-xl bg-linear-to-r from-blue-600 to-indigo-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
+            <button type="button" onClick={() => setShowLeaveModal(true)} className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-6 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">Cancelar</button>
+            <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
               {isSubmitting ? <><Spinner size="sm" /> Creando...</> : 'Crear área'}
             </button>
           </div>

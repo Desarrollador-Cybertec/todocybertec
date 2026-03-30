@@ -67,21 +67,21 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
     NOTIFICATION_CONFIG[type] ?? {
       emoji: '🔔',
       label: 'Notificación',
-      color: 'text-gray-600',
-      bgColor: 'bg-gray-50 dark:bg-gray-900/20',
+      color: 'text-slate-600',
+      bgColor: 'bg-slate-50 dark:bg-cyber-grafito/20',
     };
 
   return (
     <div className="flex flex-col overflow-hidden" style={{ height: '100%', maxHeight: 'inherit' }}>
       {/* Encabezado */}
-      <div className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-        <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+      <div className="flex items-center justify-between p-4 border-b border-slate-200 dark:border-white/10">
+        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
           Notificaciones
         </h3>
         {notifications.some((n) => !n.read_at) && (
           <button
             onClick={() => markAllAsRead()}
-            className="inline-flex items-center gap-1.5 text-xs font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light hover:text-cyber-radar dark:hover:text-cyber-radar-light transition-colors"
             title="Marcar todas como leídas"
           >
             <HiOutlineCheck className="h-4 w-4" />
@@ -91,15 +91,15 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       </div>
 
       {/* Pestañas de categoría */}
-      <div className="flex border-b border-gray-200 dark:border-gray-700 px-2">
+      <div className="flex border-b border-slate-200 dark:border-white/10 px-2">
         {TABS.map((tab) => (
           <button
             key={tab.key}
             onClick={() => setActiveTab(tab.key)}
             className={`flex-1 py-2 text-xs font-medium text-center transition-colors ${
               activeTab === tab.key
-                ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400'
-                : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'
+                ? 'text-cyber-radar dark:text-cyber-radar-light border-b-2 border-cyber-radar dark:border-cyber-radar-light'
+                : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
             {tab.label}
@@ -110,15 +110,15 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       {/* Lista de notificaciones */}
       <div className="flex-1 overflow-y-auto">
         {isLoading && notifications.length === 0 ? (
-          <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
             <p className="text-sm">Cargando...</p>
           </div>
         ) : filtered.length === 0 ? (
-          <div className="flex items-center justify-center h-32 text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
             <p className="text-sm">No hay notificaciones</p>
           </div>
         ) : (
-          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+          <div className="divide-y divide-slate-100 dark:divide-white/5">
             {filtered.map((notification) => {
               const iconConfig = getIconConfig(notification.data.type);
               const isUnread = !notification.read_at;
@@ -130,7 +130,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                   className={`p-4 cursor-pointer transition-colors ${
                     isUnread
                       ? iconConfig.bgColor
-                      : 'bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750'
+                      : 'bg-white dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/10'
                   }`}
                 >
                   <div className="flex gap-3">
@@ -140,20 +140,20 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-start justify-between gap-2">
                         <h4
-                          className={`text-sm text-gray-900 dark:text-gray-100 ${
-                            isUnread ? 'font-bold' : 'font-medium text-gray-500 dark:text-gray-400'
+                          className={`text-sm text-slate-900 dark:text-white ${
+                            isUnread ? 'font-bold' : 'font-medium text-slate-500 dark:text-slate-400'
                           }`}
                         >
                           {iconConfig.label}
                         </h4>
                         {isUnread && (
-                          <div className="shrink-0 w-2 h-2 bg-blue-500 rounded-full mt-1" />
+                          <div className="shrink-0 w-2 h-2 bg-cyber-radar rounded-full mt-1" />
                         )}
                       </div>
-                      <p className={`text-sm mt-1 line-clamp-2 ${isUnread ? 'text-gray-600 dark:text-gray-400' : 'text-gray-400 dark:text-gray-500'}`}>
+                      <p className={`text-sm mt-1 line-clamp-2 ${isUnread ? 'text-slate-600 dark:text-slate-400' : 'text-slate-400 dark:text-slate-500'}`}>
                         {notification.data.message}
                       </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-500 mt-2">
+                      <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
                         {new Date(notification.created_at).toLocaleString('es-ES')}
                       </p>
                     </div>
@@ -166,13 +166,13 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       </div>
 
       {/* Pie de página */}
-      <div className="border-t border-gray-200 dark:border-gray-700 p-3">
+      <div className="border-t border-slate-200 dark:border-white/10 p-3">
         <button
           onClick={() => {
             navigate('/notifications');
             onClose();
           }}
-          className="w-full py-2 px-3 text-sm font-medium text-center text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-gray-800 rounded-md transition-colors"
+          className="w-full py-2 px-3 text-sm font-medium text-center text-cyber-radar dark:text-cyber-radar-light hover:bg-cyber-radar/5 dark:hover:bg-white/5 rounded-md transition-colors"
         >
           Ver todas las notificaciones
         </button>

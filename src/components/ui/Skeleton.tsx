@@ -6,7 +6,7 @@ interface SkeletonProps {
 
 export function Skeleton({ className = '' }: SkeletonProps) {
   return (
-    <div className={`animate-pulse rounded-lg bg-linear-to-r from-gray-200 dark:from-gray-700 via-gray-100 dark:via-gray-800 to-gray-200 dark:to-gray-700 bg-size-[200%_100%] ${className}`} />
+    <div className={`animate-pulse rounded-sm bg-linear-to-r from-slate-200 dark:from-white/5 via-slate-100 dark:via-white/10 to-slate-200 dark:to-white/5 bg-size-[200%_100%] ${className}`} />
   );
 }
 
@@ -22,9 +22,9 @@ export function SkeletonText({ lines = 3, className = '' }: { lines?: number; cl
 
 export function SkeletonCard({ className = '' }: SkeletonProps) {
   return (
-    <div className={`rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm ${className}`}>
+    <div className={`rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 ${className}`}>
       <div className="flex items-start gap-4">
-        <Skeleton className="h-12 w-12 shrink-0 rounded-xl" />
+        <Skeleton className="h-12 w-12 shrink-0 rounded-sm" />
         <div className="flex-1 space-y-3">
           <Skeleton className="h-4 w-2/3" />
           <Skeleton className="h-3 w-full" />
@@ -37,15 +37,15 @@ export function SkeletonCard({ className = '' }: SkeletonProps) {
 
 export function SkeletonTable({ rows = 5, cols = 4, className = '' }: { rows?: number; cols?: number; className?: string }) {
   return (
-    <div className={`overflow-hidden rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 shadow-sm ${className}`}>
-      <div className="border-b bg-gray-50 dark:bg-gray-800 px-6 py-3">
+    <div className={`overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito ${className}`}>
+      <div className="border-b border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5 px-6 py-3">
         <div className="flex gap-6">
           {Array.from({ length: cols }).map((_, i) => (
             <Skeleton key={i} className="h-3 w-24" />
           ))}
         </div>
       </div>
-      <div className="divide-y divide-gray-50 dark:divide-gray-800">
+      <div className="divide-y divide-slate-50 dark:divide-white/5">
         {Array.from({ length: rows }).map((_, i) => (
           <div key={i} className="flex items-center gap-6 px-6 py-4">
             {Array.from({ length: cols }).map((_, j) => (
@@ -62,9 +62,9 @@ export function SkeletonStatCards({ count = 4 }: { count?: number }) {
   return (
     <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
       {Array.from({ length: count }).map((_, i) => (
-        <div key={i} className="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm text-gray-900 dark:text-gray-100">
+        <div key={i} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6">
           <div className="flex items-center gap-4">
-            <Skeleton className="h-12 w-12 rounded-xl" />
+            <Skeleton className="h-12 w-12 rounded-sm" />
             <div className="flex-1 space-y-2">
               <Skeleton className="h-3 w-20" />
               <Skeleton className="h-6 w-16" />
@@ -81,11 +81,11 @@ export function SkeletonDashboard() {
     <div className="space-y-8">
       <SkeletonStatCards />
       <div className="grid gap-6 lg:grid-cols-2">
-        <div className="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm text-gray-900 dark:text-gray-100">
+        <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6">
           <Skeleton className="mb-4 h-5 w-40" />
           <SkeletonText lines={5} />
         </div>
-        <div className="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm text-gray-900 dark:text-gray-100">
+        <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6">
           <Skeleton className="mb-4 h-5 w-40" />
           <SkeletonText lines={5} />
         </div>
@@ -97,7 +97,7 @@ export function SkeletonDashboard() {
 export function SkeletonDetail() {
   return (
     <div className="space-y-6">
-      <div className="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm text-gray-900 dark:text-gray-100">
+      <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6">
         <Skeleton className="mb-4 h-7 w-2/3" />
         <Skeleton className="mb-6 h-4 w-full" />
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -109,7 +109,7 @@ export function SkeletonDetail() {
           ))}
         </div>
       </div>
-      <div className="rounded-xl border border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 p-6 shadow-sm text-gray-900 dark:text-gray-100">
+      <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6">
         <Skeleton className="mb-4 h-5 w-32" />
         <SkeletonText lines={4} />
       </div>
@@ -134,12 +134,12 @@ export function EmptyState({ icon, title, description, action }: {
   action?: ReactNode;
 }) {
   return (
-    <div className="flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 px-6 py-16">
-      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-gray-50 dark:bg-gray-800 text-gray-400 dark:text-gray-500">
+    <div className="flex flex-col items-center justify-center rounded-sm border-2 border-dashed border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito px-6 py-16">
+      <div className="mb-4 flex h-16 w-16 items-center justify-center rounded-sm bg-slate-50 dark:bg-white/5 text-slate-400 dark:text-slate-500">
         {icon}
       </div>
-      <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-      {description && <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">{description}</p>}
+      <h3 className="text-lg font-bold text-slate-900 dark:text-white">{title}</h3>
+      {description && <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">{description}</p>}
       {action && <div className="mt-6">{action}</div>}
     </div>
   );
@@ -148,7 +148,7 @@ export function EmptyState({ icon, title, description, action }: {
 export function Spinner({ size = 'md', className = '' }: { size?: 'sm' | 'md' | 'lg'; className?: string }) {
   const sizes = { sm: 'h-4 w-4 border-2', md: 'h-8 w-8 border-[3px]', lg: 'h-12 w-12 border-4' };
   return (
-    <div className={`${sizes[size]} animate-spin rounded-full border-blue-600 border-t-transparent ${className}`} />
+    <div className={`${sizes[size]} animate-spin rounded-full border-cyber-radar border-t-transparent ${className}`} />
   );
 }
 
