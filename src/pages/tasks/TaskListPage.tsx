@@ -141,8 +141,8 @@ export function TaskListPage() {
       </FadeIn>
 
       {/* Search + Filters */}
-      <FadeIn delay={0.05} className="mb-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 shadow-sm">
-        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+      <FadeIn delay={0.05} className="mb-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-3 sm:p-4 shadow-sm">
+        <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
           {/* Search */}
           <div className="relative min-w-0 w-full sm:w-auto sm:min-w-50 sm:flex-1">
             <HiOutlineSearch className="absolute left-3 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
@@ -154,11 +154,12 @@ export function TaskListPage() {
               className="w-full rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 py-2.5 pl-10 pr-4 text-sm transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 text-slate-700 dark:text-slate-300"
             />
           </div>
-          {/* Filters */}
+          {/* Filters — flex-wrap on mobile (2-per-row via min-w), inline on sm+ */}
+          <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:gap-3 sm:items-center">
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Estado</option>
             {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
@@ -168,7 +169,7 @@ export function TaskListPage() {
           <select
             value={filterPriority}
             onChange={(e) => setFilterPriority(e.target.value)}
-            className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Prioridad</option>
             {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
@@ -179,7 +180,7 @@ export function TaskListPage() {
             <select
               value={filterAreaId}
               onChange={(e) => { setFilterAreaId(e.target.value); if (e.target.value) setFilterType(''); }}
-              className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
             >
               <option value="">Área</option>
               {areas.filter((a) => a.active).map((a) => (
@@ -191,7 +192,7 @@ export function TaskListPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
             >
               <option value="">Tipo</option>
               <option value="org">Organización</option>
@@ -201,7 +202,7 @@ export function TaskListPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Más recientes</option>
             <option value="oldest">Más antiguas</option>
@@ -212,11 +213,12 @@ export function TaskListPage() {
             <button
               type="button"
               onClick={clearFilters}
-              className="rounded-sm px-3 py-2.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light transition-colors hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20"
+              className="w-full sm:w-auto rounded-sm px-3 py-2.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light transition-colors hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20"
             >
               Limpiar filtros
             </button>
           )}
+          </div>
         </div>
       </FadeIn>
 
@@ -266,7 +268,7 @@ export function TaskListPage() {
         ) : (
           <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
             {/* List header */}
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-3">
+            <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-3 sm:px-6">
               <p className="text-xs font-medium text-slate-400 dark:text-slate-500">
                 {filteredTasks.length} tarea{filteredTasks.length !== 1 ? 's' : ''}
                 {search && ` para "${search}"`}
@@ -276,7 +278,7 @@ export function TaskListPage() {
             <StaggerList className="divide-y divide-slate-50 dark:divide-white/5">
               {filteredTasks.map((task) => (
                 <StaggerItem key={task.id}>
-                  <div className="group flex items-center gap-4 px-6 py-4 transition-colors hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20">
+                  <div className="group flex flex-col gap-3 px-4 py-4 transition-colors hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20 sm:flex-row sm:items-center sm:gap-4 sm:px-6">
                     {/* Left: info */}
                     <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
@@ -339,7 +341,7 @@ export function TaskListPage() {
                     </div>
 
                     {/* Right: actions */}
-                    <div className="flex shrink-0 items-center gap-2">
+                    <div className="flex shrink-0 flex-wrap items-center gap-2">
                       <TaskStatusSelect
                         task={task}
                         userId={user?.id}

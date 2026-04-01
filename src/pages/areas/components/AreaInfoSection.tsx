@@ -95,8 +95,8 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
   }
 
   return (
-    <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
-      <div className="flex items-start justify-between">
+    <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-6 shadow-sm">
+      <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{area.name}</h2>
           {area.description && <p className="mt-2 text-slate-600 dark:text-slate-400">{area.description}</p>}

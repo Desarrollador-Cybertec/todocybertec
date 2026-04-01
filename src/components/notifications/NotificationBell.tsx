@@ -15,7 +15,7 @@ export function NotificationBell() {
   useEffect(() => {
     if (isOpen && bellRef.current) {
       const rect = bellRef.current.getBoundingClientRect();
-      const panelWidth = 384; // w-96
+      const panelWidth = Math.min(384, window.innerWidth - 16);
       const spaceRight = window.innerWidth - rect.right;
       const left = spaceRight >= panelWidth
         ? rect.right - panelWidth
@@ -55,7 +55,7 @@ export function NotificationBell() {
     const update = () => {
       if (bellRef.current) {
         const rect = bellRef.current.getBoundingClientRect();
-        const panelWidth = 384;
+        const panelWidth = Math.min(384, window.innerWidth - 16);
         const spaceRight = window.innerWidth - rect.right;
         const left = spaceRight >= panelWidth
           ? rect.right - panelWidth

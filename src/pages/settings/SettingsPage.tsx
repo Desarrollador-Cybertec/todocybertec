@@ -303,7 +303,7 @@ export function SettingsPage() {
             key={tab.key}
             type="button"
             onClick={() => setActiveTab(tab.key)}
-            className={`relative inline-flex flex-1 items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-medium transition-colors ${
+            className={`relative inline-flex flex-1 items-center justify-center gap-1.5 sm:gap-2 rounded-lg px-2 py-2.5 sm:px-4 text-xs sm:text-sm font-medium transition-colors ${
               activeTab === tab.key ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-300'
             }`}
           >
@@ -314,7 +314,7 @@ export function SettingsPage() {
                 transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
               />
             )}
-            <span className="relative z-10 flex items-center gap-2">{tab.icon} {tab.label}</span>
+            <span className="relative z-10 flex items-center gap-1.5 sm:gap-2">{tab.icon} <span className="hidden sm:inline">{tab.label}</span></span>
           </button>
         ))}
       </div>

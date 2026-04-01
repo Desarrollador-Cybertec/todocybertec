@@ -219,7 +219,7 @@ export function AppLayout() {
       </aside>
 
       {/* Main content */}
-      <div className="flex flex-1 flex-col lg:ml-64">
+      <div className="flex min-w-0 flex-1 flex-col lg:ml-64">
         <header className="sticky top-0 z-10 flex h-12 items-center border-b border-slate-200 dark:border-white/5 bg-white/80 dark:bg-cyber-grafito/80 px-6 backdrop-blur-md lg:hidden lg:px-8">
           <button
             type="button"
@@ -231,7 +231,7 @@ export function AppLayout() {
           </button>
         </header>
 
-        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:p-8">
           <Outlet />
         </main>
       </div>

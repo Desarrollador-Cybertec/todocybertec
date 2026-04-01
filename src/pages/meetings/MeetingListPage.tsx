@@ -26,7 +26,7 @@ export function MeetingListPage() {
 
   return (
     <PageTransition>
-      <div className="mb-6 flex items-center justify-between">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Reuniones</h2>
         <Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
           <HiOutlinePlus className="h-4 w-4" /> Nueva reunión

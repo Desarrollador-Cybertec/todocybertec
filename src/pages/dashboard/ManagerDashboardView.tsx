@@ -143,7 +143,7 @@ export function ManagerDashboardView() {
   return (
     <div className="space-y-6">
       {/* Hero greeting */}
-      <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-6 py-5 shadow-sm">
+      <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Hola, {firstName} <span className="inline-block origin-[70%_70%] animate-[wave_1.8s_ease-in-out_infinite]">👋</span>
@@ -156,22 +156,22 @@ export function ManagerDashboardView() {
             )}.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             to="/tasks/create"
-            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
             <HiOutlinePlusCircle className="h-4 w-4" />
             Nueva tarea
           </Link>
           <Link
             to="/claim-workers"
-            className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
           >
             <HiOutlineUserGroup className="h-4 w-4" />
             Mi equipo
           </Link>
-          <div className="w-px h-8 bg-slate-200 dark:bg-white/10" />
+          <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
           <NotificationBell />
         </div>
       </FadeIn>

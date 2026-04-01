@@ -160,7 +160,7 @@ export function PersonalDashboardView() {
   return (
     <div className="space-y-6">
       {/* Hero greeting */}
-      <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-6 py-5 shadow-sm">
+      <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Hola, {firstName} <span className="inline-block animate-[wave_1.8s_ease-in-out_infinite] origin-[70%_70%]">👋</span>
@@ -172,15 +172,15 @@ export function PersonalDashboardView() {
             )}.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             to="/tasks/create"
-            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
             <HiOutlinePlus className="h-4 w-4" />
             Nueva tarea
           </Link>
-          <div className="w-px h-8 bg-slate-200 dark:bg-white/10" />
+          <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
           <NotificationBell />
         </div>
       </FadeIn>
@@ -189,14 +189,14 @@ export function PersonalDashboardView() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Lo importante hoy - 3 cols */}
         <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-          <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-6 py-4">
+          <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <span className="text-xl">🔥</span>
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white">Lo importante hoy</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">Empieza por estas tareas para evitar atrasos.</p>
             </div>
           </div>
-          <div className="divide-y divide-slate-50 dark:divide-white/5 px-6">
+          <div className="divide-y divide-slate-50 dark:divide-white/5 px-4 sm:px-6">
             {urgentTasks.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <HiOutlineCheckCircle className="mb-2 h-10 w-10 text-green-400" />
@@ -237,7 +237,7 @@ export function PersonalDashboardView() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Mis tareas - 3 cols */}
         <FadeIn delay={0.15} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white">Mis tareas activas</h3>
               <p className="text-xs text-slate-400 dark:text-slate-500">En progreso, en revisión, vencidas o rechazadas.</p>

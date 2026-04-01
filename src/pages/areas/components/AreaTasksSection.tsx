@@ -81,7 +81,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
 
   return (
     <FadeIn delay={0.25} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-      <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
+      <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
         <h3 className="font-semibold text-slate-900 dark:text-white">Tareas del área</h3>
         <span className="rounded-lg bg-slate-100 dark:bg-white/10 px-2.5 py-0.5 text-xs font-semibold text-slate-600 dark:text-slate-400">{tasks.length}</span>
       </div>
@@ -89,7 +89,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
       <AnimatePresence>
         {assignMsg && (
           <SlideDown>
-            <div className="mx-6 mt-3 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
+            <div className="mx-4 mt-3 sm:mx-6 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
               <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {assignMsg}
             </div>
           </SlideDown>
@@ -97,11 +97,11 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
       </AnimatePresence>
 
       {tasks.length === 0 ? (
-        <p className="px-6 py-8 text-center text-sm text-slate-400 dark:text-slate-500">No hay tareas registradas para esta área.</p>
+        <p className="px-4 py-8 sm:px-6 text-center text-sm text-slate-400 dark:text-slate-500">No hay tareas registradas para esta área.</p>
       ) : (
         <div className="divide-y divide-slate-50 dark:divide-white/5">
           {tasks.map((task) => (
-            <div key={task.id} className="px-6 py-4">
+            <div key={task.id} className="px-4 py-4 sm:px-6">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0 flex-1">
                   <p className="truncate font-medium text-slate-900 dark:text-white">{task.title}</p>

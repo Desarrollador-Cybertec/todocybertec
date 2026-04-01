@@ -241,62 +241,103 @@ export function UserListPage() {
       {loading ? (
         <SkeletonTable />
       ) : (
-        <FadeIn className="overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b bg-slate-50/80 dark:bg-white/5/80">
-              <tr>
-                <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Usuario</th>
-                <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Correo</th>
-                <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Rol</th>
-                <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Estado</th>
-                <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Acciones</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-50 dark:divide-white/5">
-              {users.map((u) => (
-                <tr key={u.id} className="group transition-colors hover:bg-slate-50 dark:hover:bg-white/5/50">
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyber-radar/10 dark:from-cyber-radar/20 to-cyber-navy/10 dark:to-cyber-navy/20 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light">{u.name.charAt(0)}</span>
-                      <span className="font-medium text-slate-900 dark:text-white">{u.name}</span>
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{u.email}</td>
-                  <td className="px-6 py-4">
-                    <Badge variant={ROLE_BADGE[u.role.slug] ?? 'gray'} size="sm">{ROLE_LABELS[u.role.slug]}</Badge>
-                  </td>
-                  <td className="px-6 py-4">
-                    <Badge variant={u.active ? 'green' : 'red'} size="sm">{u.active ? 'Activo' : 'Inactivo'}</Badge>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex items-center gap-2">
-                      <button
-                        type="button"
-                        onClick={() => startEditing(u)}
-                        className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
-                        title="Editar"
-                      >
-                        <HiOutlinePencil className="h-3.5 w-3.5" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleToggleActive(u.id)}
-                        className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
-                      >
-                        {u.active ? 'Desactivar' : 'Activar'}
-                      </button>
-                    </div>
-                  </td>
+        <>
+          {/* Mobile card layout */}
+          <div className="space-y-3 sm:hidden">
+            {users.map((u) => (
+              <FadeIn key={u.id} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 shadow-sm">
+                <div className="flex items-center gap-3">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-linear-to-br from-cyber-radar/10 dark:from-cyber-radar/20 to-cyber-navy/10 dark:to-cyber-navy/20 text-sm font-bold text-cyber-radar dark:text-cyber-radar-light">{u.name.charAt(0)}</span>
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate font-medium text-slate-900 dark:text-white">{u.name}</p>
+                    <p className="truncate text-xs text-slate-500 dark:text-slate-400">{u.email}</p>
+                  </div>
+                  <Badge variant={u.active ? 'green' : 'red'} size="sm">{u.active ? 'Activo' : 'Inactivo'}</Badge>
+                </div>
+                <div className="mt-3 flex items-center justify-between">
+                  <Badge variant={ROLE_BADGE[u.role.slug] ?? 'gray'} size="sm">{ROLE_LABELS[u.role.slug]}</Badge>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => startEditing(u)}
+                      className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
+                      title="Editar"
+                    >
+                      <HiOutlinePencil className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleToggleActive(u.id)}
+                      className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
+                    >
+                      {u.active ? 'Desactivar' : 'Activar'}
+                    </button>
+                  </div>
+                </div>
+              </FadeIn>
+            ))}
+          </div>
+
+          {/* Desktop table layout */}
+          <FadeIn className="hidden overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm sm:block">
+            <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="border-b bg-slate-50/80 dark:bg-white/5/80">
+                <tr>
+                  <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Usuario</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Correo</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Rol</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Estado</th>
+                  <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Acciones</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </FadeIn>
+              </thead>
+              <tbody className="divide-y divide-slate-50 dark:divide-white/5">
+                {users.map((u) => (
+                  <tr key={u.id} className="group transition-colors hover:bg-slate-50 dark:hover:bg-white/5/50">
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyber-radar/10 dark:from-cyber-radar/20 to-cyber-navy/10 dark:to-cyber-navy/20 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light">{u.name.charAt(0)}</span>
+                        <span className="font-medium text-slate-900 dark:text-white">{u.name}</span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-slate-600 dark:text-slate-400">{u.email}</td>
+                    <td className="px-6 py-4">
+                      <Badge variant={ROLE_BADGE[u.role.slug] ?? 'gray'} size="sm">{ROLE_LABELS[u.role.slug]}</Badge>
+                    </td>
+                    <td className="px-6 py-4">
+                      <Badge variant={u.active ? 'green' : 'red'} size="sm">{u.active ? 'Activo' : 'Inactivo'}</Badge>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => startEditing(u)}
+                          className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
+                          title="Editar"
+                        >
+                          <HiOutlinePencil className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleToggleActive(u.id)}
+                          className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
+                        >
+                          {u.active ? 'Desactivar' : 'Activar'}
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            </div>
+          </FadeIn>
+        </>
       )}
 
       {/* Pagination */}
       {!loading && (
-        <div className="mt-4 flex items-center justify-between">
+        <div className="mt-4 flex flex-col items-center gap-2 sm:flex-row sm:justify-between">
           <p className="text-sm text-slate-500 dark:text-slate-400">
             {total} usuario{total !== 1 ? 's' : ''} en total
           </p>

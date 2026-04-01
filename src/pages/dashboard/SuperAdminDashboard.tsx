@@ -67,7 +67,7 @@ export function SuperAdminDashboard() {
   return (
     <div className="space-y-6">
       {/* Hero greeting */}
-      <FadeIn className="flex flex-wrap items-center justify-between gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-6 py-5 shadow-sm">
+      <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
             Hola, {firstName} <span className="inline-block origin-[70%_70%] animate-[wave_1.8s_ease-in-out_infinite]">👋</span>
@@ -79,22 +79,22 @@ export function SuperAdminDashboard() {
             )}.
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           <Link
             to="/tasks/create"
-            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
+            className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
             <HiOutlinePlusCircle className="h-4 w-4" />
             Nueva tarea
           </Link>
           <Link
             to="/consolidated"
-            className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-5 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
+            className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
           >
             <HiOutlineTrendingUp className="h-4 w-4" />
             Consolidado
           </Link>
-          <div className="w-px h-8 bg-slate-200 dark:bg-white/10" />
+          <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
           <NotificationBell />
         </div>
       </FadeIn>
@@ -102,7 +102,7 @@ export function SuperAdminDashboard() {
       {/* Resumen rápido + Tareas por estado */}
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Resumen rápido - 3 cols */}
-        <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
+        <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
           <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen general</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
@@ -126,23 +126,23 @@ export function SuperAdminDashboard() {
           </div>
 
           {/* extra metrics row */}
-          <div className="mt-4 grid grid-cols-3 gap-3">
-            <div className="rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-center text-slate-700 dark:text-slate-300">
+          <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+            <div className="overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-2 py-2.5 text-center text-slate-700 dark:text-slate-300 sm:px-3">
               <p className="text-lg font-bold text-slate-900 dark:text-white">{data.total_all}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Total históricas</p>
+              <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Total históricas</p>
             </div>
-            <div className="rounded-sm bg-cyber-radar/10 dark:bg-cyber-radar/10 px-3 py-2.5 text-center">
+            <div className="overflow-hidden rounded-sm bg-cyber-radar/10 dark:bg-cyber-radar/10 px-2 py-2.5 text-center sm:px-3">
               <p className="text-lg font-bold text-cyber-radar dark:text-cyber-radar-light">{data.global_progress}%</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Progreso global</p>
+              <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Progreso global</p>
             </div>
-            <div className="rounded-sm bg-green-50 dark:bg-green-900/30 px-3 py-2.5 text-center">
+            <div className="overflow-hidden rounded-sm bg-green-50 dark:bg-green-900/30 px-2 py-2.5 text-center sm:px-3">
               <p className="text-lg font-bold text-green-700 dark:text-green-400">{data.completed_this_month}</p>
-              <p className="text-xs text-slate-500 dark:text-slate-400">Completadas (mes)</p>
+              <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Completadas (mes)</p>
             </div>
             {data.total_cancelled != null && (
-              <div className="rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-center text-slate-700 dark:text-slate-300">
+              <div className="overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-2 py-2.5 text-center text-slate-700 dark:text-slate-300 sm:px-3">
                 <p className="text-lg font-bold text-slate-500 dark:text-slate-400">{data.total_cancelled}</p>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Canceladas</p>
+                <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Canceladas</p>
               </div>
             )}
           </div>
@@ -150,11 +150,11 @@ export function SuperAdminDashboard() {
 
         {/* Tareas por estado - 2 cols */}
         <FadeIn delay={0.1} className="lg:col-span-2 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-          <div className="border-b border-slate-200 dark:border-white/5 px-6 py-4">
+          <div className="border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <h3 className="font-semibold text-slate-900 dark:text-white">Tareas por estado</h3>
             <p className="text-xs text-slate-400 dark:text-slate-500">Distribución actual de todas las tareas.</p>
           </div>
-          <div className="divide-y divide-slate-50 dark:divide-white/5 px-6">
+          <div className="divide-y divide-slate-50 dark:divide-white/5 px-4 sm:px-6">
             {(() => {
               const entries = Object.entries(data.tasks_by_status ?? {}).filter(([, c]) => c > 0);
               if (entries.length === 0) {
@@ -189,7 +189,7 @@ export function SuperAdminDashboard() {
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Pendientes por usuario - 3 cols */}
         <FadeIn delay={0.15} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
-          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
+          <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <div className="flex items-center gap-2">
               <HiOutlineUserGroup className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
               <div>
@@ -201,7 +201,7 @@ export function SuperAdminDashboard() {
               Ver usuarios
             </Link>
           </div>
-          <div className="divide-y divide-slate-50 dark:divide-white/5 px-6">
+          <div className="divide-y divide-slate-50 dark:divide-white/5 px-4 sm:px-6">
             {topOverloaded.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-10 text-center">
                 <HiOutlineCheckCircle className="mb-2 h-10 w-10 text-green-400" />
@@ -310,7 +310,7 @@ export function SuperAdminDashboard() {
 
 function MyTaskRow({ task }: { task: MyTask }) {
   return (
-    <div className="flex items-center justify-between gap-3 px-6 py-3.5">
+    <div className="flex items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{task.title}</p>

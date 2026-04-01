@@ -52,7 +52,7 @@ export function MiniStat({ label, value, icon, color, alert }: { label: string; 
 export function UrgentTaskRow({ task }: { task: UpcomingTask }) {
   const isOverdue = task.is_overdue ?? task.status === TaskStatus.OVERDUE;
   return (
-    <div className="flex items-center justify-between gap-3 py-3.5">
+    <div className="flex flex-col gap-2 py-3.5 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{task.title}</p>
         <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
@@ -80,7 +80,7 @@ export function UrgentTaskRow({ task }: { task: UpcomingTask }) {
 
 export function TaskRow({ task }: { task: UpcomingTask }) {
   return (
-    <div className="flex items-center justify-between gap-3 px-6 py-3.5">
+    <div className="flex items-center justify-between gap-3 px-4 py-3.5 sm:px-6">
       <div className="min-w-0 flex-1">
         <p className="truncate text-sm font-medium text-slate-900 dark:text-white">{task.title}</p>
         <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
