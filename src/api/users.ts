@@ -39,4 +39,7 @@ export const usersApi = {
 
   toggleActive: (id: number) =>
     apiClient.patch<ApiMessageResponse>(`/users/${id}/toggle-active`),
+
+  changePassword: (id: number, data: { password: string; password_confirmation: string }) =>
+    apiClient.patch<ApiMessageResponse>(`/users/${id}/password`, data),
 };

@@ -4,7 +4,7 @@ import { usersApi } from '../../../api/users';
 import { ApiError } from '../../../api/client';
 import { Role } from '../../../types/enums';
 import type { Area, User } from '../../../types';
-import { HiOutlineCheckCircle } from 'react-icons/hi';
+import { HiOutlineCheckCircle, HiOutlineTrash, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FadeIn, SlideDown, Badge, SkeletonDetail, Spinner } from '../../../components/ui';
 
@@ -12,9 +12,10 @@ interface AreaInfoSectionProps {
   areaId: number;
   userRole: string;
   refreshKey: number;
+  onDelete?: () => void;
 }
 
-export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectionProps) {
+export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: AreaInfoSectionProps) {
   const [area, setArea] = useState<Area | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -23,6 +24,9 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
   const [selectedManagerId, setSelectedManagerId] = useState('');
   const [managerSaving, setManagerSaving] = useState(false);
   const [managerMsg, setManagerMsg] = useState('');
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+  const [deleteError, setDeleteError] = useState('');
 
   const isSuperadmin = userRole === Role.SUPERADMIN;
 
@@ -66,6 +70,20 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
     }
   };
 
+  const handleDeleteArea = async () => {
+    setDeleting(true);
+    setDeleteError('');
+    try {
+      await areasApi.delete(areaId);
+      onDelete?.();
+    } catch (err) {
+      setDeleteError(err instanceof ApiError ? err.data.message : 'Error al eliminar el área');
+      setConfirmDelete(false);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
   if (loading) return <SkeletonDetail />;
   if (error || !area) {
     return (
@@ -83,8 +101,50 @@ export function AreaInfoSection({ areaId, userRole, refreshKey }: AreaInfoSectio
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{area.name}</h2>
           {area.description && <p className="mt-2 text-slate-600 dark:text-slate-400">{area.description}</p>}
         </div>
-        <Badge variant={area.active ? 'green' : 'red'} size="md">{area.active ? 'Activa' : 'Inactiva'}</Badge>
+        <div className="flex items-center gap-2">
+          <Badge variant={area.active ? 'green' : 'red'} size="md">{area.active ? 'Activa' : 'Inactiva'}</Badge>
+          {isSuperadmin && (
+            confirmDelete ? (
+              <div className="flex items-center gap-2 rounded-sm border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-3 py-1.5">
+                <span className="text-xs text-red-700 dark:text-red-400">¿Eliminar área?</span>
+                <button
+                  type="button"
+                  onClick={handleDeleteArea}
+                  disabled={deleting}
+                  className="inline-flex items-center gap-1 rounded-sm bg-red-600 px-2.5 py-1 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-50"
+                >
+                  {deleting ? <Spinner size="sm" /> : null} Sí, eliminar
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setConfirmDelete(false)}
+                  className="rounded-sm px-2.5 py-1 text-xs font-medium text-slate-600 dark:text-slate-400 hover:bg-red-100 dark:hover:bg-red-900/40"
+                >
+                  No
+                </button>
+              </div>
+            ) : (
+              <button
+                type="button"
+                onClick={() => { setConfirmDelete(true); setDeleteError(''); }}
+                className="inline-flex items-center gap-1.5 rounded-sm border border-red-200 dark:border-red-800 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30"
+              >
+                <HiOutlineTrash className="h-3.5 w-3.5" /> Eliminar
+              </button>
+            )
+          )}
+        </div>
       </div>
+
+      <AnimatePresence>
+        {deleteError && (
+          <SlideDown>
+            <div className="mt-3 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-2 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
+              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {deleteError}
+            </div>
+          </SlideDown>
+        )}
+      </AnimatePresence>
       <div className="mt-4 grid gap-4 sm:grid-cols-3">
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Encargado</p>

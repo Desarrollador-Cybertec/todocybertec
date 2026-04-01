@@ -42,11 +42,11 @@ export const tasksApi = {
   reject: (id: number, data: RejectTaskRequest) =>
     apiClient.post<Task>(`/tasks/${id}/reject`, data),
 
-  cancel: (id: number) =>
-    apiClient.post<Task>(`/tasks/${id}/cancel`),
+  cancel: (id: number, data: { comment: string }) =>
+    apiClient.post<Task>(`/tasks/${id}/cancel`, data),
 
-  reopen: (id: number) =>
-    apiClient.post<Task>(`/tasks/${id}/reopen`),
+  reopen: (id: number, data: { comment: string }) =>
+    apiClient.post<Task>(`/tasks/${id}/reopen`, data),
 
   addComment: (id: number, data: AddCommentRequest) =>
     apiClient.post<TaskComment>(`/tasks/${id}/comment`, data),

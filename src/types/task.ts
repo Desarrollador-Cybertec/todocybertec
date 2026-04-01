@@ -62,6 +62,7 @@ export interface TaskComment {
   user_id: number;
   comment: string;
   type: CommentTypeValue;
+  type_label?: string;
   user: User;
   created_at: string;
 }

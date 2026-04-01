@@ -1,11 +1,14 @@
+import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { HiOutlineX } from 'react-icons/hi';
+import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
 import { ROLE_LABELS, Role } from '../../../types/enums';
 import type { Area } from '../../../types';
 import { Spinner } from '../../../components/ui';
 
 interface Props {
   editingUserId: number | null;
+  currentUserId?: number;
+  isSuperAdmin?: boolean;
   editOriginalRoleSlug: string;
   editName: string;
   setEditName: (v: string) => void;
@@ -22,10 +25,13 @@ interface Props {
   areas: Area[];
   onCancel: () => void;
   onSave: (userId: number) => void;
+  onChangePassword?: (userId: number, password: string, passwordConfirmation: string) => void;
 }
 
 export function UserEditModal({
   editingUserId,
+  currentUserId,
+  isSuperAdmin,
   editOriginalRoleSlug,
   editName,
   setEditName,
@@ -42,7 +48,13 @@ export function UserEditModal({
   areas,
   onCancel,
   onSave,
+  onChangePassword,
 }: Props) {
+  const [showPasswordSection, setShowPasswordSection] = useState(false);
+  const [newPassword, setNewPassword] = useState('');
+  const [newPasswordConfirm, setNewPasswordConfirm] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const canChangePassword = isSuperAdmin && editingUserId != null && editingUserId !== currentUserId;
   return (
     <AnimatePresence>
       {editingUserId != null && (
@@ -145,6 +157,67 @@ export function UserEditModal({
                         </option>
                       ))}
                     </select>
+                  )}
+                </div>
+              )}
+
+              {canChangePassword && (
+                <div className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <HiOutlineLockClosed className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                      <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Cambiar contraseña</span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={() => { setShowPasswordSection(!showPasswordSection); setNewPassword(''); setNewPasswordConfirm(''); setPasswordError(''); }}
+                      className="rounded-sm px-2.5 py-1 text-xs font-medium text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-200 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
+                    >
+                      {showPasswordSection ? 'Cancelar' : 'Cambiar'}
+                    </button>
+                  </div>
+                  {showPasswordSection && (
+                    <div className="mt-3 space-y-3">
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Nueva contraseña</label>
+                        <input
+                          type="password"
+                          value={newPassword}
+                          onChange={(e) => { setNewPassword(e.target.value); setPasswordError(''); }}
+                          placeholder="Mínimo 8 caracteres"
+                          className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-3 py-2 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 text-slate-900 dark:text-white"
+                        />
+                      </div>
+                      <div>
+                        <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Confirmar contraseña</label>
+                        <input
+                          type="password"
+                          value={newPasswordConfirm}
+                          onChange={(e) => { setNewPasswordConfirm(e.target.value); setPasswordError(''); }}
+                          placeholder="Repite la contraseña"
+                          className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-3 py-2 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 text-slate-900 dark:text-white"
+                        />
+                      </div>
+                      {passwordError && <p className="text-xs text-red-500 dark:text-red-400">{passwordError}</p>}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          if (!newPassword || newPassword.length < 8) { setPasswordError('Mínimo 8 caracteres'); return; }
+                          if (!/[A-Z]/.test(newPassword)) { setPasswordError('Debe contener al menos una mayúscula'); return; }
+                          if (!/[a-z]/.test(newPassword)) { setPasswordError('Debe contener al menos una minúscula'); return; }
+                          if (!/[0-9]/.test(newPassword)) { setPasswordError('Debe contener al menos un número'); return; }
+                          if (newPassword !== newPasswordConfirm) { setPasswordError('Las contraseñas no coinciden'); return; }
+                          onChangePassword?.(editingUserId!, newPassword, newPasswordConfirm);
+                          setShowPasswordSection(false);
+                          setNewPassword('');
+                          setNewPasswordConfirm('');
+                        }}
+                        disabled={!newPassword || !newPasswordConfirm}
+                        className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-navy px-4 py-2 text-sm font-medium text-white transition-all hover:bg-cyber-navy-light disabled:opacity-50"
+                      >
+                        <HiOutlineLockClosed className="h-4 w-4" /> Actualizar contraseña
+                      </button>
+                    </div>
                   )}
                 </div>
               )}

@@ -31,7 +31,7 @@ export function AreaDetailPage() {
         </button>
 
         {/* Area info - endpoint: GET /areas/:id + GET /users */}
-        <AreaInfoSection areaId={areaId} userRole={userRole} refreshKey={refreshKey} />
+        <AreaInfoSection areaId={areaId} userRole={userRole} refreshKey={refreshKey} onDelete={() => navigate('/areas')} />
 
         {/* Available workers to claim - endpoint: GET /areas/:id/available-workers */}
         {isManager && (

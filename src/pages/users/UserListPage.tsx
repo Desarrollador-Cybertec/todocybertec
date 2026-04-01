@@ -7,6 +7,7 @@ import { areasApi } from '../../api/areas';
 import { createUserSchema, type CreateUserFormData } from '../../schemas';
 import { ROLE_LABELS, Role } from '../../types/enums';
 import { ApiError } from '../../api/client';
+import { useAuth } from '../../context/useAuth';
 import type { User, Area } from '../../types';
 import { HiOutlinePlus, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlinePencil, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { PageTransition, FadeIn, SlideDown, SkeletonTable, Badge } from '../../components/ui';
@@ -22,6 +23,7 @@ const ROLE_BADGE: Record<string, 'purple' | 'blue' | 'gray'> = {
 const PAGE_SIZE = 10;
 
 export function UserListPage() {
+  const { user: currentUser } = useAuth();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
@@ -174,6 +176,16 @@ export function UserListPage() {
     }
   };
 
+  const handleChangePassword = async (userId: number, password: string, passwordConfirmation: string) => {
+    setServerError('');
+    try {
+      await usersApi.changePassword(userId, { password, password_confirmation: passwordConfirmation });
+      showMessage('Contraseña actualizada correctamente');
+    } catch (error) {
+      setServerError(error instanceof ApiError ? error.data.message : 'Error al cambiar la contraseña');
+    }
+  };
+
   return (
     <PageTransition>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
@@ -315,6 +327,8 @@ export function UserListPage() {
       {/* Edit user panel */}
       <UserEditModal
         editingUserId={editingUserId}
+        currentUserId={Number(currentUser?.id)}
+        isSuperAdmin={currentUser?.role.slug === Role.SUPERADMIN}
         editOriginalRoleSlug={editOriginalRoleSlug}
         editName={editName}
         setEditName={setEditName}
@@ -331,6 +345,7 @@ export function UserListPage() {
         areas={areas}
         onCancel={cancelEditing}
         onSave={saveUserEdit}
+        onChangePassword={handleChangePassword}
       />
     </PageTransition>
   );

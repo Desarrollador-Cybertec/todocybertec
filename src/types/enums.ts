@@ -34,6 +34,8 @@ export const CommentType = {
   PROGRESS: 'progress',
   COMPLETION_NOTE: 'completion_note',
   REJECTION_NOTE: 'rejection_note',
+  CANCELLATION_NOTE: 'cancellation_note',
+  REOPEN_NOTE: 'reopen_note',
   SYSTEM: 'system',
 } as const;
 

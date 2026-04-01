@@ -86,6 +86,10 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
   const [error, setError] = useState('');
   const [pendingReject, setPendingReject] = useState(false);
   const [rejectNote, setRejectNote] = useState('');
+  const [pendingCancel, setPendingCancel] = useState(false);
+  const [cancelNote, setCancelNote] = useState('');
+  const [pendingReopen, setPendingReopen] = useState(false);
+  const [reopenNote, setReopenNote] = useState('');
 
   const actions = getAvailableActions(task, userId, userRole);
   if (actions.length === 0) return null;
@@ -115,10 +119,10 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
           updated = await tasksApi.reject(task.id, { note: note ?? '' });
           break;
         case 'cancel':
-          updated = await tasksApi.cancel(task.id);
+          updated = await tasksApi.cancel(task.id, { comment: note ?? '' });
           break;
         case 'reopen':
-          updated = await tasksApi.reopen(task.id);
+          updated = await tasksApi.reopen(task.id, { comment: note ?? '' });
           break;
         case 'claim':
           updated = await tasksApi.claim(task.id);
@@ -129,6 +133,10 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
       }
       setPendingReject(false);
       setRejectNote('');
+      setPendingCancel(false);
+      setCancelNote('');
+      setPendingReopen(false);
+      setReopenNote('');
       onUpdated(updated);
     } catch (err) {
       setError(err instanceof ApiError ? err.data.message : 'Error al actualizar el estado');
@@ -144,6 +152,9 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
     if (key === 'reject') {
       setPendingReject(true);
       setRejectNote('');
+    } else if (key === 'cancel') {
+      setPendingCancel(true);
+      setCancelNote('');
     } else {
       execute(key);
     }
@@ -151,16 +162,45 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
 
   return (
     <div className="flex flex-col gap-1.5">
-      {reopenAction && (
+      {reopenAction && !pendingReopen && (
         <button
           type="button"
-          onClick={() => execute('reopen')}
+          onClick={() => { setPendingReopen(true); setReopenNote(''); }}
           disabled={loading}
           className="flex items-center justify-center gap-1.5 rounded-sm border border-amber-300 dark:border-amber-700 bg-amber-50 dark:bg-amber-900/30 px-3 py-2 text-sm font-medium text-amber-700 dark:text-amber-400 transition-colors hover:border-amber-400 hover:bg-amber-100 dark:hover:bg-amber-900/40 disabled:opacity-60 cursor-pointer"
         >
-          <HiOutlineRefresh className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-          {loading ? 'Reabriendo...' : reopenAction.label}
+          <HiOutlineRefresh className="h-4 w-4" />
+          {reopenAction.label}
         </button>
+      )}
+      {pendingReopen && (
+        <div className="rounded-sm border border-amber-200 dark:border-amber-800 bg-amber-50 dark:bg-amber-900/30 p-2.5 space-y-2 min-w-48">
+          <p className="text-xs font-semibold text-amber-700 dark:text-amber-400">Motivo de reapertura</p>
+          <textarea
+            value={reopenNote}
+            onChange={(e) => setReopenNote(e.target.value)}
+            rows={2}
+            placeholder="Escribe el motivo..."
+            className="w-full rounded-lg border border-amber-200 dark:border-amber-800 bg-white dark:bg-cyber-grafito px-3 py-1.5 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-amber-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 resize-none text-slate-900 dark:text-white"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => execute('reopen', reopenNote)}
+              disabled={loading || !reopenNote.trim()}
+              className="flex-1 rounded-lg bg-amber-600 py-1.5 text-xs font-medium text-white transition-colors hover:bg-amber-700 disabled:opacity-50"
+            >
+              {loading ? 'Reabriendo...' : 'Confirmar'}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setPendingReopen(false); setReopenNote(''); }}
+              className="rounded-lg bg-white dark:bg-cyber-grafito border border-amber-200 dark:border-amber-800 px-3 py-1.5 text-xs font-medium text-amber-600 dark:text-amber-400 transition-colors hover:bg-amber-100 dark:hover:bg-amber-900/40"
+            >
+              Cancelar
+            </button>
+          </div>
+        </div>
       )}
       {pendingReject ? (
         <div className="rounded-sm border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/30 p-2.5 space-y-2 min-w-48">
@@ -187,6 +227,34 @@ export function TaskStatusSelect({ task, userId, userRole, onUpdated }: TaskStat
               className="rounded-lg bg-white dark:bg-cyber-grafito border border-red-200 dark:border-red-800 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-100 dark:hover:bg-red-900/40"
             >
               Cancelar
+            </button>
+          </div>
+        </div>
+      ) : pendingCancel ? (
+        <div className="rounded-sm border border-orange-200 dark:border-orange-800 bg-orange-50 dark:bg-orange-900/30 p-2.5 space-y-2 min-w-48">
+          <p className="text-xs font-semibold text-orange-700 dark:text-orange-400">Motivo de cancelación</p>
+          <textarea
+            value={cancelNote}
+            onChange={(e) => setCancelNote(e.target.value)}
+            rows={2}
+            placeholder="Escribe el motivo..."
+            className="w-full rounded-lg border border-orange-200 dark:border-orange-800 bg-white dark:bg-cyber-grafito px-3 py-1.5 text-sm placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-400/20 resize-none text-slate-900 dark:text-white"
+          />
+          <div className="flex gap-2">
+            <button
+              type="button"
+              onClick={() => execute('cancel', cancelNote)}
+              disabled={loading || !cancelNote.trim()}
+              className="flex-1 rounded-lg bg-orange-600 py-1.5 text-xs font-medium text-white transition-colors hover:bg-orange-700 disabled:opacity-50"
+            >
+              {loading ? 'Cancelando...' : 'Confirmar'}
+            </button>
+            <button
+              type="button"
+              onClick={() => { setPendingCancel(false); setCancelNote(''); }}
+              className="rounded-lg bg-white dark:bg-cyber-grafito border border-orange-200 dark:border-orange-800 px-3 py-1.5 text-xs font-medium text-orange-600 dark:text-orange-400 transition-colors hover:bg-orange-100 dark:hover:bg-orange-900/40"
+            >
+              Volver
             </button>
           </div>
         </div>

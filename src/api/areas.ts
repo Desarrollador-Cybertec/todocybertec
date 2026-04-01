@@ -7,6 +7,7 @@ import type {
   ClaimWorkerRequest,
   User,
   PaginatedResponse,
+  ApiMessageResponse,
 } from '../types';
 
 export const areasApi = {
@@ -65,4 +66,7 @@ export const areasApi = {
 
   claimWorker: (data: ClaimWorkerRequest) =>
     apiClient.post<ClaimWorkerResponse>('/areas/claim-worker', data),
+
+  delete: (id: number) =>
+    apiClient.delete<ApiMessageResponse>(`/areas/${id}`),
 };
