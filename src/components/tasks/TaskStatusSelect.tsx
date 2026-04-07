@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { HiOutlineChevronDown, HiOutlineRefresh } from 'react-icons/hi';
 import { tasksApi } from '../../api/tasks';
-import { TaskStatus, Role } from '../../types/enums';
+import { TaskStatus, Role, ADMIN_ROLES, MANAGER_ROLES, WORKER_ROLES } from '../../types/enums';
 import type { Task } from '../../types';
 import { ApiError } from '../../api/client';
 
@@ -28,8 +28,8 @@ function getAvailableActions(
   const isCreator =
     Number(task.created_by) === uid ||
     Number(task.creator?.id) === uid;
-  const isSuperAdmin = userRole === Role.SUPERADMIN;
-  const isManager = userRole === Role.AREA_MANAGER;
+  const isSuperAdmin = ADMIN_ROLES.includes(userRole as typeof Role[keyof typeof Role]);
+  const isManager = MANAGER_ROLES.includes(userRole as typeof Role[keyof typeof Role]);
   const isExternalTask = !!task.external_email;
   const canActAsResponsible = isResponsible || (isExternalTask && (isSuperAdmin || isManager || isCreator));
   const terminal: string[] = [TaskStatus.COMPLETED, TaskStatus.CANCELLED];
@@ -64,7 +64,7 @@ function getAvailableActions(
     actions.push({ key: 'cancel', label: 'Cancelar tarea' });
   }
 
-  const isWorker = userRole === Role.WORKER;
+  const isWorker = WORKER_ROLES.includes(userRole as typeof Role[keyof typeof Role]);
   if ((isSuperAdmin || isManager) && terminal.includes(task.status)) {
     actions.push({ key: 'reopen', label: 'Reabrir tarea' });
   } else if (isWorker && (isCreator || isResponsible) && terminal.includes(task.status)) {

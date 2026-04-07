@@ -22,6 +22,7 @@ import { NotificationsPage } from './pages/notifications/NotificationsPage';
 import { AttachmentsPage } from './pages/attachments/AttachmentsPage';
 import { DarkModeToggle } from './components/ui/DarkModeToggle';
 import { SileoToaster } from './components/notifications/SileoToaster';
+import { ADMIN_ROLES, MANAGER_ROLES } from './types/enums';
 
 function App() {
   return (
@@ -52,8 +53,8 @@ function App() {
         </Route>
       </Route>
 
-      {/* Meetings - superadmin and area_manager only */}
-      <Route element={<ProtectedRoute allowedRoles={['superadmin', 'area_manager']} />}>
+      {/* Meetings - admins and managers */}
+      <Route element={<ProtectedRoute allowedRoles={[...ADMIN_ROLES, ...MANAGER_ROLES]} />}>
         <Route element={<AppLayout />}>
           <Route path="/meetings" element={<MeetingListPage />} />
           <Route path="/meetings/create" element={<MeetingCreatePage />} />
@@ -61,15 +62,15 @@ function App() {
         </Route>
       </Route>
 
-      {/* Area Manager routes */}
-      <Route element={<ProtectedRoute allowedRoles={['area_manager']} />}>
+      {/* Manager routes - claim workers */}
+      <Route element={<ProtectedRoute allowedRoles={[...MANAGER_ROLES]} />}>
         <Route element={<AppLayout />}>
           <Route path="/claim-workers" element={<ClaimWorkersPage />} />
         </Route>
       </Route>
 
-      {/* SuperAdmin only - Areas management */}
-      <Route element={<ProtectedRoute allowedRoles={['superadmin']} />}>
+      {/* Admin only - Areas management */}
+      <Route element={<ProtectedRoute allowedRoles={[...ADMIN_ROLES]} />}>
         <Route element={<AppLayout />}>
           <Route path="/areas" element={<AreaListPage />} />
           <Route path="/areas/create" element={<AreaCreatePage />} />
@@ -77,12 +78,18 @@ function App() {
         </Route>
       </Route>
 
-      {/* SuperAdmin only routes */}
-      <Route element={<ProtectedRoute allowedRoles={['superadmin']} />}>
+      {/* Admin routes (superadmin + gerente) */}
+      <Route element={<ProtectedRoute allowedRoles={[...ADMIN_ROLES]} />}>
         <Route element={<AppLayout />}>
           <Route path="/users" element={<UserListPage />} />
           <Route path="/consolidated" element={<ConsolidatedPage />} />
           <Route path="/attachments" element={<AttachmentsPage />} />
+        </Route>
+      </Route>
+
+      {/* SuperAdmin only routes */}
+      <Route element={<ProtectedRoute allowedRoles={['superadmin']} />}>
+        <Route element={<AppLayout />}>
           <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>

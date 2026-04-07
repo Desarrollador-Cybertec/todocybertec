@@ -38,6 +38,7 @@ interface DraftTask {
 interface Props {
   meetingId: number;
   areaId: number | null;
+  isClosed?: boolean;
   onTasksCreated: () => void;
 }
 
@@ -61,7 +62,7 @@ function genId() {
   return crypto.randomUUID();
 }
 
-export function MeetingTasksSection({ meetingId, areaId, onTasksCreated }: Props) {
+export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreated }: Props) {
   const [drafts, setDrafts] = useState<DraftTask[]>([]);
   const [areaMembers, setAreaMembers] = useState<User[]>([]);
   const [otherAreas, setOtherAreas] = useState<Area[]>([]);
@@ -243,6 +244,20 @@ export function MeetingTasksSection({ meetingId, areaId, onTasksCreated }: Props
     onAssigneeChange: handleAssigneeChange,
     onCancel: resetForm,
   };
+
+  if (isClosed) {
+    return (
+      <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <h3 className="mb-2 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
+          <HiOutlineUserGroup className="h-5 w-5 text-slate-400 dark:text-slate-500" />
+          Compromisos de reunión
+        </h3>
+        <p className="text-sm text-slate-400 dark:text-slate-500">
+          Esta reunión está cerrada. No se pueden agregar nuevos compromisos.
+        </p>
+      </FadeIn>
+    );
+  }
 
   return (
     <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">

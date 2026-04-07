@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { tasksApi } from '../../api/tasks';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
-import { Role, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../types/enums';
+import { Role, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import type { Task, Area } from '../../types';
 import {
   HiOutlinePlus,
@@ -47,9 +47,10 @@ export function TaskListPage() {
   const [sortBy, setSortBy] = useState<string>('');
   const [search, setSearch] = useState('');
 
-  const canCreate = user?.role.slug === Role.SUPERADMIN || user?.role.slug === Role.AREA_MANAGER || user?.role.slug === Role.WORKER;
-  const isSuperadmin = user?.role.slug === Role.SUPERADMIN;
-  const isManager = user?.role.slug === Role.AREA_MANAGER;
+  const canCreate = true; // all authenticated users can create tasks
+  const slug = user?.role.slug;
+  const isSuperadmin = slug && ADMIN_ROLES.includes(slug);
+  const isManager = slug && MANAGER_ROLES.includes(slug);
   const canEdit = isSuperadmin || isManager;
 
   useEffect(() => {
@@ -142,9 +143,10 @@ export function TaskListPage() {
 
       {/* Search + Filters */}
       <FadeIn delay={0.05} className="mb-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-3 sm:p-4 shadow-sm">
-        <div className="space-y-2 sm:space-y-0 sm:flex sm:flex-wrap sm:items-center sm:gap-3">
-          {/* Search */}
-          <div className="relative min-w-0 w-full sm:w-auto sm:min-w-50 sm:flex-1">
+        {/* Single flat flex container: full-width search + selects side-by-side on desktop, 2-col grid on mobile */}
+        <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+          {/* Search — full width on mobile, grows on desktop */}
+          <div className="relative w-full sm:min-w-[160px] sm:flex-1">
             <HiOutlineSearch className="absolute left-3 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
@@ -154,12 +156,11 @@ export function TaskListPage() {
               className="w-full rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 py-2.5 pl-10 pr-4 text-sm transition-colors placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 text-slate-700 dark:text-slate-300"
             />
           </div>
-          {/* Filters — flex-wrap on mobile (2-per-row via min-w), inline on sm+ */}
-          <div className="flex flex-wrap gap-2 sm:flex-nowrap sm:gap-3 sm:items-center">
+          {/* Selects — 2-per-row on mobile (flex-1 + min-w ~50%), auto width on desktop */}
           <select
             value={filterStatus}
             onChange={(e) => setFilterStatus(e.target.value)}
-            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:min-w-0 sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Estado</option>
             {Object.entries(TASK_STATUS_LABELS).map(([value, label]) => (
@@ -169,7 +170,7 @@ export function TaskListPage() {
           <select
             value={filterPriority}
             onChange={(e) => setFilterPriority(e.target.value)}
-            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:min-w-0 sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Prioridad</option>
             {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => (
@@ -180,7 +181,7 @@ export function TaskListPage() {
             <select
               value={filterAreaId}
               onChange={(e) => { setFilterAreaId(e.target.value); if (e.target.value) setFilterType(''); }}
-              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:min-w-0 sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
             >
               <option value="">Área</option>
               {areas.filter((a) => a.active).map((a) => (
@@ -192,7 +193,7 @@ export function TaskListPage() {
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+              className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:min-w-0 sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
             >
               <option value="">Tipo</option>
               <option value="org">Organización</option>
@@ -202,7 +203,7 @@ export function TaskListPage() {
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
+            className="flex-1 min-w-[calc(50%-4px)] sm:flex-none sm:min-w-0 sm:w-auto rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:bg-white dark:focus:bg-cyber-grafito focus:outline-none text-slate-700 dark:text-slate-300"
           >
             <option value="">Más recientes</option>
             <option value="oldest">Más antiguas</option>
@@ -218,7 +219,6 @@ export function TaskListPage() {
               Limpiar filtros
             </button>
           )}
-          </div>
         </div>
       </FadeIn>
 

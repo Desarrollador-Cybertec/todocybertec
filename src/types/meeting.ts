@@ -14,6 +14,9 @@ export interface Meeting {
   area: Area | null;
   creator: User;
   tasks?: Task[];
+  is_closed: boolean;
+  closed_at: string | null;
+  tasks_count?: number;
   created_at: string;
   updated_at: string;
 }

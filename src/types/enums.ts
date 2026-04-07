@@ -23,11 +23,23 @@ export type TaskPriorityType = (typeof TaskPriority)[keyof typeof TaskPriority];
 
 export const Role = {
   SUPERADMIN: 'superadmin',
+  GERENTE: 'gerente',
   AREA_MANAGER: 'area_manager',
+  DIRECTOR: 'director',
+  LEADER: 'leader',
+  COORDINATOR: 'coordinator',
   WORKER: 'worker',
+  ANALYST: 'analyst',
 } as const;
 
 export type RoleType = (typeof Role)[keyof typeof Role];
+
+/** Roles with Admin-level access (global scope) */
+export const ADMIN_ROLES: RoleType[] = [Role.SUPERADMIN, Role.GERENTE];
+/** Roles with Manager-level access (area scope) */
+export const MANAGER_ROLES: RoleType[] = [Role.AREA_MANAGER, Role.DIRECTOR, Role.LEADER, Role.COORDINATOR];
+/** Roles with Worker-level access */
+export const WORKER_ROLES: RoleType[] = [Role.WORKER, Role.ANALYST];
 
 export const CommentType = {
   COMMENT: 'comment',
@@ -88,8 +100,13 @@ export const TASK_PRIORITY_LABELS: Record<TaskPriorityType, string> = {
 
 export const ROLE_LABELS: Record<RoleType, string> = {
   superadmin: 'Super Administrador',
+  gerente: 'Gerente',
   area_manager: 'Encargado de Área',
+  director: 'Director',
+  leader: 'Líder',
+  coordinator: 'Coordinador',
   worker: 'Trabajador',
+  analyst: 'Analista',
 };
 
 export const MEETING_CLASSIFICATION_LABELS: Record<MeetingClassificationType, string> = {

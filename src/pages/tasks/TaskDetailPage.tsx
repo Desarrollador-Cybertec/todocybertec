@@ -11,6 +11,9 @@ import {
   TaskStatus,
   TASK_STATUS_LABELS,
   TASK_PRIORITY_LABELS,
+  ADMIN_ROLES,
+  MANAGER_ROLES,
+  WORKER_ROLES,
 } from '../../types/enums';
 import {
   addCommentSchema,
@@ -140,9 +143,9 @@ export function TaskDetailPage() {
     }
   };
 
-  const isSuperAdmin = user?.role.slug === Role.SUPERADMIN;
-  const isManager = user?.role.slug === Role.AREA_MANAGER;
-  const isWorker = user?.role.slug === Role.WORKER;
+  const isSuperAdmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
+  const isManager = user?.role.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
+  const isWorker = user?.role.slug ? WORKER_ROLES.includes(user.role.slug) : false;
   const uid = Number(user?.id);
   const isResponsible =
     Number(task?.current_responsible_user_id) === uid ||

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { Role } from '../../types/enums';
+import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { PageTransition } from '../../components/ui';
 import { AreaInfoSection } from './components/AreaInfoSection';
@@ -17,8 +17,8 @@ export function AreaDetailPage() {
   const [refreshKey, setRefreshKey] = useState(0);
 
   const areaId = Number(id);
-  const isManager = user?.role.slug === Role.AREA_MANAGER;
-  const isSuperAdmin = user?.role.slug === Role.SUPERADMIN;
+  const isManager = user?.role.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
+  const isSuperAdmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
   const userRole = user?.role.slug ?? '';
 
   const handleRefresh = () => setRefreshKey((k) => k + 1);

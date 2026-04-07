@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { tasksApi } from '../../../api/tasks';
 import { areasApi } from '../../../api/areas';
 import { ApiError } from '../../../api/client';
-import { TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, Role } from '../../../types/enums';
+import { TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, Role, WORKER_ROLES } from '../../../types/enums';
 import type { Task } from '../../../types';
 import { HiOutlineUserAdd, HiOutlineCheckCircle, HiOutlineX } from 'react-icons/hi';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -33,7 +33,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
         areasApi.membersAll(areaId).catch(() => []),
       ]);
       setTasks(tasksRes?.data ?? []);
-      setMembers(Array.isArray(membersRes) ? membersRes.filter((u) => u.role?.slug === Role.WORKER) : []);
+      setMembers(Array.isArray(membersRes) ? membersRes.filter((u) => u.role?.slug && WORKER_ROLES.includes(u.role.slug)) : []);
     } catch {
       setError(true);
     } finally {

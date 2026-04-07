@@ -5,10 +5,11 @@ import { AnimatePresence } from 'framer-motion';
 import { usersApi } from '../../api/users';
 import { areasApi } from '../../api/areas';
 import { createUserSchema, type CreateUserFormData } from '../../schemas';
-import { ROLE_LABELS, Role } from '../../types/enums';
+import { ROLE_LABELS, Role, WORKER_ROLES } from '../../types/enums';
+import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
 import { useAuth } from '../../context/useAuth';
-import type { User, Area } from '../../types';
+import type { User, Area, RoleInfo } from '../../types';
 import { HiOutlinePlus, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlinePencil, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { PageTransition, FadeIn, SlideDown, SkeletonTable, Badge } from '../../components/ui';
 import { UserEditModal } from './components/UserEditModal';
@@ -16,8 +17,13 @@ import { UserCreateForm } from './components/UserCreateForm';
 
 const ROLE_BADGE: Record<string, 'purple' | 'blue' | 'gray'> = {
   superadmin: 'purple',
+  gerente: 'purple',
   area_manager: 'blue',
+  director: 'blue',
+  leader: 'blue',
+  coordinator: 'blue',
   worker: 'gray',
+  analyst: 'gray',
 };
 
 const PAGE_SIZE = 10;
@@ -26,6 +32,7 @@ export function UserListPage() {
   const { user: currentUser } = useAuth();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
+  const [roles, setRoles] = useState<RoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);
   const [roleFilter, setRoleFilter] = useState('');
@@ -53,12 +60,14 @@ export function UserListPage() {
   const loadUsers = useCallback(async () => {
     setLoading(true);
     try {
-      const [usersRes, areasRes] = await Promise.all([
+      const [usersRes, areasRes, rolesRes] = await Promise.all([
         usersApi.listAll(),
         areasApi.listAll().catch(() => []),
+        rolesApi.list().catch(() => [] as RoleInfo[]),
       ]);
       setAllUsers(usersRes);
       setAreas(Array.isArray(areasRes) ? areasRes : []);
+      setRoles(Array.isArray(rolesRes) ? rolesRes : []);
     } catch {
       setAllUsers([]);
     } finally {
@@ -118,7 +127,7 @@ export function UserListPage() {
     setServerError('');
 
     // Fetch full detail to get area_id and confirm role_id
-    if (u.role.slug === 'worker') {
+    if (WORKER_ROLES.includes(u.role.slug)) {
       setEditAreaLoading(true);
       try {
         const full = await usersApi.get(u.id);
@@ -197,9 +206,9 @@ export function UserListPage() {
             className="rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito px-3 py-2 text-sm text-slate-700 dark:text-slate-300 shadow-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
           >
             <option value="">Todos los roles</option>
-            <option value="superadmin">{ROLE_LABELS[Role.SUPERADMIN]}</option>
-            <option value="area_manager">{ROLE_LABELS[Role.AREA_MANAGER]}</option>
-            <option value="worker">{ROLE_LABELS[Role.WORKER]}</option>
+            {roles.filter((r) => r.is_active).map((r) => (
+              <option key={r.slug} value={r.slug}>{r.name}</option>
+            ))}
           </select>
           <button
           type="button"
@@ -232,6 +241,7 @@ export function UserListPage() {
         {showCreateForm && (
           <UserCreateForm
             form={createForm}
+            roles={roles}
             onSubmit={onCreateUser}
             onCancel={() => { setShowCreateForm(false); createForm.reset(); }}
           />
@@ -384,6 +394,7 @@ export function UserListPage() {
         setEditActive={(v) => setEditActive(v)}
         editSaving={editSaving}
         areas={areas}
+        roles={roles}
         onCancel={cancelEditing}
         onSave={saveUserEdit}
         onChangePassword={handleChangePassword}

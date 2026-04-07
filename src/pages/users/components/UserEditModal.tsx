@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
-import { ROLE_LABELS, Role } from '../../../types/enums';
-import type { Area } from '../../../types';
+import { ROLE_LABELS, Role, WORKER_ROLES } from '../../../types/enums';
+import type { Area, RoleInfo } from '../../../types';
 import { Spinner } from '../../../components/ui';
 
 interface Props {
@@ -23,6 +23,7 @@ interface Props {
   setEditActive: (v: boolean) => void;
   editSaving: boolean;
   areas: Area[];
+  roles: RoleInfo[];
   onCancel: () => void;
   onSave: (userId: number) => void;
   onChangePassword?: (userId: number, password: string, passwordConfirmation: string) => void;
@@ -46,6 +47,7 @@ export function UserEditModal({
   setEditActive,
   editSaving,
   areas,
+  roles,
   onCancel,
   onSave,
   onChangePassword,
@@ -110,8 +112,11 @@ export function UserEditModal({
                     onChange={(e) => setEditRoleId(Number(e.target.value))}
                     className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
                   >
-                    <option value={2}>{ROLE_LABELS[Role.AREA_MANAGER]}</option>
-                    <option value={3}>{ROLE_LABELS[Role.WORKER]}</option>
+                    {roles
+                      .filter((r) => r.is_active && r.slug !== Role.SUPERADMIN)
+                      .map((r) => (
+                        <option key={r.id} value={r.id}>{r.name}</option>
+                      ))}
                   </select>
                 </div>
               )}
@@ -136,7 +141,7 @@ export function UserEditModal({
                 </button>
               </div>
 
-              {editOriginalRoleSlug === Role.WORKER && (
+              {WORKER_ROLES.includes(editOriginalRoleSlug as typeof Role[keyof typeof Role]) && (
                 <div className="rounded-sm border border-cyber-navy/10 dark:border-cyber-navy/20 bg-cyber-navy/5/50 dark:bg-cyber-navy/20/20 p-4">
                   <label className="mb-1.5 block text-sm font-semibold text-cyber-navy dark:text-cyber-radar-light">Asignar a un área</label>
                   <p className="mb-2 text-xs text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light/70">Selecciona un área para agregar a este usuario como miembro.</p>

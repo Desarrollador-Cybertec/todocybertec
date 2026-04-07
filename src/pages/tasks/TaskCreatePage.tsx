@@ -15,7 +15,7 @@ import { usersApi } from '../../api/users';
 import { areasApi } from '../../api/areas';
 import { meetingsApi } from '../../api/meetings';
 import { useAuth } from '../../context/useAuth';
-import { Role, TASK_PRIORITY_LABELS } from '../../types/enums';
+import { Role, TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES, WORKER_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import type { User, Area, Meeting } from '../../types';
 import { PageTransition, SlideDown, FadeIn, ConfirmModal } from '../../components/ui';
@@ -47,9 +47,9 @@ export function TaskCreatePage() {
   const [areaMembers, setAreaMembers] = useState<User[]>([]);
   const [workerDest, setWorkerDest] = useState<'self' | 'external'>('self');
 
-  const isWorker = user?.role.slug === Role.WORKER;
-  const isManager = user?.role.slug === Role.AREA_MANAGER;
-  const isSuperadmin = user?.role.slug === Role.SUPERADMIN;
+  const isWorker = user?.role.slug ? WORKER_ROLES.includes(user.role.slug) : false;
+  const isManager = user?.role.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
+  const isSuperadmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
 
   const {
     register,

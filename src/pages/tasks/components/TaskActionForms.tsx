@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { Role } from '../../../types/enums';
+import { Role, WORKER_ROLES } from '../../../types/enums';
 import type { User } from '../../../types';
 import { SlideDown } from '../../../components/ui';
 import type {
@@ -140,7 +140,7 @@ export function DelegateFormPanel({
             <option value="">
               {loading ? 'Cargando trabajadores...' : 'Seleccionar trabajador'}
             </option>
-            {!loading && members.filter((m) => m.role?.slug === Role.WORKER).map((m) => (
+            {!loading && members.filter((m) => m.role?.slug && WORKER_ROLES.includes(m.role.slug)).map((m) => (
               <option key={m.id} value={m.id}>{m.name}</option>
             ))}
           </select>

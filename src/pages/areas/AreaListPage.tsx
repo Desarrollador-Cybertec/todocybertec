@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
-import { Role } from '../../types/enums';
+import { Role, ADMIN_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import { updateAreaSchema, type UpdateAreaFormData } from '../../schemas';
 import type { Area } from '../../types';
@@ -23,7 +23,7 @@ export function AreaListPage() {
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
-  const isSuperAdmin = user?.role.slug === Role.SUPERADMIN;
+  const isSuperAdmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
 
   const editForm = useForm<UpdateAreaFormData>({
     resolver: zodResolver(updateAreaSchema),

@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { createMeetingSchema, type CreateMeetingFormData } from '../../schemas';
 import { meetingsApi } from '../../api/meetings';
 import { areasApi } from '../../api/areas';
-import { MEETING_CLASSIFICATION_LABELS, Role } from '../../types/enums';
+import { MEETING_CLASSIFICATION_LABELS, Role, MANAGER_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import type { Area } from '../../types';
 import { useAuth } from '../../context/useAuth';
@@ -17,7 +17,7 @@ import { useNavigationGuard } from '../../utils/useNavigationGuard';
 export function MeetingCreatePage() {
   const navigate = useNavigate();
   const { user } = useAuth();
-  const isManager = user?.role?.slug === Role.AREA_MANAGER;
+  const isManager = user?.role?.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
   const [serverError, setServerError] = useState('');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);

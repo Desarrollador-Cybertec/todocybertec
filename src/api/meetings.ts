@@ -23,6 +23,9 @@ export const meetingsApi = {
   update: (id: number, data: UpdateMeetingRequest) =>
     apiClient.put<Meeting>(`/meetings/${id}`, data),
 
+  close: (id: number) =>
+    apiClient.patch<Meeting>(`/meetings/${id}/close`),
+
   delete: (id: number) =>
     apiClient.delete<ApiMessageResponse>(`/meetings/${id}`),
 };

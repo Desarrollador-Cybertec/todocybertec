@@ -1,14 +1,17 @@
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateUserFormData } from '../../../schemas';
+import type { RoleInfo } from '../../../types';
+import { Role } from '../../../types/enums';
 import { SlideDown, Spinner } from '../../../components/ui';
 
 interface Props {
   form: UseFormReturn<CreateUserFormData>;
+  roles: RoleInfo[];
   onSubmit: (data: CreateUserFormData) => void;
   onCancel: () => void;
 }
 
-export function UserCreateForm({ form, onSubmit, onCancel }: Props) {
+export function UserCreateForm({ form, roles, onSubmit, onCancel }: Props) {
   const { register, handleSubmit, formState: { errors, isSubmitting } } = form;
 
   return (
@@ -41,9 +44,11 @@ export function UserCreateForm({ form, onSubmit, onCancel }: Props) {
               <label htmlFor="role_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Rol *</label>
               <select id="role_id" {...register('role_id', { valueAsNumber: true })} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20">
                 <option value="">Seleccionar rol</option>
-                <option value={1}>Super Administrador</option>
-                <option value={2}>Encargado de Área</option>
-                <option value={3}>Trabajador</option>
+                {roles
+                  .filter((r) => r.is_active && r.slug !== Role.SUPERADMIN)
+                  .map((r) => (
+                    <option key={r.id} value={r.id}>{r.name}</option>
+                  ))}
               </select>
               {errors.role_id && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.role_id.message}</p>}
             </div>

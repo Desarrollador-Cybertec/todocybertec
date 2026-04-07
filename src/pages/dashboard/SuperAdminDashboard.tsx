@@ -65,7 +65,7 @@ export function SuperAdminDashboard() {
   const healthColor = data.completion_rate >= 75 ? 'text-green-600 dark:text-green-400' : data.completion_rate >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-full overflow-hidden space-y-6">
       {/* Hero greeting */}
       <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>

@@ -51,10 +51,10 @@ export function LoginPage() {
             transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
             className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-sm bg-cyber-navy shadow-lg shadow-cyber-navy/30"
           >
-            <img src="/ESCUDO.png" alt="Cybertec" className="h-10 w-10 brightness-0 invert" />
+            <img src="/isotipo.png" alt="S!NTyC" className="h-10 w-10" />
           </motion.div>
-          <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">SITAPRO</h1>
-          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema de Tareas Programadas</p>
+          <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">S!NTyC</h1>
+          <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema Integral de Tareas y Compromisos</p>
           <p className="mt-0.5 text-[10px] uppercase tracking-[0.15em] text-slate-300 dark:text-slate-600">Plataforma Cybertec</p>
         </div>
 
@@ -136,7 +136,7 @@ export function LoginPage() {
 
           <div className="mt-4 flex flex-col items-center gap-0 border-t border-slate-100 dark:border-white/5 pt-4">
             <p className="text-[9px] uppercase tracking-widest text-slate-400 dark:text-white/25">Powered by</p>
-            <img src="/hero-logo.png" alt="Cybertec" className="-mt-2 h-30 w-auto opacity-50 dark:opacity-40 brightness-0 dark:brightness-100" />
+            <img src="/logotipo.png" alt="S!NTyC" className="-mt-2 h-30 w-auto opacity-50 dark:opacity-40 brightness-0 dark:brightness-100" />
           </div>
         </div>
       </motion.div>

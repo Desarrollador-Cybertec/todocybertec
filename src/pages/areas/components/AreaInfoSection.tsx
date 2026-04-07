@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
 import { usersApi } from '../../../api/users';
 import { ApiError } from '../../../api/client';
-import { Role } from '../../../types/enums';
+import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
 import type { Area, User } from '../../../types';
 import { HiOutlineCheckCircle, HiOutlineTrash, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -28,7 +28,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
 
-  const isSuperadmin = userRole === Role.SUPERADMIN;
+  const isSuperadmin = ADMIN_ROLES.includes(userRole as typeof Role[keyof typeof Role]);
 
   const load = useCallback(async () => {
     setLoading(true);
@@ -40,7 +40,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
       ]);
       setArea(areaRes);
       setManagerCandidates(
-        usersRes.filter((u) => u.role.slug === Role.AREA_MANAGER && u.active),
+        usersRes.filter((u) => u.role.slug && MANAGER_ROLES.includes(u.role.slug) && u.active),
       );
     } catch {
       setError(true);

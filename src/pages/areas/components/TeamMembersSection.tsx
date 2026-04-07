@@ -1,6 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
-import { Role } from '../../../types/enums';
+import { Role, WORKER_ROLES } from '../../../types/enums';
 import type { User } from '../../../types';
 import { SkeletonCard } from '../../../components/ui';
 import { FadeIn } from '../../../components/ui';
@@ -21,7 +21,7 @@ export function TeamMembersSection({ areaId, refreshKey }: TeamMembersSectionPro
     setError(false);
     try {
       const users = await areasApi.membersAll(areaId);
-      setMembers(users.filter((u) => u.role?.slug === Role.WORKER));
+      setMembers(users.filter((u) => u.role?.slug && WORKER_ROLES.includes(u.role.slug)));
     } catch {
       setError(true);
       setMembers([]);

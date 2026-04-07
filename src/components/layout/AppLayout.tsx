@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/useAuth';
-import { Role, ROLE_LABELS } from '../../types/enums';
+import { Role, ROLE_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { areasApi } from '../../api/areas';
 import {
   HiOutlineHome,
@@ -39,31 +39,31 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Áreas',
     path: '/areas',
     icon: <HiOutlineUserGroup className="h-5 w-5" />,
-    roles: [Role.SUPERADMIN],
+    roles: [...ADMIN_ROLES],
   },
   {
     label: 'Mi equipo',
     path: '/claim-workers',
     icon: <HiOutlineUserGroup className="h-5 w-5" />,
-    roles: [Role.AREA_MANAGER],
+    roles: [...MANAGER_ROLES],
   },
   {
     label: 'Reuniones',
     path: '/meetings',
     icon: <HiOutlineCalendar className="h-5 w-5" />,
-    roles: [Role.SUPERADMIN, Role.AREA_MANAGER],
+    roles: [...ADMIN_ROLES, ...MANAGER_ROLES],
   },
   {
     label: 'Usuarios',
     path: '/users',
     icon: <HiOutlineUsers className="h-5 w-5" />,
-    roles: [Role.SUPERADMIN],
+    roles: [...ADMIN_ROLES],
   },
   {
     label: 'Consolidado',
     path: '/consolidated',
     icon: <HiOutlineChartBar className="h-5 w-5" />,
-    roles: [Role.SUPERADMIN],
+    roles: [...ADMIN_ROLES],
   },
   {
     label: 'Configuración',
@@ -84,7 +84,7 @@ export function AppLayout() {
     const areaId = user?.area_id;
     if (areaId) {
       areasApi.get(areaId).then((area) => setAreaName(area.name)).catch(() => setAreaName(null));
-    } else if (user?.role.slug === Role.AREA_MANAGER && user?.id) {
+    } else if (user?.role.slug && MANAGER_ROLES.includes(user.role.slug) && user?.id) {
       // Managers may not have area_id set — scan the list
       const uid = Number(user.id);
       areasApi.listAll()
@@ -134,17 +134,14 @@ export function AppLayout() {
         }`}
       >
         {/* Brand header */}
-        <div className="flex h-16 items-center justify-between border-b border-white/10 px-5">
-          <div className="flex items-center gap-3">
-            <img src="/ESCUDO.png" alt="Cybertec" className="h-10 w-10 brightness-0 invert" />
-            <div>
-              <h1 className="text-sm font-black uppercase tracking-[0.2em] text-white">SITAPRO</h1>
-              <span className="text-[10px] uppercase tracking-[0.2em] text-white/40">by cybertec</span>
-            </div>
+        <div className="relative border-b border-white/10 px-4 py-4">
+          <div className="rounded-xl bg-[#1a2a5e] px-4 py-4 ring-1 ring-cyan-400/20 shadow-lg shadow-cyan-500/10 flex flex-col items-center gap-0">
+            <img src="/magnotipo.png" alt="S!NTyC" className="h-16 w-auto drop-shadow-[0_2px_12px_rgba(27,198,208,0.6)]" />
+            <span className="-mt-3 ml-16 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/60">by cybertec</span>
           </div>
           <button
             type="button"
-            className="rounded p-1.5 text-white/40 hover:bg-white/10 hover:text-white lg:hidden"
+            className="absolute right-3 top-3 rounded p-1.5 text-white/40 hover:bg-white/10 hover:text-white lg:hidden"
             onClick={() => setSidebarOpen(false)}
             aria-label="Cerrar menú"
           >
@@ -231,7 +228,7 @@ export function AppLayout() {
           </button>
         </header>
 
-        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:p-8">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:p-8 max-w-full">
           <Outlet />
         </main>
       </div>

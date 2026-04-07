@@ -1,18 +1,20 @@
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { settingsApi, automationApi, importApi } from '../../api/settings';
+import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
-import type { SystemSetting, MessageTemplate } from '../../types';
-import { HiOutlineCog, HiOutlineMail, HiOutlineLightningBolt, HiOutlineUpload, HiOutlineExclamationCircle, HiOutlineCheckCircle } from 'react-icons/hi';
-import { PageTransition, FadeIn, SlideDown, SkeletonCard } from '../../components/ui';
+import type { SystemSetting, MessageTemplate, RoleInfo } from '../../types';
+import { HiOutlineCog, HiOutlineMail, HiOutlineLightningBolt, HiOutlineUpload, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlineUsers } from 'react-icons/hi';
+import { PageTransition, FadeIn, SlideDown, SkeletonCard, Badge, Spinner } from '../../components/ui';
 import { SettingsTab } from './components/SettingsTab';
 import { TemplatesTab } from './components/TemplatesTab';
 
 export function SettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>([]);
   const [templates, setTemplates] = useState<MessageTemplate[]>([]);
+  const [roles, setRoles] = useState<RoleInfo[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'settings' | 'templates' | 'automation' | 'import'>('settings');
+  const [activeTab, setActiveTab] = useState<'settings' | 'templates' | 'roles' | 'automation' | 'import'>('settings');
   const [drafts, setDrafts] = useState<Record<string, string>>({});
   const [templateDrafts, setTemplateDrafts] = useState<Record<number, Partial<Pick<MessageTemplate, 'subject' | 'body' | 'active'>>>>({});
   const [saving, setSaving] = useState(false);
@@ -26,9 +28,10 @@ export function SettingsPage() {
   const loadData = useCallback(async () => {
     setLoading(true);
     try {
-      const [settingsRes, templatesRes] = await Promise.all([
+      const [settingsRes, templatesRes, rolesRes] = await Promise.all([
         settingsApi.listSettings().catch(() => []),
         settingsApi.listTemplates().catch(() => [] as MessageTemplate[]),
+        rolesApi.list().catch(() => [] as RoleInfo[]),
       ]);
       // API returns settings grouped as { group: [...] } — flatten to array
       let flatSettings: SystemSetting[];
@@ -46,6 +49,7 @@ export function SettingsPage() {
       }));
       setSettings(flatSettings);
       setTemplates(Array.isArray(templatesRes) ? templatesRes : []);
+      setRoles(Array.isArray(rolesRes) ? rolesRes : []);
     } finally {
       setLoading(false);
     }
@@ -229,9 +233,27 @@ export function SettingsPage() {
     }
   };
 
+  const [togglingRoleId, setTogglingRoleId] = useState<number | null>(null);
+
+  const handleToggleRole = async (role: RoleInfo) => {
+    setTogglingRoleId(role.id);
+    try {
+      const res = await rolesApi.toggleActive(role.id);
+      showMessage(res.message);
+      setRoles((prev) =>
+        prev.map((r) => (r.id === role.id ? res.role : r)),
+      );
+    } catch (err) {
+      showError(err instanceof ApiError ? err.data.message : 'Error al cambiar el estado del rol');
+    } finally {
+      setTogglingRoleId(null);
+    }
+  };
+
   const tabs = [
     { key: 'settings' as const, label: 'Configuración', icon: <HiOutlineCog className="h-4 w-4" /> },
     { key: 'templates' as const, label: 'Plantillas', icon: <HiOutlineMail className="h-4 w-4" /> },
+    { key: 'roles' as const, label: 'Roles', icon: <HiOutlineUsers className="h-4 w-4" /> },
     { key: 'automation' as const, label: 'Automatización', icon: <HiOutlineLightningBolt className="h-4 w-4" /> },
     { key: 'import' as const, label: 'Importar', icon: <HiOutlineUpload className="h-4 w-4" /> },
   ];
@@ -362,6 +384,75 @@ export function SettingsPage() {
                 handleDrop={handleDrop}
                 handleDragOver={handleDragOver}
               />
+            )}
+
+            {activeTab === 'roles' && (
+              <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+                <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-white">Gestión de Roles</h3>
+                <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
+                  Activa o desactiva los roles configurables del sistema. Los roles no configurables no pueden modificarse.
+                </p>
+
+                <div className="space-y-2">
+                  {roles.map((role) => (
+                    <div
+                      key={role.id}
+                      className={`flex items-center justify-between rounded-sm border px-4 py-3 transition-colors ${
+                        role.is_active
+                          ? 'border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito'
+                          : 'border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5'
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-slate-100 dark:bg-white/10">
+                          <HiOutlineUsers className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <p className={`text-sm font-medium ${role.is_active ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
+                              {role.name}
+                            </p>
+                            <Badge variant={role.is_active ? 'green' : 'red'} size="sm">
+                              {role.is_active ? 'Activo' : 'Inactivo'}
+                            </Badge>
+                            {!role.is_configurable && (
+                              <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                                No configurable
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-400 dark:text-slate-500">
+                            {role.slug} · {role.users_count} usuario{role.users_count !== 1 ? 's' : ''}
+                          </p>
+                        </div>
+                      </div>
+
+                      {role.is_configurable && (
+                        <button
+                          type="button"
+                          onClick={() => handleToggleRole(role)}
+                          disabled={togglingRoleId === role.id}
+                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none disabled:opacity-50 ${
+                            role.is_active ? 'bg-green-500' : 'bg-slate-300 dark:bg-white/10'
+                          }`}
+                        >
+                          {togglingRoleId === role.id ? (
+                            <span className="absolute inset-0 flex items-center justify-center">
+                              <Spinner size="sm" />
+                            </span>
+                          ) : (
+                            <span
+                              className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-cyber-grafito shadow transition-transform ${
+                                role.is_active ? 'translate-x-6' : 'translate-x-1'
+                              }`}
+                            />
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </FadeIn>
             )}
 
             {activeTab === 'automation' && (

@@ -14,7 +14,7 @@ import {
 import { attachmentsApi } from '../../../api/attachments';
 import { ApiError } from '../../../api/client';
 import { useAuth } from '../../../context/useAuth';
-import { Role } from '../../../types/enums';
+import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
 import type { Attachment, ProcessingStatus } from '../../../types/attachment';
 import { FadeIn, StaggerList, StaggerItem, Badge } from '../../../components/ui';
 import { ConfirmModal } from '../../../components/ui/ConfirmModal';
@@ -302,8 +302,8 @@ export function TaskAttachmentsV2({
   const [deleteTarget, setDeleteTarget] = useState<Attachment | null>(null);
   const [deleting, setDeleting] = useState(false);
 
-  const isSuperAdmin = user?.role.slug === Role.SUPERADMIN;
-  const isManager = user?.role.slug === Role.AREA_MANAGER;
+  const isSuperAdmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
+  const isManager = user?.role.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
 
   const loadAttachments = useCallback(async () => {
     try {

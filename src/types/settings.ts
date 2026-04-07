@@ -29,3 +29,17 @@ export interface UpdateMessageTemplateRequest {
   body?: string;
   active?: boolean;
 }
+
+export interface RoleInfo {
+  id: number;
+  name: string;
+  slug: string;
+  is_active: boolean;
+  is_configurable: boolean;
+  users_count: number;
+}
+
+export interface ToggleRoleResponse {
+  message: string;
+  role: RoleInfo;
+}

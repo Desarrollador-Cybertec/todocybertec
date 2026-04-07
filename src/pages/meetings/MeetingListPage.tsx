@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { meetingsApi } from '../../api/meetings';
 import { MEETING_CLASSIFICATION_LABELS } from '../../types/enums';
 import type { Meeting } from '../../types';
-import { HiOutlinePlus, HiOutlineCalendar } from 'react-icons/hi';
+import { HiOutlinePlus, HiOutlineCalendar, HiOutlineLockClosed } from 'react-icons/hi';
 import { PageTransition, StaggerList, StaggerItem, EmptyState, SkeletonList, Badge } from '../../components/ui';
 
 const CLASSIFICATION_VARIANT: Record<string, 'purple' | 'blue' | 'green' | 'amber'> = {
@@ -61,6 +61,12 @@ export function MeetingListPage() {
                       <Badge variant={CLASSIFICATION_VARIANT[m.classification] ?? 'gray'} size="sm">
                         {MEETING_CLASSIFICATION_LABELS[m.classification]}
                       </Badge>
+                      {m.is_closed && (
+                        <Badge variant="red" size="sm">
+                          <HiOutlineLockClosed className="mr-0.5 inline h-3 w-3" />
+                          Cerrada
+                        </Badge>
+                      )}
                       {m.area && <span>Área: {m.area.name}</span>}
                       <span className="flex items-center gap-1">
                         <span className="flex h-4 w-4 items-center justify-center rounded-full bg-slate-100 dark:bg-white/10 text-[9px] font-medium text-slate-600 dark:text-slate-400">{m.creator.name.charAt(0)}</span>

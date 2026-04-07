@@ -1,12 +1,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { meetingsApi } from '../../api/meetings';
-import { MEETING_CLASSIFICATION_LABELS, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../types/enums';
+import { MEETING_CLASSIFICATION_LABELS, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, ADMIN_ROLES } from '../../types/enums';
 import type { Meeting } from '../../types';
 import { useAuth } from '../../context/useAuth';
 import { ApiError } from '../../api/client';
-import { HiOutlineArrowLeft, HiOutlineCalendar, HiOutlineChevronRight, HiOutlinePencil, HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
+import { HiOutlineArrowLeft, HiOutlineCalendar, HiOutlineChevronRight, HiOutlinePencil, HiOutlineCheck, HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
 import { PageTransition, FadeIn, StaggerList, StaggerItem, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT, SkeletonDetail, Spinner } from '../../components/ui';
+import { ConfirmModal } from '../../components/ui/ConfirmModal';
 import { MeetingTasksSection } from './components/MeetingTasksSection';
 
 const CLASSIFICATION_VARIANT: Record<string, 'purple' | 'blue' | 'green' | 'amber'> = {
@@ -31,6 +32,8 @@ export function MeetingDetailPage() {
   const [editNotes, setEditNotes] = useState('');
   const [editSaving, setEditSaving] = useState(false);
   const [editError, setEditError] = useState('');
+  const [showCloseConfirm, setShowCloseConfirm] = useState(false);
+  const [closing, setClosing] = useState(false);
 
   const loadMeeting = useCallback(() => {
     meetingsApi.get(Number(id))
@@ -44,6 +47,22 @@ export function MeetingDetailPage() {
   }, [loadMeeting]);
 
   const isCreator = meeting && Number(meeting.created_by) === Number(user?.id);
+  const canClose = meeting && !meeting.is_closed && (isCreator || (user && ADMIN_ROLES.includes(user.role.slug)));
+  const canEdit = isCreator && !meeting?.is_closed;
+
+  const handleCloseMeeting = async () => {
+    if (!meeting) return;
+    setClosing(true);
+    try {
+      await meetingsApi.close(meeting.id);
+      loadMeeting();
+    } catch (error) {
+      setEditError(error instanceof ApiError ? error.data.message : 'Error al cerrar la reunión');
+    } finally {
+      setClosing(false);
+      setShowCloseConfirm(false);
+    }
+  };
 
   const startEditing = () => {
     if (!meeting) return;
@@ -134,12 +153,27 @@ export function MeetingDetailPage() {
           ) : (
           <>
           <div className="flex items-start justify-between gap-4">
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{meeting.title}</h2>
-          {isCreator && (
-            <button type="button" onClick={startEditing} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
-              <HiOutlinePencil className="h-4 w-4" /> Editar
-            </button>
-          )}
+          <div className="flex items-center gap-3">
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{meeting.title}</h2>
+            {meeting.is_closed && (
+              <Badge variant="red" size="md">
+                <HiOutlineLockClosed className="mr-1 inline h-3.5 w-3.5" />
+                Cerrada
+              </Badge>
+            )}
+          </div>
+          <div className="flex items-center gap-2">
+            {canClose && (
+              <button type="button" onClick={() => setShowCloseConfirm(true)} className="inline-flex items-center gap-1.5 rounded-sm border border-red-200 dark:border-red-800 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 transition-all hover:bg-red-50 dark:hover:bg-red-900/30 active:scale-[0.98]">
+                <HiOutlineLockClosed className="h-4 w-4" /> Cerrar reunión
+              </button>
+            )}
+            {canEdit && (
+              <button type="button" onClick={startEditing} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
+                <HiOutlinePencil className="h-4 w-4" /> Editar
+              </button>
+            )}
+          </div>
           </div>
           <div className="mt-4 grid gap-4 sm:grid-cols-3">
             <div>
@@ -168,6 +202,14 @@ export function MeetingDetailPage() {
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Área</p>
                 <p className="mt-1 text-sm text-slate-900 dark:text-white">{meeting.area.name}</p>
+              </div>
+            )}
+            {meeting.is_closed && meeting.closed_at && (
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Cerrada el</p>
+                <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                  {new Date(meeting.closed_at).toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                </p>
               </div>
             )}
           </div>
@@ -215,7 +257,18 @@ export function MeetingDetailPage() {
         <MeetingTasksSection
           meetingId={meeting.id}
           areaId={meeting.area_id ?? meeting.area?.id ?? null}
+          isClosed={meeting.is_closed}
           onTasksCreated={loadMeeting}
+        />
+
+        <ConfirmModal
+          open={showCloseConfirm}
+          title="Cerrar reunión"
+          message="Una vez cerrada, no se podrán editar los datos ni agregar nuevos compromisos. ¿Deseas continuar?"
+          confirmLabel={closing ? 'Cerrando...' : 'Cerrar reunión'}
+          variant="danger"
+          onConfirm={handleCloseMeeting}
+          onCancel={() => setShowCloseConfirm(false)}
         />
       </div>
     </PageTransition>

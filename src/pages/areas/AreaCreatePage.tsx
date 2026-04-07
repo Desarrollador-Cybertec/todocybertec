@@ -8,6 +8,7 @@ import { areasApi } from '../../api/areas';
 import { usersApi } from '../../api/users';
 import { ApiError } from '../../api/client';
 import type { User } from '../../types';
+import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { PageTransition, FadeIn, SlideDown, Spinner, ConfirmModal } from '../../components/ui';
 import { useNavigationGuard } from '../../utils/useNavigationGuard';
@@ -94,7 +95,7 @@ export function AreaCreatePage() {
               <label htmlFor="manager_user_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Encargado</label>
               <select id="manager_user_id" {...register('manager_user_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20">
                 <option value="">Sin encargado</option>
-                {users.filter((u) => u.role.slug === 'area_manager' || u.role.slug === 'superadmin').map((u) => (
+                {users.filter((u) => [...ADMIN_ROLES, ...MANAGER_ROLES].includes(u.role.slug)).map((u) => (
                   <option key={u.id} value={u.id}>{u.name}</option>
                 ))}
               </select>
