@@ -5,7 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
-import { Role, ADMIN_ROLES } from '../../types/enums';
+import { ADMIN_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import { updateAreaSchema, type UpdateAreaFormData } from '../../schemas';
 import type { Area } from '../../types';

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
-import { ROLE_LABELS, Role, ADMIN_ROLES } from '../../../types/enums';
+import { Role, ADMIN_ROLES } from '../../../types/enums';
 import type { Area, RoleInfo } from '../../../types';
 import { Spinner } from '../../../components/ui';
 

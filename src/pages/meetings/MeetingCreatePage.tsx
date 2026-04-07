@@ -6,7 +6,7 @@ import { AnimatePresence } from 'framer-motion';
 import { createMeetingSchema, type CreateMeetingFormData } from '../../schemas';
 import { meetingsApi } from '../../api/meetings';
 import { areasApi } from '../../api/areas';
-import { MEETING_CLASSIFICATION_LABELS, Role, MANAGER_ROLES } from '../../types/enums';
+import { MEETING_CLASSIFICATION_LABELS, MANAGER_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import type { Area } from '../../types';
 import { useAuth } from '../../context/useAuth';

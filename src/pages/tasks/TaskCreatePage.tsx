@@ -15,7 +15,7 @@ import { usersApi } from '../../api/users';
 import { areasApi } from '../../api/areas';
 import { meetingsApi } from '../../api/meetings';
 import { useAuth } from '../../context/useAuth';
-import { Role, TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES, WORKER_ROLES } from '../../types/enums';
+import { TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES, WORKER_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import type { User, Area, Meeting } from '../../types';
 import { PageTransition, SlideDown, FadeIn, ConfirmModal } from '../../components/ui';

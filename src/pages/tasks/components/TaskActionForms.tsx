@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import type { UseFormReturn } from 'react-hook-form';
-import { Role, WORKER_ROLES } from '../../../types/enums';
+import { WORKER_ROLES } from '../../../types/enums';
 import type { User } from '../../../types';
 import { SlideDown } from '../../../components/ui';
 import type {

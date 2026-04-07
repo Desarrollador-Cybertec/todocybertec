@@ -7,7 +7,6 @@ import { tasksApi } from '../../api/tasks';
 import { useAuth } from '../../context/useAuth';
 import { ApiError } from '../../api/client';
 import {
-  Role,
   TaskStatus,
   TASK_STATUS_LABELS,
   TASK_PRIORITY_LABELS,

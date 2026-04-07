@@ -14,7 +14,7 @@ import {
 import { attachmentsApi } from '../../../api/attachments';
 import { ApiError } from '../../../api/client';
 import { useAuth } from '../../../context/useAuth';
-import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
+import { ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
 import type { Attachment, ProcessingStatus } from '../../../types/attachment';
 import { FadeIn, StaggerList, StaggerItem, Badge } from '../../../components/ui';
 import { ConfirmModal } from '../../../components/ui/ConfirmModal';

@@ -17,7 +17,7 @@ export function UserCreateForm({ form, roles, areas, onSubmit, onCancel }: Props
 
   const selectedRoleId = watch('role_id');
   const selectedRole = roles.find((r) => r.id === selectedRoleId);
-  const canHaveArea = selectedRole && !ADMIN_ROLES.includes(selectedRole.slug);
+  const canHaveArea = selectedRole && !ADMIN_ROLES.includes(selectedRole.slug as never);
 
   return (
     <SlideDown className="mb-6">

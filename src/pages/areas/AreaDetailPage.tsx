@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
-import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
+import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft } from 'react-icons/hi';
 import { PageTransition } from '../../components/ui';
 import { AreaInfoSection } from './components/AreaInfoSection';

@@ -4,7 +4,7 @@ import { AnimatePresence } from 'framer-motion';
 import { tasksApi } from '../../api/tasks';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
-import { Role, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
+import { TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import type { Task, Area } from '../../types';
 import {
   HiOutlinePlus,
