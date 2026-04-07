@@ -15,6 +15,7 @@ export const createUserSchema = z
     password: passwordRules,
     password_confirmation: z.string().min(1, 'Confirma la contraseña'),
     role_id: z.number({ message: 'Selecciona un rol' }).int().positive(),
+    area_id: z.number().int().positive().optional().nullable(),
   })
   .refine((data) => data.password === data.password_confirmation, {
     message: 'Las contraseñas no coinciden',

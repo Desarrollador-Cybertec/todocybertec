@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
-import { ROLE_LABELS, Role, WORKER_ROLES } from '../../../types/enums';
+import { ROLE_LABELS, Role, ADMIN_ROLES } from '../../../types/enums';
 import type { Area, RoleInfo } from '../../../types';
 import { Spinner } from '../../../components/ui';
 
@@ -141,7 +141,7 @@ export function UserEditModal({
                 </button>
               </div>
 
-              {WORKER_ROLES.includes(editOriginalRoleSlug as typeof Role[keyof typeof Role]) && (
+              {!ADMIN_ROLES.includes(editOriginalRoleSlug as typeof Role[keyof typeof Role]) && (
                 <div className="rounded-sm border border-cyber-navy/10 dark:border-cyber-navy/20 bg-cyber-navy/5/50 dark:bg-cyber-navy/20/20 p-4">
                   <label className="mb-1.5 block text-sm font-semibold text-cyber-navy dark:text-cyber-radar-light">Asignar a un área</label>
                   <p className="mb-2 text-xs text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light/70">Selecciona un área para agregar a este usuario como miembro.</p>

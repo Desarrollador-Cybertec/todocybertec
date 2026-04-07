@@ -242,6 +242,7 @@ export function UserListPage() {
           <UserCreateForm
             form={createForm}
             roles={roles}
+            areas={areas}
             onSubmit={onCreateUser}
             onCancel={() => { setShowCreateForm(false); createForm.reset(); }}
           />

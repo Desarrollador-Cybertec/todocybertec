@@ -1,6 +1,5 @@
 import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
-import { Role, WORKER_ROLES } from '../../../types/enums';
 import type { User } from '../../../types';
 import { SkeletonCard } from '../../../components/ui';
 import { FadeIn } from '../../../components/ui';
@@ -21,7 +20,7 @@ export function TeamMembersSection({ areaId, refreshKey }: TeamMembersSectionPro
     setError(false);
     try {
       const users = await areasApi.membersAll(areaId);
-      setMembers(users.filter((u) => u.role?.slug && WORKER_ROLES.includes(u.role.slug)));
+      setMembers(users);
     } catch {
       setError(true);
       setMembers([]);
@@ -56,14 +55,14 @@ export function TeamMembersSection({ areaId, refreshKey }: TeamMembersSectionPro
       <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
         <h3 className="flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
           <HiOutlineUsers className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
-          Trabajadores del área
+          Miembros del área
         </h3>
         <span className="rounded-lg bg-cyber-navy/5 dark:bg-cyber-navy/20/30 px-2.5 py-0.5 text-xs font-semibold text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">
           {members.length}
         </span>
       </div>
       {members.length === 0 ? (
-        <p className="px-6 py-8 text-center text-sm text-slate-400 dark:text-slate-500">No hay trabajadores en esta área aún.</p>
+        <p className="px-6 py-8 text-center text-sm text-slate-400 dark:text-slate-500">No hay miembros en esta área aún.</p>
       ) : (
         <div className="grid gap-3 p-6 sm:grid-cols-2 lg:grid-cols-3">
           {members.map((member) => (

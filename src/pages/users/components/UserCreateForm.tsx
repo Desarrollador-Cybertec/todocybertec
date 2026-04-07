@@ -1,18 +1,23 @@
 import type { UseFormReturn } from 'react-hook-form';
 import type { CreateUserFormData } from '../../../schemas';
-import type { RoleInfo } from '../../../types';
-import { Role } from '../../../types/enums';
+import type { RoleInfo, Area } from '../../../types';
+import { Role, ADMIN_ROLES } from '../../../types/enums';
 import { SlideDown, Spinner } from '../../../components/ui';
 
 interface Props {
   form: UseFormReturn<CreateUserFormData>;
   roles: RoleInfo[];
+  areas: Area[];
   onSubmit: (data: CreateUserFormData) => void;
   onCancel: () => void;
 }
 
-export function UserCreateForm({ form, roles, onSubmit, onCancel }: Props) {
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = form;
+export function UserCreateForm({ form, roles, areas, onSubmit, onCancel }: Props) {
+  const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = form;
+
+  const selectedRoleId = watch('role_id');
+  const selectedRole = roles.find((r) => r.id === selectedRoleId);
+  const canHaveArea = selectedRole && !ADMIN_ROLES.includes(selectedRole.slug);
 
   return (
     <SlideDown className="mb-6">
@@ -52,6 +57,17 @@ export function UserCreateForm({ form, roles, onSubmit, onCancel }: Props) {
               </select>
               {errors.role_id && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.role_id.message}</p>}
             </div>
+            {canHaveArea && (
+              <div>
+                <label htmlFor="area_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Área</label>
+                <select id="area_id" {...register('area_id', { setValueAs: (v: string) => v ? Number(v) : null })} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20">
+                  <option value="">Sin área</option>
+                  {areas.filter((a) => a.active).map((a) => (
+                    <option key={a.id} value={a.id}>{a.name}</option>
+                  ))}
+                </select>
+              </div>
+            )}
           </div>
           <div className="flex gap-2">
             <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light disabled:opacity-50">

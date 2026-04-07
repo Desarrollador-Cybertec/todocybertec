@@ -123,20 +123,26 @@ export function TaskCreatePage() {
       setAreas(a);
       setMeetings(m);
 
-      // For managers: load actual members of their managed areas
+      // For managers: load members of their managed areas AND areas they belong to
       if (isManager && user?.id) {
         const uid = Number(user.id);
-        // 1. Prefer area_id from /me; 2. scan areas list; 3. fallback to first area
-        let areaIdsToFetch: number[] = [];
+        const areaIdSet = new Set<number>();
+
+        // Areas the user belongs to as a member
         if (user.area_id) {
-          areaIdsToFetch = [Number(user.area_id)];
-        } else {
-          const matched = a.filter(
-            (area) =>
-              Number(area.manager_user_id) === uid || Number(area.manager?.id) === uid ||
-              (area.manager?.id != null && Number(area.manager.id) === uid),
-          );
-          areaIdsToFetch = matched.length ? matched.map((area) => area.id) : a.length ? [a[0].id] : [];
+          areaIdSet.add(Number(user.area_id));
+        }
+
+        // Areas the user manages
+        a.filter(
+          (area) =>
+            Number(area.manager_user_id) === uid || Number(area.manager?.id) === uid ||
+            (area.manager?.id != null && Number(area.manager.id) === uid),
+        ).forEach((area) => areaIdSet.add(area.id));
+
+        let areaIdsToFetch = [...areaIdSet];
+        if (!areaIdsToFetch.length && a.length) {
+          areaIdsToFetch = [a[0].id];
         }
 
         if (areaIdsToFetch.length) {

@@ -31,7 +31,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
       const res = await areasApi.availableWorkers(areaId);
       setWorkers(Array.isArray(res.data) ? res.data : []);
     } catch {
-      setError('Error al cargar trabajadores disponibles');
+      setError('Error al cargar usuarios disponibles');
       setWorkers([]);
     } finally {
       setLoading(false);
@@ -50,7 +50,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
       onClaimed();
     } catch (err) {
       if (err instanceof ApiError) {
-        setClaimError(err.data.message || 'Error al reclamar trabajador');
+        setClaimError(err.data.message || 'Error al reclamar usuario');
       } else {
         setClaimError('Error de conexión');
       }
@@ -87,7 +87,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
     <FadeIn delay={0.1}>
       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
         <HiOutlineUserAdd className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
-        Trabajadores disponibles
+        Usuarios disponibles
         <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light">
           {workers.length}
         </span>
@@ -113,11 +113,11 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
       {filtered.length === 0 ? (
         <EmptyState
           icon={<HiOutlineUsers className="h-12 w-12" />}
-          title={search ? 'Sin resultados' : 'No hay trabajadores disponibles'}
+          title={search ? 'Sin resultados' : 'No hay usuarios disponibles'}
           description={
             search
               ? 'Intenta con otro término de búsqueda.'
-              : 'Todos los trabajadores activos ya pertenecen a un área.'
+              : 'Todos los usuarios elegibles ya pertenecen a un área.'
           }
         />
       ) : (

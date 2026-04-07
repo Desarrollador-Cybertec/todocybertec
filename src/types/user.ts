@@ -24,6 +24,7 @@ export interface CreateUserRequest {
   password: string;
   password_confirmation: string;
   role_id: number;
+  area_id?: number | null;
 }
 
 export interface UpdateUserRequest {
