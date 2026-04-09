@@ -8,6 +8,7 @@ export * from './dashboard';
 export * from './settings';
 export * from './notification';
 export * from './attachment';
+export * from './license';
 
 export interface ApiResponse<T> {
   data: T;
@@ -20,6 +21,7 @@ export interface ApiMessageResponse {
 export interface ApiErrorResponse {
   message: string;
   errors?: Record<string, string[]>;
+  type?: string;
 }
 
 export interface PaginatedResponse<T> {

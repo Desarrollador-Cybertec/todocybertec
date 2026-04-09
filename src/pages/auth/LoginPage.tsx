@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { motion, AnimatePresence } from 'framer-motion';
+import { sileo } from 'sileo';
 import { HiOutlineMail, HiOutlineLockClosed, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useAuth } from '../../context/useAuth';
 import { loginSchema, type LoginFormData } from '../../schemas';
@@ -13,10 +14,12 @@ export function LoginPage() {
   const { login } = useAuth();
   const navigate = useNavigate();
   const [serverError, setServerError] = useState('');
+  const [licenseError, setLicenseError] = useState('');
 
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -24,11 +27,35 @@ export function LoginPage() {
 
   const onSubmit = async (data: LoginFormData) => {
     setServerError('');
+    setLicenseError('');
     try {
       await login(data.email, data.password);
       navigate('/dashboard');
     } catch (error) {
       if (error instanceof ApiError) {
+        const licType = error.licenseType;
+
+        // Validation errors (422) — show in field
+        if (error.status === 422 && error.data.errors?.email) {
+          setError('email', { message: error.data.errors.email[0] });
+          return;
+        }
+
+        // License expired or suspended — form-level message (no field)
+        if (licType === 'license_expired' || licType === 'license_suspended') {
+          setLicenseError(error.data.message);
+          return;
+        }
+
+        // License unavailable — toast, allow retry
+        if (licType === 'license_unavailable') {
+          sileo.error({
+            title: 'Servicio no disponible',
+            description: error.data.message,
+          });
+          return;
+        }
+
         setServerError(error.data.message || 'Credenciales incorrectas');
       } else {
         setServerError('Error de conexión. Intenta de nuevo.');
@@ -72,6 +99,19 @@ export function LoginPage() {
                 <div className="flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
                   <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
                   {serverError}
+                </div>
+              </motion.div>
+            )}
+            {licenseError && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-4 overflow-hidden"
+              >
+                <div className="flex items-center gap-2 rounded-sm bg-orange-50 dark:bg-orange-900/30 p-3 text-sm text-orange-700 dark:text-orange-400 ring-1 ring-inset ring-orange-200 dark:ring-orange-800">
+                  <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                  {licenseError}
                 </div>
               </motion.div>
             )}

@@ -1,6 +1,13 @@
-import type { ApiErrorResponse } from '../types';
+import type { ApiErrorResponse, LicenseErrorType } from '../types';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+
+const LICENSE_ERROR_TYPES: Set<string> = new Set([
+  'license_denied',
+  'license_expired',
+  'license_suspended',
+  'license_unavailable',
+]);
 
 class ApiError extends Error {
   status: number;
@@ -11,6 +18,15 @@ class ApiError extends Error {
     this.name = 'ApiError';
     this.status = status;
     this.data = data;
+  }
+
+  get licenseType(): LicenseErrorType | null {
+    const t = this.data.type;
+    return t && LICENSE_ERROR_TYPES.has(t) ? (t as LicenseErrorType) : null;
+  }
+
+  get isLicenseError(): boolean {
+    return this.licenseType !== null;
   }
 }
 

@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/useAuth';
 import { Role, ROLE_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { areasApi } from '../../api/areas';
+import { LicenseBanner } from '../ui/LicenseBanner';
 import {
   HiOutlineHome,
   HiOutlineClipboardList,
@@ -227,6 +228,8 @@ export function AppLayout() {
             <HiOutlineMenu className="h-5 w-5" />
           </button>
         </header>
+
+        <LicenseBanner />
 
         <main className="flex-1 overflow-x-hidden overflow-y-auto p-3 sm:p-6 lg:p-8 max-w-full">
           <Outlet />

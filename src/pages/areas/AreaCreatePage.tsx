@@ -7,6 +7,8 @@ import { createAreaSchema, type CreateAreaFormData } from '../../schemas';
 import { areasApi } from '../../api/areas';
 import { usersApi } from '../../api/users';
 import { ApiError } from '../../api/client';
+import { useLicense } from '../../context/useLicense';
+import { sileo } from 'sileo';
 import type { User } from '../../types';
 import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft, HiOutlineExclamationCircle } from 'react-icons/hi';
@@ -15,6 +17,7 @@ import { useNavigationGuard } from '../../utils/useNavigationGuard';
 
 export function AreaCreatePage() {
   const navigate = useNavigate();
+  const license = useLicense();
   const [serverError, setServerError] = useState('');
   const [showLeaveModal, setShowLeaveModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -50,6 +53,17 @@ export function AreaCreatePage() {
       navGuard.skip();
       navigate('/areas');
     } catch (error) {
+      if (error instanceof ApiError && error.isLicenseError) {
+        const lt = error.licenseType!;
+        if (lt === 'license_expired') {
+          license.setExpired(error.data.message);
+        } else if (lt === 'license_suspended') {
+          license.setSuspended(error.data.message);
+        } else {
+          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
+        }
+        return;
+      }
       setServerError(error instanceof ApiError ? error.data.message : 'Error al crear el área');
     } finally {
       setPendingFormData(null);

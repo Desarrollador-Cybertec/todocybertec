@@ -9,6 +9,8 @@ import { ROLE_LABELS, Role, WORKER_ROLES } from '../../types/enums';
 import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
 import { useAuth } from '../../context/useAuth';
+import { useLicense } from '../../context/useLicense';
+import { sileo } from 'sileo';
 import type { User, Area, RoleInfo } from '../../types';
 import { HiOutlinePlus, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlinePencil, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { PageTransition, FadeIn, SlideDown, SkeletonTable, Badge } from '../../components/ui';
@@ -30,6 +32,7 @@ const PAGE_SIZE = 10;
 
 export function UserListPage() {
   const { user: currentUser } = useAuth();
+  const license = useLicense();
   const [allUsers, setAllUsers] = useState<User[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
   const [roles, setRoles] = useState<RoleInfo[]>([]);
@@ -101,6 +104,19 @@ export function UserListPage() {
       setShowCreateForm(false);
       loadUsers();
     } catch (error) {
+      if (error instanceof ApiError && error.isLicenseError) {
+        const lt = error.licenseType!;
+        if (lt === 'license_denied') {
+          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
+        } else if (lt === 'license_expired') {
+          license.setExpired(error.data.message);
+        } else if (lt === 'license_suspended') {
+          license.setSuspended(error.data.message);
+        } else {
+          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
+        }
+        return;
+      }
       setServerError(error instanceof ApiError ? error.data.message : 'Error al crear usuario');
     }
   };
@@ -111,6 +127,19 @@ export function UserListPage() {
       showMessage('Estado del usuario actualizado');
       loadUsers();
     } catch (error) {
+      if (error instanceof ApiError && error.isLicenseError) {
+        const lt = error.licenseType!;
+        if (lt === 'license_denied') {
+          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
+        } else if (lt === 'license_expired') {
+          license.setExpired(error.data.message);
+        } else if (lt === 'license_suspended') {
+          license.setSuspended(error.data.message);
+        } else {
+          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
+        }
+        return;
+      }
       setServerError(error instanceof ApiError ? error.data.message : 'Error al cambiar estado');
     }
   };
@@ -179,6 +208,19 @@ export function UserListPage() {
       setEditingUserId(null);
       loadUsers();
     } catch (error) {
+      if (error instanceof ApiError && error.isLicenseError) {
+        const lt = error.licenseType!;
+        if (lt === 'license_denied') {
+          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
+        } else if (lt === 'license_expired') {
+          license.setExpired(error.data.message);
+        } else if (lt === 'license_suspended') {
+          license.setSuspended(error.data.message);
+        } else {
+          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
+        }
+        return;
+      }
       setServerError(error instanceof ApiError ? error.data.message : 'Error al actualizar usuario');
     } finally {
       setEditSaving(false);
@@ -213,7 +255,9 @@ export function UserListPage() {
           <button
           type="button"
           onClick={() => setShowCreateForm(!showCreateForm)}
-          className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]"
+          disabled={license.isBlocked}
+          title={license.isBlocked ? (license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida') : undefined}
+          className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
         >
           <HiOutlinePlus className="h-4 w-4" /> Nuevo usuario
         </button>
@@ -279,7 +323,9 @@ export function UserListPage() {
                     <button
                       type="button"
                       onClick={() => handleToggleActive(u.id)}
-                      className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
+                      disabled={!u.active && license.isBlocked}
+                      title={!u.active && license.isBlocked ? (license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida') : undefined}
+                      className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
                     >
                       {u.active ? 'Desactivar' : 'Activar'}
                     </button>
@@ -331,7 +377,9 @@ export function UserListPage() {
                         <button
                           type="button"
                           onClick={() => handleToggleActive(u.id)}
-                          className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
+                          disabled={!u.active && license.isBlocked}
+                          title={!u.active && license.isBlocked ? (license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida') : undefined}
+                          className={`rounded-sm px-3 py-1.5 text-xs font-medium transition-colors disabled:cursor-not-allowed disabled:opacity-50 ${u.active ? 'border border-red-200 dark:border-red-800 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/30' : 'border border-green-200 dark:border-green-800 text-green-600 dark:text-green-400 hover:bg-green-50 dark:hover:bg-green-900/30'}`}
                         >
                           {u.active ? 'Desactivar' : 'Activar'}
                         </button>

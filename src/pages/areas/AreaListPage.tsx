@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
+import { useLicense } from '../../context/useLicense';
 import { ADMIN_ROLES } from '../../types/enums';
 import { ApiError } from '../../api/client';
 import { updateAreaSchema, type UpdateAreaFormData } from '../../schemas';
@@ -14,6 +15,7 @@ import { PageTransition, StaggerList, StaggerItem, EmptyState, SkeletonCard, Bad
 
 export function AreaListPage() {
   const { user } = useAuth();
+  const license = useLicense();
   const [areas, setAreas] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
   const [editingArea, setEditingArea] = useState<Area | null>(null);
@@ -87,9 +89,20 @@ export function AreaListPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Áreas</h2>
         {isSuperAdmin && (
-          <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
-            <HiOutlinePlus className="h-4 w-4" /> Nueva área
-          </Link>
+          license.isBlocked ? (
+            <button
+              type="button"
+              disabled
+              title={license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida'}
+              className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm opacity-50 cursor-not-allowed"
+            >
+              <HiOutlinePlus className="h-4 w-4" /> Nueva área
+            </button>
+          ) : (
+            <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+              <HiOutlinePlus className="h-4 w-4" /> Nueva área
+            </Link>
+          )
         )}
       </div>
 
@@ -108,7 +121,7 @@ export function AreaListPage() {
           icon={<HiOutlineUserGroup className="h-12 w-12" />}
           title="No hay áreas registradas"
           description="Crea una nueva área para organizar tus tareas y equipos."
-          action={isSuperAdmin ? <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white hover:bg-cyber-radar-light"><HiOutlinePlus className="h-4 w-4" /> Nueva área</Link> : undefined}
+          action={isSuperAdmin && !license.isBlocked ? <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white hover:bg-cyber-radar-light"><HiOutlinePlus className="h-4 w-4" /> Nueva área</Link> : undefined}
         />
       ) : (
         <StaggerList className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
