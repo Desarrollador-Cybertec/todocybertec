@@ -1,17 +1,25 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { dashboardApi } from '../../api/dashboard';
+import { areasApi } from '../../api/areas';
 import type { ConsolidatedDashboard, ConsolidatedArea } from '../../types';
 import { TASK_STATUS_LABELS } from '../../types/enums';
 import { PageTransition, FadeIn, SkeletonStatCards, SkeletonTable, Badge, STATUS_BADGE_VARIANT } from '../../components/ui';
+import { AreaIconDisplay } from '../../utils/areaIcons';
 
 export function ConsolidatedPage() {
   const [data, setData] = useState<ConsolidatedDashboard | null>(null);
+  const [iconMap, setIconMap] = useState<Record<number, string | null>>({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    dashboardApi.consolidated()
-      .then((res) => setData(res as ConsolidatedDashboard))
+    Promise.all([dashboardApi.consolidated(), areasApi.listAll()])
+      .then(([consolidated, areas]) => {
+        setData(consolidated as ConsolidatedDashboard);
+        const map: Record<number, string | null> = {};
+        for (const a of areas) map[a.id] = a.icon_key;
+        setIconMap(map);
+      })
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
@@ -31,11 +39,11 @@ export function ConsolidatedPage() {
   const { summary } = data;
 
   const statCards = [
-    { label: 'Total', value: summary.total_tasks, bg: 'bg-slate-50 dark:bg-white/5', text: 'text-slate-900 dark:text-white' },
-    { label: 'Completadas', value: summary.total_completed, bg: 'bg-green-50 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-400' },
-    { label: 'Activas', value: summary.total_active, bg: 'bg-cyber-radar/10 dark:bg-cyber-radar/10', text: 'text-cyber-radar dark:text-cyber-radar-light' },
-    { label: 'Vencidas', value: summary.total_overdue, bg: 'bg-red-50 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-400' },
-    { label: 'Cumplimiento', value: `${summary.global_completion_rate}%`, bg: 'bg-amber-50 dark:bg-amber-900/30', text: 'text-amber-700 dark:text-amber-400' },
+    { label: 'Total tareas',  value: summary.total_tasks,              border: 'border-slate-400 dark:border-slate-500', bg: 'bg-white dark:bg-white/5',           text: 'text-slate-800 dark:text-white',          dot: 'bg-slate-400 dark:bg-slate-500' },
+    { label: 'Completadas',   value: summary.total_completed,          border: 'border-green-500',                         bg: 'bg-green-50 dark:bg-green-900/25',     text: 'text-green-700 dark:text-green-400',      dot: 'bg-green-500' },
+    { label: 'Activas',       value: summary.total_active,             border: 'border-cyber-radar',                       bg: 'bg-cyber-radar/5 dark:bg-cyber-radar/10', text: 'text-cyber-radar dark:text-cyber-radar-light', dot: 'bg-cyber-radar' },
+    { label: 'Vencidas',      value: summary.total_overdue,            border: 'border-red-500',                           bg: 'bg-red-50 dark:bg-red-900/25',         text: 'text-red-600 dark:text-red-400',          dot: 'bg-red-500' },
+    { label: 'Cumplimiento',  value: `${summary.global_completion_rate}%`, border: 'border-amber-500',                    bg: 'bg-amber-50 dark:bg-amber-900/25',     text: 'text-amber-700 dark:text-amber-400',      dot: 'bg-amber-500' },
   ];
 
   const areas = data.by_area ?? [];
@@ -44,17 +52,20 @@ export function ConsolidatedPage() {
     <PageTransition>
       <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Dashboard Consolidado</h2>
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
+      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((card, i) => (
           <motion.div
             key={card.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.06 }}
-            className={`rounded-sm ${card.bg} p-4 text-center ring-1 ring-inset ring-slate-900/5 dark:ring-slate-100/10`}
+            className={`flex items-center justify-between gap-3 rounded-sm border-l-4 ${card.border} ${card.bg} px-4 py-3.5 shadow-sm ring-1 ring-inset ring-slate-900/5 dark:ring-white/5`}
           >
-            <p className={`text-2xl font-bold ${card.text}`}>{card.value}</p>
-            <p className="mt-0.5 text-xs font-medium text-slate-500 dark:text-slate-400">{card.label}</p>
+            <div className="flex items-center gap-2 min-w-0">
+              <span className={`h-2 w-2 shrink-0 rounded-full ${card.dot}`} />
+              <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 truncate">{card.label}</p>
+            </div>
+            <p className={`text-xl font-black tabular-nums shrink-0 ${card.text}`}>{card.value}</p>
           </motion.div>
         ))}
       </div>
@@ -82,12 +93,12 @@ export function ConsolidatedPage() {
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2 + i * 0.05 }}
-                className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 shadow-sm transition-colors hover:border-slate-200"
+                className="rounded-sm border border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito p-5 shadow-sm transition-colors hover:border-slate-300 dark:hover:border-white/20"
               >
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-sm font-bold text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">
-                      {area.area_name.charAt(0)}
+                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-sm bg-cyber-navy/10 dark:bg-cyber-navy/30 text-cyber-navy dark:text-cyber-radar-light ring-1 ring-inset ring-cyber-navy/10 dark:ring-white/10">
+                      <AreaIconDisplay iconKey={iconMap[area.area_id] ?? null} className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="font-semibold text-slate-900 dark:text-white">{area.area_name}</p>
@@ -103,21 +114,21 @@ export function ConsolidatedPage() {
                 </div>
 
                 <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-4">
-                  <div className="rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2 text-center text-slate-700 dark:text-slate-300">
-                    <p className="text-lg font-bold text-slate-900 dark:text-white">{area.total}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Total</p>
+                  <div className="flex items-center justify-between gap-2 rounded-sm border-l-2 border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-white/5 px-3 py-2">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Total</p>
+                    <p className="text-base font-black text-slate-900 dark:text-white tabular-nums">{area.total}</p>
                   </div>
-                  <div className="rounded-sm bg-green-50/60 dark:bg-green-900/20 px-3 py-2 text-center">
-                    <p className="text-lg font-bold text-green-700 dark:text-green-400">{completedCount}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Completadas</p>
+                  <div className="flex items-center justify-between gap-2 rounded-sm border-l-2 border-green-500 bg-green-50 dark:bg-green-900/20 px-3 py-2">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Completadas</p>
+                    <p className="text-base font-black text-green-700 dark:text-green-400 tabular-nums">{completedCount}</p>
                   </div>
-                  <div className="rounded-sm bg-red-50/60 dark:bg-red-900/20 px-3 py-2 text-center">
-                    <p className={`text-lg font-bold ${area.overdue > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'}`}>{area.overdue}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Vencidas</p>
+                  <div className="flex items-center justify-between gap-2 rounded-sm border-l-2 border-red-500 bg-red-50 dark:bg-red-900/20 px-3 py-2">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Vencidas</p>
+                    <p className={`text-base font-black tabular-nums ${area.overdue > 0 ? 'text-red-600 dark:text-red-400' : 'text-slate-400 dark:text-slate-600'}`}>{area.overdue}</p>
                   </div>
-                  <div className="rounded-sm bg-amber-50/60 dark:bg-amber-900/20 px-3 py-2 text-center">
-                    <p className={`text-lg font-bold ${area.without_progress > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-500'}`}>{area.without_progress}</p>
-                    <p className="text-[11px] text-slate-500 dark:text-slate-400">Sin progreso</p>
+                  <div className="flex items-center justify-between gap-2 rounded-sm border-l-2 border-amber-500 bg-amber-50 dark:bg-amber-900/20 px-3 py-2">
+                    <p className="text-[11px] font-medium text-slate-500 dark:text-slate-400">Sin progreso</p>
+                    <p className={`text-base font-black tabular-nums ${area.without_progress > 0 ? 'text-amber-600 dark:text-amber-400' : 'text-slate-400 dark:text-slate-600'}`}>{area.without_progress}</p>
                   </div>
                 </div>
 

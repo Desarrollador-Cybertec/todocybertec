@@ -80,6 +80,7 @@ export interface ConsolidatedDashboard {
 export interface ConsolidatedArea {
   area_id: number;
   area_name: string;
+  icon_key: string | null;
   process_identifier: string | null;
   manager: string | null;
   total: number;

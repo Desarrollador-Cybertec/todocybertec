@@ -9,6 +9,7 @@ import { useAuth } from '../../context/useAuth';
 import { loginSchema, type LoginFormData } from '../../schemas';
 import { ApiError } from '../../api/client';
 import { Spinner } from '../../components/ui';
+import { CybertecLogo } from '../../components/ui/CybertecLogo';
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -76,9 +77,9 @@ export function LoginPage() {
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
-            className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-sm bg-cyber-navy shadow-lg shadow-cyber-navy/30"
+            className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-cyber-navy to-cyber-navy/80 shadow-xl shadow-cyber-navy/40 ring-1 ring-white/10"
           >
-            <img src="/isotipo.png" alt="S!NTyC" className="h-10 w-10" />
+            <CybertecLogo variant="isotipo" size="lg" />
           </motion.div>
           <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">S!NTyC</h1>
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema Integral de Tareas y Compromisos</p>
