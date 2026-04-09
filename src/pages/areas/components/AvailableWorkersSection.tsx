@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
 import { ApiError } from '../../../api/client';
 import type { User } from '../../../types';
@@ -86,7 +86,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
   return (
     <FadeIn delay={0.1}>
       <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
-        <HiOutlineUserAdd className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
+        <HiOutlineUserAdd className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" />
         Usuarios disponibles
         <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light">
           {workers.length}
@@ -100,7 +100,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
       )}
 
       <div className="relative mb-4">
-        <HiOutlineSearch className="absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+        <HiOutlineSearch className="absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
         <input
           type="text"
           value={search}
@@ -143,7 +143,7 @@ export function AvailableWorkersSection({ areaId, refreshKey, onClaimed }: Avail
                   {claimingId === worker.id ? (
                     <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
                   ) : (
-                    <HiOutlineUserAdd className="h-4 w-4" />
+                    <HiOutlineUserAdd className="h-5 w-5" />
                   )}
                   {claimingId === worker.id ? 'Reclamando...' : 'Reclamar'}
                 </button>

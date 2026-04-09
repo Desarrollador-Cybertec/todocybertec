@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion';
+﻿import { AnimatePresence, motion } from 'framer-motion';
 import type { UseFormRegister, UseFormSetValue } from 'react-hook-form';
 import { HiOutlineShieldCheck, HiOutlineBell } from 'react-icons/hi';
 import type { CreateTaskFormData } from '../../../schemas';
@@ -159,7 +159,7 @@ export function TaskCreateAdvanced({
         {/* requirements */}
         <FadeIn delay={0.15} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-            <HiOutlineShieldCheck className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" /> Requisitos
+            <HiOutlineShieldCheck className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" /> Requisitos
           </h3>
           <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">Configura qué necesita la tarea para completarse.</p>
           <div className="divide-y divide-slate-50 dark:divide-white/5">
@@ -177,7 +177,7 @@ export function TaskCreateAdvanced({
         {!isPersonalTask && (
         <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
-            <HiOutlineBell className="h-5 w-5 text-yellow-500 dark:text-yellow-400" /> Notificaciones
+            <HiOutlineBell className="h-6 w-6 text-yellow-500 dark:text-yellow-400" /> Notificaciones
           </h3>
           <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">Decide qué avisos quieres recibir.</p>
           <div className="divide-y divide-slate-50 dark:divide-white/5">

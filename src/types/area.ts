@@ -7,6 +7,7 @@ export interface Area {
   process_identifier: string | null;
   manager_user_id: number | null;
   active: boolean;
+  icon_key: string | null;
   manager: User | null;
   members?: AreaMember[];
   members_count?: number;
@@ -36,6 +37,7 @@ export interface CreateAreaRequest {
   description?: string;
   process_identifier?: string;
   manager_user_id?: number;
+  icon_key?: string;
 }
 
 export interface UpdateAreaRequest {
@@ -43,6 +45,7 @@ export interface UpdateAreaRequest {
   description?: string;
   process_identifier?: string;
   active?: boolean;
+  icon_key?: string;
 }
 
 export interface ClaimWorkerRequest {

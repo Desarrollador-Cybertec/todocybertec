@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
 import type { Area } from '../../types';
@@ -69,7 +69,7 @@ export function ClaimWorkersPage() {
       <div className="mb-6">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Mi equipo</h2>
         <div className="mt-2 flex items-center gap-2">
-          <HiOutlineUserGroup className="h-4 w-4 text-cyber-radar dark:text-cyber-radar-light" />
+          <HiOutlineUserGroup className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
           <span className="text-sm text-slate-600 dark:text-slate-400">
             Área: <span className="font-semibold text-slate-900 dark:text-white">{myArea.name}</span>
           </span>
@@ -80,7 +80,7 @@ export function ClaimWorkersPage() {
       </div>
 
       {/* Team members - endpoint: GET /areas/:id (members) */}
-      <TeamMembersSection areaId={myArea.id} refreshKey={refreshKey} />
+      <TeamMembersSection areaId={myArea.id} refreshKey={refreshKey} canRemove onMemberRemoved={handleClaimed} />
 
       {/* Divider */}
       <div className="mb-8 border-t border-slate-200 dark:border-white/10" />

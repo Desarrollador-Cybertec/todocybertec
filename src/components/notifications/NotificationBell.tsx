@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { HiOutlineBell } from 'react-icons/hi';
 import { useNotifications } from '../../context/useNotifications';
@@ -83,7 +83,7 @@ export function NotificationBell() {
         className="relative inline-flex items-center justify-center p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"
         title="Notificaciones"
       >
-        <HiOutlineBell className="h-6 w-6" />
+        <HiOutlineBell className="h-7 w-7" />
         {unreadCount > 0 && (
           <span className="absolute top-0 right-0 inline-flex items-center justify-center h-5 w-5 text-xs font-bold text-white bg-red-500 rounded-full">
             {unreadCount > 99 ? '99+' : unreadCount}

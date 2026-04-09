@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+﻿import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { tasksApi } from '../../api/tasks';
@@ -19,21 +19,7 @@ import { PageTransition, StaggerList, StaggerItem, FadeIn } from '../../componen
 import { SkeletonList, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT } from '../../components/ui';
 import { TaskStatusSelect } from '../../components/tasks/TaskStatusSelect';
 
-import { taskProgress } from '../../utils';
-
-function formatRelativeDate(dateStr: string | null): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = date.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  if (diffDays < 0) return `Hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}`;
-  if (diffDays === 0) return 'Hoy';
-  if (diffDays === 1) return 'Mañana';
-  const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  if (diffDays <= 6) return weekdays[date.getDay()];
-  return date.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
-}
+import { taskProgress, formatRelativeDate } from '../../utils';
 
 export function TaskListPage() {
   const { user } = useAuth();
@@ -135,7 +121,7 @@ export function TaskListPage() {
             to="/tasks/create"
             className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
-            <HiOutlinePlus className="h-4 w-4" />
+            <HiOutlinePlus className="h-5 w-5" />
             Nueva tarea
           </Link>
         )}
@@ -147,7 +133,7 @@ export function TaskListPage() {
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Search — full width on mobile, grows on desktop */}
           <div className="relative w-full sm:min-w-[160px] sm:flex-1">
-            <HiOutlineSearch className="absolute left-3 top-1/2 h-4.5 w-4.5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+            <HiOutlineSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
               value={search}
@@ -246,7 +232,7 @@ export function TaskListPage() {
                       to="/tasks/create"
                       className="mt-6 inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
                     >
-                      <HiOutlinePlus className="h-4 w-4" /> Crear primera tarea
+                      <HiOutlinePlus className="h-5 w-5" /> Crear primera tarea
                     </Link>
                   )}
                 </>
@@ -287,7 +273,7 @@ export function TaskListPage() {
                         </Link>
                         {task.is_overdue && (
                           <span className="flex shrink-0 items-center gap-0.5 rounded-md bg-red-50 dark:bg-red-900/30 px-1.5 py-0.5 text-[10px] font-semibold text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                            <HiOutlineExclamation className="h-3 w-3" /> Vencida
+                            <HiOutlineExclamation className="h-5 w-5" /> Vencida
                           </span>
                         )}
                       </div>
@@ -302,7 +288,7 @@ export function TaskListPage() {
                         )}
                         {task.due_date && (
                           <span className={`flex items-center gap-1 ${task.is_overdue ? 'font-medium text-red-600 dark:text-red-400' : ''}`}>
-                            <HiOutlineClock className="h-3.5 w-3.5" />
+                            <HiOutlineClock className="h-5 w-5" />
                             {formatRelativeDate(task.due_date)}
                           </span>
                         )}
@@ -354,7 +340,7 @@ export function TaskListPage() {
                         to={`/tasks/${task.id}`}
                         className="flex items-center gap-1.5 rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-all hover:border-cyber-radar/20 hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20 hover:text-cyber-radar"
                       >
-                        <HiOutlineEye className="h-3.5 w-3.5" />
+                        <HiOutlineEye className="h-5 w-5" />
                         Ver
                       </Link>
                       {canEdit && (
@@ -362,7 +348,7 @@ export function TaskListPage() {
                           to={`/tasks/${task.id}?edit=1`}
                           className="flex items-center gap-1.5 rounded-lg bg-cyber-radar px-3 py-1.5 text-xs font-medium text-white transition-all hover:bg-cyber-radar-light active:scale-[0.97]"
                         >
-                          <HiOutlinePencil className="h-3.5 w-3.5" />
+                          <HiOutlinePencil className="h-5 w-5" />
                           Editar
                         </Link>
                       )}

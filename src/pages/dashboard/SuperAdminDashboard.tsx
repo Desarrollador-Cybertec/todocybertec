@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+﻿import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { dashboardApi } from '../../api/dashboard';
 import { useAuth } from '../../context/useAuth';
@@ -6,7 +6,6 @@ import {  TASK_STATUS_LABELS, TASK_PRIORITY_LABELS } from '../../types/enums';
 import type { GeneralDashboard, MyTask, PendingByUser } from '../../types';
 import {
   HiOutlineClipboardList,
-  HiOutlineExclamation,
   HiOutlineCheckCircle,
   HiOutlineTrendingUp,
   HiOutlineChevronRight,
@@ -15,23 +14,11 @@ import {
   HiOutlineOfficeBuilding,
   HiOutlinePlusCircle,
   HiOutlineClock,
+  HiOutlineEye,
 } from 'react-icons/hi';
 import { FadeIn, SkeletonDashboard, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT } from '../../components/ui';
 import { NotificationBell } from '../../components/notifications';
-
-function formatRelativeDate(dateStr: string | null): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = date.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  if (diffDays < 0) return `Hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}`;
-  if (diffDays === 0) return 'Hoy';
-  if (diffDays === 1) return 'Mañana';
-  const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  if (diffDays <= 6) return weekdays[date.getDay()];
-  return date.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
-}
+import { formatRelativeDate } from '../../utils';
 
 const TIPS = [
   { icon: '📊', text: 'Revisa el consolidado para un panorama completo de todas las áreas.' },
@@ -84,14 +71,14 @@ export function SuperAdminDashboard() {
             to="/tasks/create"
             className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
-            <HiOutlinePlusCircle className="h-4 w-4" />
+            <HiOutlinePlusCircle className="h-5 w-5" />
             Nueva tarea
           </Link>
           <Link
             to="/consolidated"
             className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
           >
-            <HiOutlineTrendingUp className="h-4 w-4" />
+            <HiOutlineTrendingUp className="h-5 w-5" />
             Consolidado
           </Link>
           <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
@@ -105,10 +92,10 @@ export function SuperAdminDashboard() {
         <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
           <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen general</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-            <MiniStat label="Vencidas" value={data.overdue_tasks} icon={<HiOutlineExclamation className="h-4.5 w-4.5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
-            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-4.5 w-4.5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
-            <MiniStat label="Por vencer" value={data.due_soon} icon={<HiOutlineClock className="h-4.5 w-4.5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} />
+            <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+            <MiniStat label="Por revisar" value={(data.tasks_by_status as Record<string, number>)['in_review'] ?? 0} icon={<HiOutlineEye className="h-5 w-5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
+            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+            <MiniStat label="Por vencer" value={data.due_soon} icon={<HiOutlineClock className="h-5 w-5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} />
           </div>
 
           {/* progress bar for completion rate */}
@@ -127,22 +114,22 @@ export function SuperAdminDashboard() {
 
           {/* extra metrics row */}
           <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
-            <div className="overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-2 py-2.5 text-center text-slate-700 dark:text-slate-300 sm:px-3">
-              <p className="text-lg font-bold text-slate-900 dark:text-white">{data.total_all}</p>
+            <div className="flex items-center justify-between overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-slate-700 dark:text-slate-300">
               <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Total históricas</p>
+              <p className="ml-2 shrink-0 text-lg font-bold text-slate-900 dark:text-white">{data.total_all}</p>
             </div>
-            <div className="overflow-hidden rounded-sm bg-cyber-radar/10 dark:bg-cyber-radar/10 px-2 py-2.5 text-center sm:px-3">
-              <p className="text-lg font-bold text-cyber-radar dark:text-cyber-radar-light">{data.global_progress}%</p>
+            <div className="flex items-center justify-between overflow-hidden rounded-sm bg-cyber-radar/10 dark:bg-cyber-radar/10 px-3 py-2.5">
               <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Progreso global</p>
+              <p className="ml-2 shrink-0 text-lg font-bold text-cyber-radar dark:text-cyber-radar-light">{data.global_progress}%</p>
             </div>
-            <div className="overflow-hidden rounded-sm bg-green-50 dark:bg-green-900/30 px-2 py-2.5 text-center sm:px-3">
-              <p className="text-lg font-bold text-green-700 dark:text-green-400">{data.completed_this_month}</p>
+            <div className="flex items-center justify-between overflow-hidden rounded-sm bg-green-50 dark:bg-green-900/30 px-3 py-2.5">
               <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Completadas (mes)</p>
+              <p className="ml-2 shrink-0 text-lg font-bold text-green-700 dark:text-green-400">{data.completed_this_month}</p>
             </div>
             {data.total_cancelled != null && (
-              <div className="overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-2 py-2.5 text-center text-slate-700 dark:text-slate-300 sm:px-3">
-                <p className="text-lg font-bold text-slate-500 dark:text-slate-400">{data.total_cancelled}</p>
+              <div className="flex items-center justify-between overflow-hidden rounded-sm bg-slate-50 dark:bg-white/5 px-3 py-2.5 text-slate-700 dark:text-slate-300">
                 <p className="truncate text-[11px] sm:text-xs text-slate-500 dark:text-slate-400">Canceladas</p>
+                <p className="ml-2 shrink-0 text-lg font-bold text-slate-500 dark:text-slate-400">{data.total_cancelled}</p>
               </div>
             )}
           </div>
@@ -191,7 +178,7 @@ export function SuperAdminDashboard() {
         <FadeIn delay={0.15} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
           <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <div className="flex items-center gap-2">
-              <HiOutlineUserGroup className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
+              <HiOutlineUserGroup className="h-6 w-6 text-cyber-navy dark:text-cyber-radar-light" />
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">Carga por usuario</h3>
                 <p className="text-xs text-slate-400 dark:text-slate-500">Usuarios con más tareas pendientes.</p>
@@ -237,7 +224,7 @@ export function SuperAdminDashboard() {
           {/* Tareas por área */}
           <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
             <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-5 py-4">
-              <HiOutlineOfficeBuilding className="h-4.5 w-4.5 text-cyber-radar dark:text-cyber-radar-light" />
+              <HiOutlineOfficeBuilding className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
               <h3 className="font-semibold text-slate-900 dark:text-white">Por área</h3>
             </div>
             <div className="divide-y divide-slate-50 dark:divide-white/5 px-5">
@@ -251,7 +238,7 @@ export function SuperAdminDashboard() {
                       <span className="rounded-full bg-slate-100 dark:bg-white/10 px-2.5 py-0.5 text-xs font-semibold text-slate-700 dark:text-slate-300 group-hover:bg-cyber-radar/10 dark:group-hover:bg-cyber-radar/10 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light">
                         {a.total}
                       </span>
-                      <HiOutlineChevronRight className="h-3.5 w-3.5 text-slate-300 dark:text-slate-500 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
+                      <HiOutlineChevronRight className="h-5 w-5 text-slate-300 dark:text-slate-500 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
                     </div>
                   </Link>
                 ))
@@ -263,7 +250,7 @@ export function SuperAdminDashboard() {
           <FadeIn delay={0.25} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-5 py-4">
               <div className="flex items-center gap-2">
-                <HiOutlineClipboardList className="h-4.5 w-4.5 text-cyber-radar dark:text-cyber-radar-light" />
+                <HiOutlineClipboardList className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
                 <h3 className="font-semibold text-slate-900 dark:text-white">Mis tareas</h3>
               </div>
               <Link to="/tasks" className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white">
@@ -287,7 +274,7 @@ export function SuperAdminDashboard() {
           {/* Tips */}
           <FadeIn delay={0.3} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-              <HiOutlineLightBulb className="h-4.5 w-4.5 text-amber-500 dark:text-amber-400" />
+              <HiOutlineLightBulb className="h-5 w-5 text-amber-500 dark:text-amber-400" />
               Consejos de gestión
             </h3>
             <div className="space-y-2">
@@ -347,11 +334,13 @@ function MyTaskRow({ task }: { task: MyTask }) {
 function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
   return (
     <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-      <div className="flex items-center gap-2">
-        <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+        </div>
+        <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
       </div>
-      <p className={`mt-1.5 text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
     </div>
   );
 }

@@ -67,6 +67,9 @@ export const areasApi = {
   claimWorker: (data: ClaimWorkerRequest) =>
     apiClient.post<ClaimWorkerResponse>('/areas/claim-worker', data),
 
+  removeMember: (areaId: number, userId: number) =>
+    apiClient.delete<ApiMessageResponse>(`/areas/${areaId}/members/${userId}`),
+
   delete: (id: number) =>
     apiClient.delete<ApiMessageResponse>(`/areas/${id}`),
 };

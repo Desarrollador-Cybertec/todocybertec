@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useAuth } from '../../context/useAuth';
@@ -82,13 +82,13 @@ export function ProfilePage() {
         <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           {serverError && (
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+              <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
               {serverError}
             </div>
           )}
           {success && (
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" />
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" />
               {success}
             </div>
           )}
@@ -96,7 +96,7 @@ export function ProfilePage() {
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
               <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                <HiOutlineUser className="mb-0.5 mr-1 inline h-4 w-4 text-slate-400 dark:text-slate-500" />
+                <HiOutlineUser className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                 Nombre
               </label>
               <input
@@ -111,7 +111,7 @@ export function ProfilePage() {
               <div className="space-y-3">
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-4 w-4 text-slate-400 dark:text-slate-500" />
+                    <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                     Nueva contraseña
                   </label>
                   <input
@@ -124,7 +124,7 @@ export function ProfilePage() {
                 </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                    <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-4 w-4 text-slate-400 dark:text-slate-500" />
+                    <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                     Confirmar contraseña
                   </label>
                   <input

@@ -1,13 +1,16 @@
-import { useEffect, useState, useCallback, useRef } from 'react';
+﻿import { useEffect, useState, useCallback, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import { settingsApi, automationApi, importApi } from '../../api/settings';
+import { settingsApi } from '../../api/settings';
 import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
 import type { SystemSetting, MessageTemplate, RoleInfo } from '../../types';
 import { HiOutlineCog, HiOutlineMail, HiOutlineLightningBolt, HiOutlineUpload, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlineUsers } from 'react-icons/hi';
-import { PageTransition, FadeIn, SlideDown, SkeletonCard, Badge, Spinner } from '../../components/ui';
+import { PageTransition, SlideDown, SkeletonCard } from '../../components/ui';
 import { SettingsTab } from './components/SettingsTab';
 import { TemplatesTab } from './components/TemplatesTab';
+import { RolesTab } from './components/RolesTab';
+import { AutomationTab } from './components/AutomationTab';
+import { ImportTab } from './components/ImportTab';
 
 export function SettingsPage() {
   const [settings, setSettings] = useState<SystemSetting[]>([]);
@@ -207,31 +210,6 @@ export function SettingsPage() {
     }
   };
 
-  const MAX_IMPORT_SIZE = 5 * 1024 * 1024; // 5 MB
-  const [importFile, setImportFile] = useState<File | null>(null);
-  const [importFileError, setImportFileError] = useState('');
-
-  const handleImportFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0] ?? null;
-    if (file) {
-      const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
-      if (ext !== 'csv') { setImportFileError('Solo se permiten archivos .csv'); setImportFile(null); return; }
-      if (file.size > MAX_IMPORT_SIZE) { setImportFileError(`El archivo excede el límite de ${MAX_IMPORT_SIZE / 1024 / 1024} MB.`); setImportFile(null); return; }
-    }
-    setImportFileError('');
-    setImportFile(file);
-  };
-
-  const handleImport = async () => {
-    if (!importFile) return;
-    try {
-      await importApi.importTasks(importFile);
-      showMessage('Importación completada exitosamente');
-      setImportFile(null);
-    } catch (err) {
-      showError(err instanceof ApiError ? err.data.message : 'Error en la importación');
-    }
-  };
 
   const [togglingRoleId, setTogglingRoleId] = useState<number | null>(null);
 
@@ -251,11 +229,11 @@ export function SettingsPage() {
   };
 
   const tabs = [
-    { key: 'settings' as const, label: 'Configuración', icon: <HiOutlineCog className="h-4 w-4" /> },
-    { key: 'templates' as const, label: 'Plantillas', icon: <HiOutlineMail className="h-4 w-4" /> },
-    { key: 'roles' as const, label: 'Roles', icon: <HiOutlineUsers className="h-4 w-4" /> },
-    { key: 'automation' as const, label: 'Automatización', icon: <HiOutlineLightningBolt className="h-4 w-4" /> },
-    { key: 'import' as const, label: 'Importar', icon: <HiOutlineUpload className="h-4 w-4" /> },
+    { key: 'settings' as const, label: 'Configuración', icon: <HiOutlineCog className="h-5 w-5" /> },
+    { key: 'templates' as const, label: 'Plantillas', icon: <HiOutlineMail className="h-5 w-5" /> },
+    { key: 'roles' as const, label: 'Roles', icon: <HiOutlineUsers className="h-5 w-5" /> },
+    { key: 'automation' as const, label: 'Automatización', icon: <HiOutlineLightningBolt className="h-5 w-5" /> },
+    { key: 'import' as const, label: 'Importar', icon: <HiOutlineUpload className="h-5 w-5" /> },
   ];
 
   return (
@@ -306,14 +284,14 @@ export function SettingsPage() {
         {message && (
           <SlideDown>
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {message}
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" /> {message}
             </div>
           </SlideDown>
         )}
         {error && (
           <SlideDown>
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {error}
+              <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" /> {error}
             </div>
           </SlideDown>
         )}
@@ -387,123 +365,19 @@ export function SettingsPage() {
             )}
 
             {activeTab === 'roles' && (
-              <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
-                <h3 className="mb-1 text-lg font-semibold text-slate-900 dark:text-white">Gestión de Roles</h3>
-                <p className="mb-4 text-sm text-slate-500 dark:text-slate-400">
-                  Activa o desactiva los roles configurables del sistema. Los roles no configurables no pueden modificarse.
-                </p>
-
-                <div className="space-y-2">
-                  {roles.map((role) => (
-                    <div
-                      key={role.id}
-                      className={`flex items-center justify-between rounded-sm border px-4 py-3 transition-colors ${
-                        role.is_active
-                          ? 'border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito'
-                          : 'border-slate-100 dark:border-white/5 bg-slate-50 dark:bg-white/5'
-                      }`}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 items-center justify-center rounded-sm bg-slate-100 dark:bg-white/10">
-                          <HiOutlineUsers className="h-4 w-4 text-slate-500 dark:text-slate-400" />
-                        </div>
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className={`text-sm font-medium ${role.is_active ? 'text-slate-900 dark:text-white' : 'text-slate-400 dark:text-slate-500'}`}>
-                              {role.name}
-                            </p>
-                            <Badge variant={role.is_active ? 'green' : 'red'} size="sm">
-                              {role.is_active ? 'Activo' : 'Inactivo'}
-                            </Badge>
-                            {!role.is_configurable && (
-                              <span className="text-[10px] font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">
-                                No configurable
-                              </span>
-                            )}
-                          </div>
-                          <p className="text-xs text-slate-400 dark:text-slate-500">
-                            {role.slug} · {role.users_count} usuario{role.users_count !== 1 ? 's' : ''}
-                          </p>
-                        </div>
-                      </div>
-
-                      {role.is_configurable && (
-                        <button
-                          type="button"
-                          onClick={() => handleToggleRole(role)}
-                          disabled={togglingRoleId === role.id}
-                          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none disabled:opacity-50 ${
-                            role.is_active ? 'bg-green-500' : 'bg-slate-300 dark:bg-white/10'
-                          }`}
-                        >
-                          {togglingRoleId === role.id ? (
-                            <span className="absolute inset-0 flex items-center justify-center">
-                              <Spinner size="sm" />
-                            </span>
-                          ) : (
-                            <span
-                              className={`inline-block h-4 w-4 transform rounded-full bg-white dark:bg-cyber-grafito shadow transition-transform ${
-                                role.is_active ? 'translate-x-6' : 'translate-x-1'
-                              }`}
-                            />
-                          )}
-                        </button>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </FadeIn>
+              <RolesTab
+                roles={roles}
+                togglingRoleId={togglingRoleId}
+                onToggleRole={handleToggleRole}
+              />
             )}
 
             {activeTab === 'automation' && (
-              <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
-                <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Ejecutar procesos manualmente</h3>
-                <div className="grid gap-3 sm:grid-cols-2">
-                  {[
-                    { name: 'Detección de vencidas', fn: automationApi.detectOverdue, desc: 'Marca como vencidas las tareas pasadas de fecha', icon: '⏰' },
-                    { name: 'Resumen diario', fn: automationApi.sendDailySummary, desc: 'Genera resúmenes consolidados por responsable', icon: '📊' },
-                    { name: 'Recordatorios', fn: automationApi.sendDueReminders, desc: 'Envía recordatorios de tareas próximas a vencer', icon: '🔔' },
-                    { name: 'Detección de inactividad', fn: automationApi.detectInactive, desc: 'Detecta tareas sin avance y envía alertas', icon: '⚠️' },
-                  ].map((item) => (
-                    <button
-                      key={item.name}
-                      type="button"
-                      onClick={() => runAutomation(item.name, item.fn)}
-                      className="rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-200 dark:border-white/5 px-4 py-4 text-left text-sm transition-all hover:border-cyber-radar/10 dark:hover:border-cyber-radar/20 hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20 active:scale-[0.98]"
-                    >
-                      <p className="flex items-center gap-2 font-medium text-slate-900 dark:text-white"><span>{item.icon}</span> {item.name}</p>
-                      <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{item.desc}</p>
-                    </button>
-                  ))}
-                </div>
-              </FadeIn>
+              <AutomationTab onRunAutomation={runAutomation} />
             )}
 
             {activeTab === 'import' && (
-              <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
-                <h3 className="mb-4 text-lg font-semibold text-slate-900 dark:text-white">Importar tareas desde CSV</h3>
-                <p className="mb-4 text-sm text-slate-600 dark:text-slate-400">
-                  Sube un archivo CSV con columnas: titulo, descripcion, responsable_email, area, prioridad, estado, fecha_inicio, fecha_limite.
-                </p>
-                <div className="space-y-3">
-                  <input
-                    type="file"
-                    accept=".csv"
-                    onChange={handleImportFileChange}
-                    className="w-full text-sm text-slate-600 dark:text-slate-400 file:mr-3 file:rounded-lg file:border-0 file:bg-cyber-radar/5 file:px-4 file:py-2 file:text-sm file:font-medium file:text-cyber-radar hover:file:bg-cyber-radar/10"
-                  />
-                  {importFileError && <p className="text-sm text-red-500 dark:text-red-400">{importFileError}</p>}
-                  <p className="text-xs text-slate-400 dark:text-slate-500">Máx. 5 MB. Solo archivos .csv</p>
-                  <button
-                    type="button"
-                    onClick={handleImport}
-                    disabled={!importFile}
-                    className="rounded-sm bg-cyber-radar px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50"
-                  >
-                    Importar
-                  </button>
-                </div>
-              </FadeIn>
+              <ImportTab onSuccess={showMessage} onError={showError} />
             )}
           </motion.div>
         </AnimatePresence>

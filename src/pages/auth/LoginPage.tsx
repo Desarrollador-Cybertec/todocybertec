@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -97,7 +97,7 @@ export function LoginPage() {
                 className="mb-4 overflow-hidden"
               >
                 <div className="flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                  <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                  <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                   {serverError}
                 </div>
               </motion.div>
@@ -110,7 +110,7 @@ export function LoginPage() {
                 className="mb-4 overflow-hidden"
               >
                 <div className="flex items-center gap-2 rounded-sm bg-orange-50 dark:bg-orange-900/30 p-3 text-sm text-orange-700 dark:text-orange-400 ring-1 ring-inset ring-orange-200 dark:ring-orange-800">
-                  <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                  <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                   {licenseError}
                 </div>
               </motion.div>
@@ -123,7 +123,7 @@ export function LoginPage() {
                 Correo electrónico
               </label>
               <div className="relative">
-                <HiOutlineMail className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <HiOutlineMail className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   id="email"
                   type="email"
@@ -143,7 +143,7 @@ export function LoginPage() {
                 Contraseña
               </label>
               <div className="relative">
-                <HiOutlineLockClosed className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <HiOutlineLockClosed className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   id="password"
                   type="password"

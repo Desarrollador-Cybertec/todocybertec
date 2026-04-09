@@ -81,7 +81,8 @@ export function ApproveFormPanel({
       <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
         <h3 className="mb-3 font-semibold text-slate-900 dark:text-white">Aprobar tarea</h3>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
-          <textarea {...form.register('note')} rows={3} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" placeholder="Nota de aprobación (opcional)..." />
+          <textarea {...form.register('note')} rows={3} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" placeholder="Nota de aprobación (obligatoria)..." />
+          {form.formState.errors.note && <p className="text-sm text-red-500 dark:text-red-400">{form.formState.errors.note.message}</p>}
           <div className="flex gap-2">
             <button type="submit" disabled={form.formState.isSubmitting} className="rounded-sm bg-green-600 px-4 py-2 text-sm font-medium text-white hover:bg-green-700 disabled:opacity-50">Aprobar</button>
             <button type="button" onClick={onClose} className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5">Cancelar</button>

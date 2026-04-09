@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
 import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
@@ -27,7 +27,7 @@ export function AreaDetailPage() {
     <PageTransition>
       <div className="mx-auto max-w-4xl">
         <button type="button" onClick={() => navigate('/areas')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
-          <HiOutlineArrowLeft className="h-4 w-4" /> Volver a áreas
+          <HiOutlineArrowLeft className="h-5 w-5" /> Volver a áreas
         </button>
 
         {/* Area info - endpoint: GET /areas/:id + GET /users */}
@@ -46,7 +46,7 @@ export function AreaDetailPage() {
 
         {/* Team members - endpoint: GET /areas/:id/members */}
         {(isManager || isSuperAdmin) && (
-          <TeamMembersSection areaId={areaId} refreshKey={refreshKey} />
+          <TeamMembersSection areaId={areaId} refreshKey={refreshKey} canRemove onMemberRemoved={handleRefresh} />
         )}
       </div>
     </PageTransition>

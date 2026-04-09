@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { meetingsApi } from '../../api/meetings';
 import { MEETING_CLASSIFICATION_LABELS, TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, ADMIN_ROLES } from '../../types/enums';
@@ -9,6 +9,7 @@ import { HiOutlineArrowLeft, HiOutlineCalendar, HiOutlineChevronRight, HiOutline
 import { PageTransition, FadeIn, StaggerList, StaggerItem, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT, SkeletonDetail, Spinner } from '../../components/ui';
 import { ConfirmModal } from '../../components/ui/ConfirmModal';
 import { MeetingTasksSection } from './components/MeetingTasksSection';
+import { formatDate, formatDateTime } from '../../utils';
 
 const CLASSIFICATION_VARIANT: Record<string, 'purple' | 'blue' | 'green' | 'amber'> = {
   operational: 'blue',
@@ -108,7 +109,7 @@ export function MeetingDetailPage() {
     <PageTransition>
       <div className="mx-auto max-w-4xl">
         <button type="button" onClick={() => navigate('/meetings')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
-          <HiOutlineArrowLeft className="h-4 w-4" /> Volver a reuniones
+          <HiOutlineArrowLeft className="h-5 w-5" /> Volver a reuniones
         </button>
 
         <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
@@ -142,10 +143,10 @@ export function MeetingDetailPage() {
               </div>
               <div className="flex justify-end gap-2 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
                 <button type="button" onClick={cancelEditing} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                  <HiOutlineX className="h-4 w-4" /> Cancelar
+                  <HiOutlineX className="h-5 w-5" /> Cancelar
                 </button>
                 <button type="button" onClick={saveEdit} disabled={editSaving || !editTitle.trim()} className="inline-flex items-center gap-1.5 rounded-sm bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-700 disabled:opacity-50">
-                  {editSaving ? <Spinner size="sm" /> : <HiOutlineCheck className="h-4 w-4" />}
+                  {editSaving ? <Spinner size="sm" /> : <HiOutlineCheck className="h-5 w-5" />}
                   {editSaving ? 'Guardando...' : 'Guardar'}
                 </button>
               </div>
@@ -157,7 +158,7 @@ export function MeetingDetailPage() {
             <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{meeting.title}</h2>
             {meeting.is_closed && (
               <Badge variant="red" size="md">
-                <HiOutlineLockClosed className="mr-1 inline h-3.5 w-3.5" />
+                <HiOutlineLockClosed className="mr-1 inline h-5 w-5" />
                 Cerrada
               </Badge>
             )}
@@ -165,12 +166,12 @@ export function MeetingDetailPage() {
           <div className="flex items-center gap-2">
             {canClose && (
               <button type="button" onClick={() => setShowCloseConfirm(true)} className="inline-flex items-center gap-1.5 rounded-sm border border-red-200 dark:border-red-800 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 transition-all hover:bg-red-50 dark:hover:bg-red-900/30 active:scale-[0.98]">
-                <HiOutlineLockClosed className="h-4 w-4" /> Cerrar reunión
+                <HiOutlineLockClosed className="h-5 w-5" /> Cerrar reunión
               </button>
             )}
             {canEdit && (
               <button type="button" onClick={startEditing} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
-                <HiOutlinePencil className="h-4 w-4" /> Editar
+                <HiOutlinePencil className="h-5 w-5" /> Editar
               </button>
             )}
           </div>
@@ -179,8 +180,8 @@ export function MeetingDetailPage() {
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Fecha</p>
               <p className="mt-1 flex items-center gap-1.5 text-sm text-slate-900 dark:text-white">
-                <HiOutlineCalendar className="h-4 w-4 text-slate-400 dark:text-slate-500" />
-                {new Date(meeting.meeting_date).toLocaleDateString('es-PE')}
+                <HiOutlineCalendar className="h-5 w-5 text-slate-400 dark:text-slate-500" />
+                {formatDate(meeting.meeting_date)}
               </p>
             </div>
             <div>
@@ -208,7 +209,7 @@ export function MeetingDetailPage() {
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Cerrada el</p>
                 <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                  {new Date(meeting.closed_at).toLocaleDateString('es-PE', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
+                  {formatDateTime(meeting.closed_at)}
                 </p>
               </div>
             )}
@@ -240,13 +241,13 @@ export function MeetingDetailPage() {
                         <Badge variant={PRIORITY_BADGE_VARIANT[task.priority]} size="sm">{TASK_PRIORITY_LABELS[task.priority]}</Badge>
                         {task.current_responsible && (
                           <span className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
-                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-[9px] font-medium text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">{task.current_responsible.name.charAt(0)}</span>
+                            <span className="flex h-4 w-4 items-center justify-center rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-[9px] font-medium text-cyber-navy dark:text-cyber-radar-light">{task.current_responsible.name.charAt(0)}</span>
                             {task.current_responsible.name}
                           </span>
                         )}
                       </div>
                     </div>
-                    <HiOutlineChevronRight className="h-4 w-4 text-slate-300 dark:text-slate-500 transition-colors group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
+                    <HiOutlineChevronRight className="h-5 w-5 text-slate-300 dark:text-slate-500 transition-colors group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
                   </Link>
                 </StaggerItem>
               ))}

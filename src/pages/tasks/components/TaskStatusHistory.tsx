@@ -8,6 +8,7 @@ interface StatusEntry {
   from_status: TaskStatusType | null;
   to_status: TaskStatusType;
   note?: string | null;
+  changed_by?: { name?: string } | number | null;
   user_id?: number | null;
   created_at: string;
   user?: { name?: string } | null;
@@ -44,7 +45,7 @@ export function TaskStatusHistory({
                 ) : null}
                 <Badge variant={STATUS_BADGE_VARIANT[h.to_status]} size="sm">{TASK_STATUS_LABELS[h.to_status]}</Badge>
               </p>
-              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{h.user?.name ?? 'Sistema'} · {formatDateTime(h.created_at)}</p>
+              <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">{(typeof h.changed_by === 'object' && h.changed_by?.name) ? h.changed_by.name : h.user?.name ?? 'Sistema'} · {formatDateTime(h.created_at)}</p>
               {h.note && <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">{h.note}</p>}
             </div>
           </div>

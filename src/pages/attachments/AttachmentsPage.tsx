@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import {
   HiOutlinePaperClip,
@@ -18,7 +18,8 @@ import type { Area } from '../../types/area';
 import { PageTransition, FadeIn, Badge } from '../../components/ui';
 import { SkeletonList } from '../../components/ui';
 import { ConfirmModal } from '../../components/ui/ConfirmModal';
-import { AttachmentPreviewModal } from '../tasks/components/TaskAttachmentsV2';
+import { AttachmentPreviewModal } from '../tasks/components/AttachmentPreview';
+import { formatDate } from '../../utils';
 
 /* ── Helpers ── */
 
@@ -32,10 +33,6 @@ function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
   return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
-}
-
-function formatDate(dateStr: string): string {
-  return new Date(dateStr).toLocaleDateString('es-PE', { day: 'numeric', month: 'short', year: 'numeric' });
 }
 
 /* ── Main Page ── */
@@ -148,13 +145,13 @@ export function AttachmentsPage() {
             {/* Toolbar */}
             <div className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 dark:border-white/5 px-6 py-4">
               <div className="flex items-center gap-2">
-                <HiOutlinePaperClip className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
+                <HiOutlinePaperClip className="h-6 w-6 text-cyber-navy dark:text-cyber-radar-light" />
                 <h3 className="font-semibold text-slate-900 dark:text-white">
                   {total} archivo{total !== 1 ? 's' : ''}
                 </h3>
               </div>
               <div className="relative">
-                <HiOutlineSearch className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
+                <HiOutlineSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                 <input
                   type="text"
                   value={search}
@@ -193,9 +190,9 @@ export function AttachmentsPage() {
                           <div className="flex items-center gap-3">
                             <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-slate-50 dark:bg-white/5">
                               {isImage(a.extension) ? (
-                                <HiOutlinePhotograph className="h-4 w-4 text-cyber-navy dark:text-cyber-radar-light" />
+                                <HiOutlinePhotograph className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
                               ) : (
-                                <HiOutlineDocumentText className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                                <HiOutlineDocumentText className="h-5 w-5 text-slate-400 dark:text-slate-500" />
                               )}
                             </div>
                             <div className="min-w-0">
@@ -237,7 +234,7 @@ export function AttachmentsPage() {
                                   className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
                                   title="Ver"
                                 >
-                                  <HiOutlineEye className="h-4 w-4" />
+                                  <HiOutlineEye className="h-5 w-5" />
                                 </button>
                                 <button
                                   type="button"
@@ -245,7 +242,7 @@ export function AttachmentsPage() {
                                   className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-green-600 dark:hover:text-green-400"
                                   title="Descargar"
                                 >
-                                  <HiOutlineDownload className="h-4 w-4" />
+                                  <HiOutlineDownload className="h-5 w-5" />
                                 </button>
                               </>
                             )}
@@ -255,7 +252,7 @@ export function AttachmentsPage() {
                               className="rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-red-600 dark:hover:text-red-400"
                               title="Eliminar"
                             >
-                              <HiOutlineTrash className="h-4 w-4" />
+                              <HiOutlineTrash className="h-5 w-5" />
                             </button>
                           </div>
                         </td>
@@ -279,7 +276,7 @@ export function AttachmentsPage() {
                     disabled={page <= 1}
                     className="rounded-lg border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-white/5"
                   >
-                    <HiOutlineChevronLeft className="h-4 w-4" />
+                    <HiOutlineChevronLeft className="h-5 w-5" />
                   </button>
                   <button
                     type="button"
@@ -287,7 +284,7 @@ export function AttachmentsPage() {
                     disabled={page >= lastPage}
                     className="rounded-lg border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 disabled:opacity-30 hover:bg-slate-50 dark:hover:bg-white/5"
                   >
-                    <HiOutlineChevronRight className="h-4 w-4" />
+                    <HiOutlineChevronRight className="h-5 w-5" />
                   </button>
                 </div>
               </div>

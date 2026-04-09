@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion';
+﻿import { motion } from 'framer-motion';
 import { HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
 import { TASK_PRIORITY_LABELS } from '../../../types/enums';
 import type { TaskPriorityType } from '../../../types/enums';
@@ -181,7 +181,7 @@ export function MeetingDraftTaskForm({
             onClick={onCancel}
             className="inline-flex items-center gap-1 rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-1.5 text-sm font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
           >
-            <HiOutlineX className="h-4 w-4" /> Cancelar
+            <HiOutlineX className="h-5 w-5" /> Cancelar
           </button>
           <button
             type="button"
@@ -189,7 +189,7 @@ export function MeetingDraftTaskForm({
             disabled={!form.title.trim()}
             className="inline-flex items-center gap-1 rounded-lg bg-cyber-radar px-4 py-1.5 text-sm font-medium text-white transition-colors hover:bg-cyber-radar-light disabled:opacity-50"
           >
-            <HiOutlineCheck className="h-4 w-4" />
+            <HiOutlineCheck className="h-5 w-5" />
             {isEditing ? 'Guardar cambios' : 'Agregar'}
           </button>
         </div>

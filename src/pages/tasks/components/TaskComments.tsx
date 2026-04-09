@@ -1,7 +1,10 @@
-import { HiOutlineChatAlt } from 'react-icons/hi';
+﻿import { useState } from 'react';
+import { HiOutlineChatAlt, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { FadeIn, StaggerList, StaggerItem } from '../../../components/ui';
 import { formatDateTime } from '../../../utils';
 import { CommentType } from '../../../types/enums';
+
+const PAGE_SIZE = 5;
 
 interface Comment {
   id: number;
@@ -32,16 +35,26 @@ const COMMENT_TYPE_BADGE: Record<string, { label: string; className: string }> =
 };
 
 export function TaskComments({ comments }: { comments: Comment[] }) {
+  const [page, setPage] = useState(1);
+
   if (comments.length === 0) return null;
+
+  // Most recent first
+  const sorted = [...comments].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
+
+  const lastPage = Math.max(1, Math.ceil(sorted.length / PAGE_SIZE));
+  const pageComments = sorted.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE);
 
   return (
     <FadeIn delay={0.1} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
       <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-        <HiOutlineChatAlt className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" /> Comentarios
+        <HiOutlineChatAlt className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" /> Comentarios
         <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light">{comments.length}</span>
       </h3>
       <StaggerList className="space-y-3">
-        {comments.map((c) => {
+        {pageComments.map((c) => {
           const badge = c.type ? COMMENT_TYPE_BADGE[c.type] : undefined;
           const badgeLabel = c.type_label ?? badge?.label;
           return (
@@ -65,6 +78,32 @@ export function TaskComments({ comments }: { comments: Comment[] }) {
           );
         })}
       </StaggerList>
+
+      {lastPage > 1 && (
+        <div className="mt-4 flex items-center justify-between border-t border-slate-100 dark:border-white/5 pt-4">
+          <span className="text-xs text-slate-400 dark:text-slate-500">
+            Página {page} de {lastPage}
+          </span>
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.max(1, p - 1))}
+              disabled={page === 1}
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              <HiOutlineChevronLeft className="h-5 w-5" /> Anterior
+            </button>
+            <button
+              type="button"
+              onClick={() => setPage((p) => Math.min(lastPage, p + 1))}
+              disabled={page === lastPage}
+              className="inline-flex items-center gap-1 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito px-3 py-1.5 text-xs text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              Siguiente <HiOutlineChevronRight className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
+      )}
     </FadeIn>
   );
 }

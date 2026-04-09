@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../context/useNotifications';
 import type { Notification, NotificationType } from '../../types/notification';
 import { NOTIFICATION_CONFIG } from '../../types/notification';
 import { HiOutlineCheck } from 'react-icons/hi';
+import { formatDateTime } from '../../utils';
 
 interface NotificationPanelProps {
   onClose: () => void;
@@ -84,7 +85,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
             className="inline-flex items-center gap-1.5 text-xs font-medium text-cyber-radar dark:text-cyber-radar-light hover:text-cyber-radar dark:hover:text-cyber-radar-light transition-colors"
             title="Marcar todas como leídas"
           >
-            <HiOutlineCheck className="h-4 w-4" />
+            <HiOutlineCheck className="h-5 w-5" />
             Marcar todas
           </button>
         )}
@@ -154,7 +155,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                         {notification.data.message}
                       </p>
                       <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
-                        {new Date(notification.created_at).toLocaleString('es-ES')}
+                        {formatDateTime(notification.created_at)}
                       </p>
                     </div>
                   </div>

@@ -30,13 +30,13 @@ export const tasksApi = {
   delegate: (id: number, data: DelegateTaskRequest) =>
     apiClient.post<Task>(`/tasks/${id}/delegate`, data),
 
-  start: (id: number) =>
-    apiClient.post<Task>(`/tasks/${id}/start`),
+  start: (id: number, data: { comment: string }) =>
+    apiClient.post<Task>(`/tasks/${id}/start`, data),
 
-  submitReview: (id: number) =>
-    apiClient.post<Task>(`/tasks/${id}/submit-review`),
+  submitReview: (id: number, data: { comment: string }) =>
+    apiClient.post<Task>(`/tasks/${id}/submit-review`, data),
 
-  approve: (id: number, data?: ApproveTaskRequest) =>
+  approve: (id: number, data: { note: string }) =>
     apiClient.post<Task>(`/tasks/${id}/approve`, data),
 
   reject: (id: number, data: RejectTaskRequest) =>

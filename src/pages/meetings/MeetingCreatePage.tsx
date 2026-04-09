@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -86,7 +86,7 @@ export function MeetingCreatePage() {
     <PageTransition>
       <div className="mx-auto max-w-2xl">
         <button type="button" onClick={() => navigate('/meetings')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
-          <HiOutlineArrowLeft className="h-4 w-4" /> Volver a reuniones
+          <HiOutlineArrowLeft className="h-5 w-5" /> Volver a reuniones
         </button>
 
         <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Nueva Reunión</h2>
@@ -95,7 +95,7 @@ export function MeetingCreatePage() {
           {serverError && (
             <SlideDown>
               <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                 {serverError}
               </div>
             </SlideDown>
@@ -129,7 +129,7 @@ export function MeetingCreatePage() {
               <label htmlFor="area_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Área</label>
               {isManager ? (
                 <div className="flex items-center gap-2 rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300">
-                  <HiOutlineOfficeBuilding className="h-4 w-4 shrink-0 text-purple-500 dark:text-purple-400" />
+                  <HiOutlineOfficeBuilding className="h-5 w-5 shrink-0 text-purple-500 dark:text-purple-400" />
                   <span>{managerArea?.name ?? 'Cargando área...'}</span>
                   <input type="hidden" {...register('area_id', { valueAsNumber: true })} />
                 </div>

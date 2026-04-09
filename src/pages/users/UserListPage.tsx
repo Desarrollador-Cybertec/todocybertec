@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useMemo } from 'react';
+﻿import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence } from 'framer-motion';
@@ -10,7 +10,7 @@ import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
 import { useAuth } from '../../context/useAuth';
 import { useLicense } from '../../context/useLicense';
-import { sileo } from 'sileo';
+import { handleLicenseError } from '../../utils/handleLicenseError';
 import type { User, Area, RoleInfo } from '../../types';
 import { HiOutlinePlus, HiOutlineExclamationCircle, HiOutlineCheckCircle, HiOutlinePencil, HiOutlineChevronLeft, HiOutlineChevronRight } from 'react-icons/hi';
 import { PageTransition, FadeIn, SlideDown, SkeletonTable, Badge } from '../../components/ui';
@@ -104,19 +104,7 @@ export function UserListPage() {
       setShowCreateForm(false);
       loadUsers();
     } catch (error) {
-      if (error instanceof ApiError && error.isLicenseError) {
-        const lt = error.licenseType!;
-        if (lt === 'license_denied') {
-          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
-        } else if (lt === 'license_expired') {
-          license.setExpired(error.data.message);
-        } else if (lt === 'license_suspended') {
-          license.setSuspended(error.data.message);
-        } else {
-          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
-        }
-        return;
-      }
+      if (handleLicenseError(error, license)) return;
       setServerError(error instanceof ApiError ? error.data.message : 'Error al crear usuario');
     }
   };
@@ -127,19 +115,7 @@ export function UserListPage() {
       showMessage('Estado del usuario actualizado');
       loadUsers();
     } catch (error) {
-      if (error instanceof ApiError && error.isLicenseError) {
-        const lt = error.licenseType!;
-        if (lt === 'license_denied') {
-          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
-        } else if (lt === 'license_expired') {
-          license.setExpired(error.data.message);
-        } else if (lt === 'license_suspended') {
-          license.setSuspended(error.data.message);
-        } else {
-          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
-        }
-        return;
-      }
+      if (handleLicenseError(error, license)) return;
       setServerError(error instanceof ApiError ? error.data.message : 'Error al cambiar estado');
     }
   };
@@ -208,19 +184,7 @@ export function UserListPage() {
       setEditingUserId(null);
       loadUsers();
     } catch (error) {
-      if (error instanceof ApiError && error.isLicenseError) {
-        const lt = error.licenseType!;
-        if (lt === 'license_denied') {
-          sileo.warning({ title: 'Límite alcanzado', description: error.data.message });
-        } else if (lt === 'license_expired') {
-          license.setExpired(error.data.message);
-        } else if (lt === 'license_suspended') {
-          license.setSuspended(error.data.message);
-        } else {
-          sileo.error({ title: 'Servicio no disponible', description: error.data.message });
-        }
-        return;
-      }
+      if (handleLicenseError(error, license)) return;
       setServerError(error instanceof ApiError ? error.data.message : 'Error al actualizar usuario');
     } finally {
       setEditSaving(false);
@@ -259,7 +223,7 @@ export function UserListPage() {
           title={license.isBlocked ? (license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida') : undefined}
           className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50"
         >
-          <HiOutlinePlus className="h-4 w-4" /> Nuevo usuario
+          <HiOutlinePlus className="h-5 w-5" /> Nuevo usuario
         </button>
         </div>
       </div>
@@ -268,14 +232,14 @@ export function UserListPage() {
         {serverError && (
           <SlideDown>
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {serverError}
+              <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" /> {serverError}
             </div>
           </SlideDown>
         )}
         {successMsg && (
           <SlideDown>
             <div className="mb-4 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {successMsg}
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" /> {successMsg}
             </div>
           </SlideDown>
         )}
@@ -318,7 +282,7 @@ export function UserListPage() {
                       className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
                       title="Editar"
                     >
-                      <HiOutlinePencil className="h-3.5 w-3.5" />
+                      <HiOutlinePencil className="h-5 w-5" />
                     </button>
                     <button
                       type="button"
@@ -372,7 +336,7 @@ export function UserListPage() {
                           className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
                           title="Editar"
                         >
-                          <HiOutlinePencil className="h-3.5 w-3.5" />
+                          <HiOutlinePencil className="h-5 w-5" />
                         </button>
                         <button
                           type="button"
@@ -407,7 +371,7 @@ export function UserListPage() {
               disabled={page === 1}
               className="inline-flex items-center gap-1 rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <HiOutlineChevronLeft className="h-4 w-4" /> Anterior
+              <HiOutlineChevronLeft className="h-5 w-5" /> Anterior
             </button>
             <span className="text-sm text-slate-600 dark:text-slate-400">
               Página {page} de {lastPage}
@@ -418,7 +382,7 @@ export function UserListPage() {
               disabled={page === lastPage}
               className="inline-flex items-center gap-1 rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-sm text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5 disabled:cursor-not-allowed disabled:opacity-40"
             >
-              Siguiente <HiOutlineChevronRight className="h-4 w-4" />
+              Siguiente <HiOutlineChevronRight className="h-5 w-5" />
             </button>
           </div>
         </div>

@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { meetingsApi } from '../../api/meetings';
 import { MEETING_CLASSIFICATION_LABELS } from '../../types/enums';
 import type { Meeting } from '../../types';
 import { HiOutlinePlus, HiOutlineCalendar, HiOutlineLockClosed } from 'react-icons/hi';
 import { PageTransition, StaggerList, StaggerItem, EmptyState, SkeletonList, Badge } from '../../components/ui';
+import { formatDate } from '../../utils';
 
 const CLASSIFICATION_VARIANT: Record<string, 'purple' | 'blue' | 'green' | 'amber'> = {
   operational: 'blue',
@@ -29,7 +30,7 @@ export function MeetingListPage() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Reuniones</h2>
         <Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
-          <HiOutlinePlus className="h-4 w-4" /> Nueva reunión
+          <HiOutlinePlus className="h-5 w-5" /> Nueva reunión
         </Link>
       </div>
 
@@ -40,7 +41,7 @@ export function MeetingListPage() {
           icon={<HiOutlineCalendar className="h-12 w-12" />}
           title="No hay reuniones registradas"
           description="Crea una nueva reunión para registrar acuerdos y compromisos."
-          action={<Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700"><HiOutlinePlus className="h-4 w-4" /> Nueva reunión</Link>}
+          action={<Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700"><HiOutlinePlus className="h-5 w-5" /> Nueva reunión</Link>}
         />
       ) : (
         <StaggerList className="space-y-3">
@@ -49,21 +50,21 @@ export function MeetingListPage() {
               <Link to={`/meetings/${m.id}`} className="block rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm transition-all hover:shadow-md hover:border-purple-100 dark:hover:border-purple-900">
                 <div className="flex items-start gap-4">
                   <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-linear-to-br from-cyber-radar/5 dark:from-cyber-radar/20 to-cyber-navy/5 dark:to-cyber-navy/20">
-                    <HiOutlineCalendar className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                    <HiOutlineCalendar className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-medium text-slate-900 dark:text-white">{m.title}</h3>
                     <div className="mt-1.5 flex flex-wrap items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
                       <span className="flex items-center gap-1">
-                        <HiOutlineCalendar className="h-3.5 w-3.5" />
-                        {new Date(m.meeting_date).toLocaleDateString('es-PE')}
+                        <HiOutlineCalendar className="h-5 w-5" />
+                        {formatDate(m.meeting_date)}
                       </span>
                       <Badge variant={CLASSIFICATION_VARIANT[m.classification] ?? 'gray'} size="sm">
                         {MEETING_CLASSIFICATION_LABELS[m.classification]}
                       </Badge>
                       {m.is_closed && (
                         <Badge variant="red" size="sm">
-                          <HiOutlineLockClosed className="mr-0.5 inline h-3 w-3" />
+                          <HiOutlineLockClosed className="mr-0.5 inline h-5 w-5" />
                           Cerrada
                         </Badge>
                       )}

@@ -83,7 +83,7 @@ export interface TaskAttachment {
 export interface TaskStatusHistory {
   id: number;
   task_id: number;
-  changed_by: number;
+  changed_by: User | number | null;
   user_id: number | null;
   from_status: TaskStatusType | null;
   to_status: TaskStatusType;
@@ -139,8 +139,6 @@ export interface UpdateTaskRequest {
   title?: string;
   description?: string;
   priority?: TaskPriorityType;
-  due_date?: string;
-  start_date?: string;
   requires_attachment?: boolean;
   requires_completion_comment?: boolean;
   requires_manager_approval?: boolean;
@@ -158,7 +156,7 @@ export interface DelegateTaskRequest {
 }
 
 export interface ApproveTaskRequest {
-  note?: string;
+  note: string;
 }
 
 export interface RejectTaskRequest {

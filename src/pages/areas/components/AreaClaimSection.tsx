@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { areasApi } from '../../../api/areas';
 import { ApiError } from '../../../api/client';
 import { HiOutlineExclamationCircle, HiOutlineCheckCircle } from 'react-icons/hi';
@@ -36,14 +36,14 @@ export function AreaClaimSection({ areaId, onClaimed }: AreaClaimSectionProps) {
         {claimError && (
           <SlideDown>
             <div className="mb-3 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-2 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {claimError}
+              <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" /> {claimError}
             </div>
           </SlideDown>
         )}
         {claimSuccess && (
           <SlideDown>
             <div className="mb-3 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {claimSuccess}
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" /> {claimSuccess}
             </div>
           </SlideDown>
         )}

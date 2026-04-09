@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { tasksApi } from '../../../api/tasks';
 import { areasApi } from '../../../api/areas';
 import { ApiError } from '../../../api/client';
@@ -7,6 +7,7 @@ import type { Task } from '../../../types';
 import { HiOutlineUserAdd, HiOutlineCheckCircle, HiOutlineX } from 'react-icons/hi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FadeIn, SlideDown, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT, SkeletonCard, Spinner } from '../../../components/ui';
+import { formatDate } from '../../../utils';
 
 interface AreaTasksSectionProps {
   areaId: number;
@@ -90,7 +91,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
         {assignMsg && (
           <SlideDown>
             <div className="mx-4 mt-3 sm:mx-6 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 px-3 py-2 text-sm text-green-700 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {assignMsg}
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" /> {assignMsg}
             </div>
           </SlideDown>
         )}
@@ -114,7 +115,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
                     </Badge>
                     {task.due_date && (
                       <span className={`text-xs ${task.is_overdue ? 'font-semibold text-red-600 dark:text-red-400' : 'text-slate-400 dark:text-slate-500'}`}>
-                        Vence: {new Date(task.due_date).toLocaleDateString('es', { day: '2-digit', month: 'short', year: 'numeric' })}
+                        Vence: {formatDate(task.due_date)}
                       </span>
                     )}
                   </div>
@@ -141,7 +142,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
                       className={`rounded-lg p-1.5 transition-colors ${assigningTaskId === task.id ? 'bg-red-50 dark:bg-red-900/30 text-red-500 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/40' : 'border border-slate-200 dark:border-white/10 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-600 dark:hover:text-slate-400'}`}
                       title={assigningTaskId === task.id ? 'Cancelar' : 'Asignar'}
                     >
-                      {assigningTaskId === task.id ? <HiOutlineX className="h-4 w-4" /> : <HiOutlineUserAdd className="h-4 w-4" />}
+                      {assigningTaskId === task.id ? <HiOutlineX className="h-5 w-5" /> : <HiOutlineUserAdd className="h-5 w-5" />}
                     </button>
                   )}
                 </div>

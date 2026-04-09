@@ -33,8 +33,6 @@ export const updateTaskSchema = z.object({
     [TaskPriority.LOW, TaskPriority.MEDIUM, TaskPriority.HIGH, TaskPriority.URGENT],
     { message: 'Selecciona una prioridad' },
   ),
-  due_date: z.string().optional().or(z.literal('')),
-  start_date: z.string().optional().or(z.literal('')),
 });
 
 export const delegateTaskSchema = z.object({
@@ -43,7 +41,7 @@ export const delegateTaskSchema = z.object({
 });
 
 export const approveTaskSchema = z.object({
-  note: z.string().max(2000).optional().or(z.literal('')),
+  note: z.string().min(1, 'La nota de aprobación es obligatoria').max(2000),
 });
 
 export const rejectTaskSchema = z.object({

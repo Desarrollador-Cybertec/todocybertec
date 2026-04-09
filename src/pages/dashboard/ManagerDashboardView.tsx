@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+﻿import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { NotificationBell } from '../../components/notifications';
 import { dashboardApi } from '../../api/dashboard';
@@ -161,14 +161,14 @@ export function ManagerDashboardView() {
             to="/tasks/create"
             className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
-            <HiOutlinePlusCircle className="h-4 w-4" />
+            <HiOutlinePlusCircle className="h-5 w-5" />
             Nueva tarea
           </Link>
           <Link
             to="/claim-workers"
             className="inline-flex items-center gap-2 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
           >
-            <HiOutlineUserGroup className="h-4 w-4" />
+            <HiOutlineUserGroup className="h-5 w-5" />
             Mi equipo
           </Link>
           <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
@@ -192,10 +192,10 @@ export function ManagerDashboardView() {
           <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Resumen del área</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-4.5 w-4.5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} />
-              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-4.5 w-4.5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} />
-              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-4.5 w-4.5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-5 w-5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} />
+              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-5 w-5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} />
+              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {areaData?.completion_rate != null && (
               <div className="mt-4">
@@ -222,7 +222,7 @@ export function ManagerDashboardView() {
             {/* Carga del equipo */}
             <FadeIn delay={0.25} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
               <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-5 py-4">
-                <HiOutlineUserGroup className="h-4.5 w-4.5 text-cyber-navy dark:text-cyber-radar-light" />
+                <HiOutlineUserGroup className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
                 <div>
                   <h3 className="font-semibold text-slate-900 dark:text-white">Carga del equipo</h3>
                   <p className="text-xs text-slate-500 dark:text-slate-400">Tareas activas por responsable.</p>
@@ -343,7 +343,7 @@ export function ManagerDashboardView() {
       {/* Tips */}
       <FadeIn delay={0.35} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
         <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-          <HiOutlineLightBulb className="h-4.5 w-4.5 text-amber-500 dark:text-amber-400" />
+          <HiOutlineLightBulb className="h-5 w-5 text-amber-500 dark:text-amber-400" />
           Consejos
         </h3>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">

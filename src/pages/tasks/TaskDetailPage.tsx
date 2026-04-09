@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -7,11 +7,8 @@ import { tasksApi } from '../../api/tasks';
 import { useAuth } from '../../context/useAuth';
 import { ApiError } from '../../api/client';
 import {
-  TaskStatus,
   TASK_STATUS_LABELS,
   TASK_PRIORITY_LABELS,
-  ADMIN_ROLES,
-  MANAGER_ROLES,
   WORKER_ROLES,
 } from '../../types/enums';
 import {
@@ -41,7 +38,7 @@ import {
 import { PageTransition, FadeIn, SlideDown } from '../../components/ui';
 import { SkeletonDetail, Badge, Spinner, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT } from '../../components/ui';
 import { TaskStatusSelect } from '../../components/tasks/TaskStatusSelect';
-import { taskProgress } from '../../utils';
+import { taskProgress, formatDate } from '../../utils';
 import { TaskEditForm } from './components/TaskEditForm';
 import {
   CommentFormPanel,
@@ -53,6 +50,8 @@ import { TaskComments } from './components/TaskComments';
 import { TaskAttachmentsV2, UploadFormPanelV2 } from './components/TaskAttachmentsV2';
 import { TaskStatusHistory } from './components/TaskStatusHistory';
 import { TaskUpdates } from './components/TaskUpdates';
+import { useTaskEditState } from './hooks/useTaskEditState';
+import { useTaskPermissions } from './hooks/useTaskPermissions';
 
 export function TaskDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -70,49 +69,27 @@ export function TaskDetailPage() {
   const [showUploadForm, setShowUploadForm] = useState(false);
   const [areaMembers, setAreaMembers] = useState<User[]>([]);
   const [membersLoading, setMembersLoading] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [editTitle, setEditTitle] = useState('');
-  const [editDescription, setEditDescription] = useState('');
-  const [editPriority, setEditPriority] = useState('');
-  const [editDueDate, setEditDueDate] = useState('');
-  const [editStartDate, setEditStartDate] = useState('');
-  const [editRequiresAttachment, setEditRequiresAttachment] = useState(false);
-  const [editRequiresComment, setEditRequiresComment] = useState(false);
-  const [editRequiresApproval, setEditRequiresApproval] = useState(false);
-  const [editRequiresNotification, setEditRequiresNotification] = useState(false);
-  const [editRequiresDueDate, setEditRequiresDueDate] = useState(false);
-  const [editNotifyDue, setEditNotifyDue] = useState(false);
-  const [editNotifyOverdue, setEditNotifyOverdue] = useState(false);
-  const [editNotifyCompletion, setEditNotifyCompletion] = useState(false);
-  const [editSaving, setEditSaving] = useState(false);
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [attachmentsKey, setAttachmentsKey] = useState(0);
 
   const taskId = Number(id);
+
+  const showMessage = (msg: string) => {
+    setActionSuccess(msg);
+    setActionError('');
+    setTimeout(() => setActionSuccess(''), 3000);
+  };
 
   const loadTask = useCallback(async () => {
     try {
       const res = await tasksApi.get(taskId);
-      // If the backend omits the creator relation for this role, fetch it by ID
       if (!res.creator && res.created_by) {
         res.creator = await usersApi.get(res.created_by).catch(() => null) as typeof res.creator;
       }
       setTask(res);
       if (searchParams.get('edit') === '1') {
-        setEditing(true);
-        setEditTitle(res.title);
-        setEditDescription(res.description ?? '');
-        setEditPriority(res.priority);
-        setEditDueDate(res.due_date?.slice(0, 10) ?? '');
-        setEditStartDate(res.start_date?.slice(0, 10) ?? '');
-        setEditRequiresAttachment(res.requires_attachment);
-        setEditRequiresComment(res.requires_completion_comment);
-        setEditRequiresApproval(res.requires_manager_approval);
-        setEditRequiresNotification(res.requires_completion_notification);
-        setEditRequiresDueDate(res.requires_due_date);
-        setEditNotifyDue(res.notify_on_due);
-        setEditNotifyOverdue(res.notify_on_overdue);
-        setEditNotifyCompletion(res.notify_on_completion);
+        edit.startEditing(res);
       }
     } catch {
       navigate('/tasks');
@@ -125,11 +102,8 @@ export function TaskDetailPage() {
     loadTask();
   }, [loadTask]);
 
-  const showMessage = (msg: string) => {
-    setActionSuccess(msg);
-    setActionError('');
-    setTimeout(() => setActionSuccess(''), 3000);
-  };
+  const edit = useTaskEditState(task, taskId, showMessage, setActionError, loadTask);
+  const perms = useTaskPermissions(task, user as Parameters<typeof useTaskPermissions>[1]);
 
   const handleAction = async (action: () => Promise<unknown>, successMsg: string) => {
     setActionError('');
@@ -139,107 +113,6 @@ export function TaskDetailPage() {
       loadTask();
     } catch (error) {
       setActionError(error instanceof ApiError ? error.data.message : 'Error al ejecutar la acción');
-    }
-  };
-
-  const isSuperAdmin = user?.role.slug ? ADMIN_ROLES.includes(user.role.slug) : false;
-  const isManager = user?.role.slug ? MANAGER_ROLES.includes(user.role.slug) : false;
-  const isWorker = user?.role.slug ? WORKER_ROLES.includes(user.role.slug) : false;
-  const uid = Number(user?.id);
-  const isResponsible =
-    Number(task?.current_responsible_user_id) === uid ||
-    Number(task?.current_responsible?.id) === uid ||
-    Number(task?.assigned_to_user_id) === uid ||
-    Number(task?.assigned_user?.id) === uid;
-  const isCreator =
-    Number(task?.created_by) === uid ||
-    Number(task?.creator?.id) === uid;
-  const terminal = [TaskStatus.COMPLETED as string, TaskStatus.CANCELLED as string];
-  const isPersonalTask = !task?.area_id && !task?.assigned_to_area_id;
-
-  const canDelete = isSuperAdmin || (isWorker && isCreator && isPersonalTask);
-  // Manager cannot delegate if the task is assigned to themselves (any responsible field)
-  const taskAssignedToSelf =
-    (task?.assigned_to_user_id != null && Number(task.assigned_to_user_id) === uid) ||
-    (task?.current_responsible_user_id != null && Number(task.current_responsible_user_id) === uid) ||
-    (task?.current_responsible?.id != null && Number(task.current_responsible.id) === uid) ||
-    (task?.assigned_user?.id != null && Number(task.assigned_user.id) === uid);
-  // Manager can only delegate tasks in their own area — not tasks sent to a different area
-  const managerOwnsTask = isManager && !taskAssignedToSelf && (
-    // No area restriction (personal task)
-    (!task?.assigned_to_area_id && !task?.area_id) ||
-    // Manager is the manager of the task's area (via relation)
-    Number(task?.area?.manager_user_id) === uid ||
-    Number(task?.area?.manager?.id) === uid ||
-    Number(task?.assigned_area?.manager_user_id) === uid ||
-    Number(task?.assigned_area?.manager?.id) === uid ||
-    // Fallback: area_id matches if it's set on the user
-    (!!user?.area_id && (
-      Number(task?.assigned_to_area_id) === Number(user.area_id) ||
-      Number(task?.area_id) === Number(user.area_id)
-    ))
-  );
-  const canDelegate = !terminal.includes(task?.status as string) && (isSuperAdmin || managerOwnsTask);
-  const isParticipant = isResponsible || isCreator || isSuperAdmin || isManager;
-  const isActive = !terminal.includes(task?.status as string);
-  const canUpload = isParticipant && isActive && !!task?.requires_attachment;
-  const canComment = isParticipant && isActive && !!task?.requires_completion_comment;
-  const isAssignedToExternal = !!task?.external_email;
-  const canEdit =
-    ((isSuperAdmin || isManager) && isActive) ||
-    (isWorker && isCreator && isPersonalTask && isActive) ||
-    (isCreator && isAssignedToExternal && isActive);
-
-  const startEditing = () => {
-    if (!task) return;
-    setEditTitle(task.title);
-    setEditDescription(task.description ?? '');
-    setEditPriority(task.priority);
-    setEditDueDate(task.due_date?.slice(0, 10) ?? '');
-    setEditStartDate(task.start_date?.slice(0, 10) ?? '');
-    setEditRequiresAttachment(task.requires_attachment);
-    setEditRequiresComment(task.requires_completion_comment);
-    setEditRequiresApproval(task.requires_manager_approval);
-    setEditRequiresNotification(task.requires_completion_notification);
-    setEditRequiresDueDate(task.requires_due_date);
-    setEditNotifyDue(task.notify_on_due);
-    setEditNotifyOverdue(task.notify_on_overdue);
-    setEditNotifyCompletion(task.notify_on_completion);
-    setEditing(true);
-  };
-
-  const cancelEditing = () => {
-    setEditing(false);
-  };
-
-  const saveEdit = async () => {
-    if (!task) return;
-    setEditSaving(true);
-    try {
-      const updates: Record<string, string | boolean> = {};
-      if (editTitle !== task.title) updates.title = editTitle;
-      if ((editDescription || '') !== (task.description || '')) updates.description = editDescription;
-      if (editPriority !== task.priority) updates.priority = editPriority;
-      if ((editDueDate || '') !== (task.due_date?.slice(0, 10) || '')) updates.due_date = editDueDate;
-      if ((editStartDate || '') !== (task.start_date?.slice(0, 10) || '')) updates.start_date = editStartDate;
-      if (editRequiresAttachment !== task.requires_attachment) updates.requires_attachment = editRequiresAttachment;
-      if (editRequiresComment !== task.requires_completion_comment) updates.requires_completion_comment = editRequiresComment;
-      if (editRequiresApproval !== task.requires_manager_approval) updates.requires_manager_approval = editRequiresApproval;
-      if (editRequiresNotification !== task.requires_completion_notification) updates.requires_completion_notification = editRequiresNotification;
-      if (editRequiresDueDate !== task.requires_due_date) updates.requires_due_date = editRequiresDueDate;
-      if (editNotifyDue !== task.notify_on_due) updates.notify_on_due = editNotifyDue;
-      if (editNotifyOverdue !== task.notify_on_overdue) updates.notify_on_overdue = editNotifyOverdue;
-      if (editNotifyCompletion !== task.notify_on_completion) updates.notify_on_completion = editNotifyCompletion;
-      if (Object.keys(updates).length > 0) {
-        await tasksApi.update(taskId, updates);
-        showMessage('Tarea actualizada');
-        loadTask();
-      }
-      setEditing(false);
-    } catch (error) {
-      setActionError(error instanceof ApiError ? error.data.message : 'Error al actualizar');
-    } finally {
-      setEditSaving(false);
     }
   };
 
@@ -259,7 +132,7 @@ export function TaskDetailPage() {
 
   const approveForm = useForm<ApproveTaskFormData>({ resolver: zodResolver(approveTaskSchema) });
   const onApprove = async (data: ApproveTaskFormData) => {
-    await handleAction(() => tasksApi.approve(taskId, data.note ? { note: data.note } : undefined), 'Tarea aprobada');
+    await handleAction(() => tasksApi.approve(taskId, { note: data.note }), 'Tarea aprobada');
     approveForm.reset();
     setShowApproveForm(false);
   };
@@ -270,8 +143,6 @@ export function TaskDetailPage() {
     delegateForm.reset();
     setShowDelegateForm(false);
   };
-
-  const [attachmentsKey, setAttachmentsKey] = useState(0);
 
   const handleDelete = async () => {
     setDeleting(true);
@@ -290,13 +161,10 @@ export function TaskDetailPage() {
     setShowDelegateForm(true);
     setMembersLoading(true);
     try {
-      if (isSuperAdmin) {
-        // Superadmin can access all users; /areas/{id}/members is restricted to area owners
+      if (perms.isSuperAdmin) {
         const allUsers = await usersApi.listAll();
         setAreaMembers(allUsers);
       } else {
-        // For manager: resolve the area THEY manage (not just any area linked to the task)
-        // Resolve the area the manager owns. Backend returns manager as nested { id } not manager_user_id.
         const uid = Number(user?.id);
         let areaId: number | null = null;
         if (task?.area && (Number(task.area.manager_user_id) === uid || Number(task.area.manager?.id) === uid)) {
@@ -306,7 +174,6 @@ export function TaskDetailPage() {
         } else if (user?.area_id) {
           areaId = user.area_id;
         } else {
-          // Last resort: fetch areas list and find the one this manager owns
           const areas = await areasApi.listAll();
           const managedArea = areas.find((a) => (Number(a.manager_user_id) === uid || Number(a.manager?.id) === uid) && a.active);
           areaId = managedArea?.id ?? null;
@@ -323,6 +190,25 @@ export function TaskDetailPage() {
     }
   };
 
+  const isWorker = user?.role.slug ? WORKER_ROLES.includes(user.role.slug) : false;
+
+  const requirementFields = isWorker ? [
+    { label: 'Requiere adjunto', value: edit.fields.requiresAttachment, set: (v: boolean) => edit.updateField('requiresAttachment', v) },
+    { label: 'Requiere comentario de cierre', value: edit.fields.requiresComment, set: (v: boolean) => edit.updateField('requiresComment', v) },
+  ] : [
+    { label: 'Requiere adjunto', value: edit.fields.requiresAttachment, set: (v: boolean) => edit.updateField('requiresAttachment', v) },
+    { label: 'Requiere comentario de cierre', value: edit.fields.requiresComment, set: (v: boolean) => edit.updateField('requiresComment', v) },
+    { label: 'Requiere aprobación del encargado', value: edit.fields.requiresApproval, set: (v: boolean) => edit.updateField('requiresApproval', v) },
+    { label: 'Requiere fecha límite', value: edit.fields.requiresDueDate, set: (v: boolean) => edit.updateField('requiresDueDate', v) },
+  ];
+
+  const notificationFields = isWorker ? [] : [
+    { label: 'Notificar al vencer', value: edit.fields.notifyDue, set: (v: boolean) => edit.updateField('notifyDue', v) },
+    { label: 'Notificar si vencida', value: edit.fields.notifyOverdue, set: (v: boolean) => edit.updateField('notifyOverdue', v) },
+    { label: 'Notificar al completarse', value: edit.fields.notifyCompletion, set: (v: boolean) => edit.updateField('notifyCompletion', v) },
+    { label: 'Notificar al completar (usuario)', value: edit.fields.requiresNotification, set: (v: boolean) => edit.updateField('requiresNotification', v) },
+  ];
+
   if (loading) return <SkeletonDetail />;
   if (!task) return null;
 
@@ -330,14 +216,14 @@ export function TaskDetailPage() {
     <PageTransition>
       <div className="mx-auto max-w-4xl">
         <button type="button" onClick={() => navigate('/tasks')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
-          <HiOutlineArrowLeft className="h-4 w-4" /> Volver a tareas
+          <HiOutlineArrowLeft className="h-5 w-5" /> Volver a tareas
         </button>
 
         <AnimatePresence>
           {actionError && (
             <SlideDown>
               <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                 {actionError}
               </div>
             </SlideDown>
@@ -345,7 +231,7 @@ export function TaskDetailPage() {
           {actionSuccess && (
             <SlideDown>
               <div className="mb-4 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-3 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-                <HiOutlineCheckCircle className="h-4 w-4 shrink-0" />
+                <HiOutlineCheckCircle className="h-5 w-5 shrink-0" />
                 {actionSuccess}
               </div>
             </SlideDown>
@@ -355,36 +241,19 @@ export function TaskDetailPage() {
         {/* Task Header */}
         <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <AnimatePresence mode="wait">
-            {editing ? (
+            {edit.editing ? (
               <TaskEditForm
-                editTitle={editTitle}
-                setEditTitle={setEditTitle}
-                editDescription={editDescription}
-                setEditDescription={setEditDescription}
-                editPriority={editPriority}
-                setEditPriority={setEditPriority}
-                editDueDate={editDueDate}
-                setEditDueDate={setEditDueDate}
-                editStartDate={editStartDate}
-                setEditStartDate={setEditStartDate}
-                requirementFields={isWorker ? [
-                  { label: 'Requiere adjunto', value: editRequiresAttachment, set: setEditRequiresAttachment },
-                  { label: 'Requiere comentario de cierre', value: editRequiresComment, set: setEditRequiresComment },
-                ] : [
-                  { label: 'Requiere adjunto', value: editRequiresAttachment, set: setEditRequiresAttachment },
-                  { label: 'Requiere comentario de cierre', value: editRequiresComment, set: setEditRequiresComment },
-                  { label: 'Requiere aprobación del encargado', value: editRequiresApproval, set: setEditRequiresApproval },
-                  { label: 'Requiere fecha límite', value: editRequiresDueDate, set: setEditRequiresDueDate },
-                ]}
-                notificationFields={isWorker ? [] : [
-                  { label: 'Notificar al vencer', value: editNotifyDue, set: setEditNotifyDue },
-                  { label: 'Notificar si vencida', value: editNotifyOverdue, set: setEditNotifyOverdue },
-                  { label: 'Notificar al completarse', value: editNotifyCompletion, set: setEditNotifyCompletion },
-                  { label: 'Notificar al completar (usuario)', value: editRequiresNotification, set: setEditRequiresNotification },
-                ]}
-                saving={editSaving}
-                onSave={saveEdit}
-                onCancel={cancelEditing}
+                editTitle={edit.fields.title}
+                setEditTitle={(v) => edit.updateField('title', v)}
+                editDescription={edit.fields.description}
+                setEditDescription={(v) => edit.updateField('description', v)}
+                editPriority={edit.fields.priority}
+                setEditPriority={(v) => edit.updateField('priority', v)}
+                requirementFields={requirementFields}
+                notificationFields={notificationFields}
+                saving={edit.saving}
+                onSave={edit.saveEdit}
+                onCancel={edit.cancelEditing}
               />
             ) : (
               <motion.div key="view-mode" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
@@ -416,7 +285,7 @@ export function TaskDetailPage() {
               <div className="mt-1 flex items-center gap-2">
                 {task.current_responsible ? (
                   <>
-                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">{task.current_responsible.name.charAt(0)}</span>
+                    <span className="flex h-6 w-6 items-center justify-center rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light">{task.current_responsible.name.charAt(0)}</span>
                     <p className="text-sm text-slate-900 dark:text-white">{task.current_responsible.name}</p>
                   </>
                 ) : (
@@ -432,8 +301,8 @@ export function TaskDetailPage() {
               <div>
                 <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Fecha límite</p>
                 <p className={`mt-1 flex items-center gap-1.5 text-sm ${task.is_overdue ? 'font-medium text-red-600 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>
-                  <HiOutlineClock className="h-4 w-4" />
-                  {new Date(task.due_date).toLocaleDateString('es-PE')}
+                  <HiOutlineClock className="h-5 w-5" />
+                  {formatDate(task.due_date)}
                 </p>
               </div>
             )}
@@ -476,32 +345,32 @@ export function TaskDetailPage() {
               task={task}
               userId={user?.id}
               userRole={user?.role.slug}
-              onUpdated={() => {
+              onUpdated={(updated) => {
+                setTask(updated);
                 showMessage('Estado actualizado correctamente');
-                loadTask();
               }}
             />
-            {canEdit && (
-              <button type="button" onClick={startEditing} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
-                <HiOutlinePencil className="h-4 w-4" /> Editar
+            {perms.canEdit && (
+              <button type="button" onClick={() => edit.startEditing()} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
+                <HiOutlinePencil className="h-5 w-5" /> Editar
               </button>
             )}
-            {canDelegate && (
+            {perms.canDelegate && (
               <button type="button" onClick={handleDelegateOpen} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                <HiOutlineRefresh className="h-4 w-4" /> Delegar
+                <HiOutlineRefresh className="h-5 w-5" /> Delegar
               </button>
             )}
-            {canUpload && (
+            {perms.canUpload && (
               <button type="button" onClick={() => setShowUploadForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                <HiOutlineUpload className="h-4 w-4" /> Adjuntar
+                <HiOutlineUpload className="h-5 w-5" /> Adjuntar
               </button>
             )}
-            {canComment && (
+            {perms.canComment && (
               <button type="button" onClick={() => setShowCommentForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-                <HiOutlineChatAlt className="h-4 w-4" /> Comentar
+                <HiOutlineChatAlt className="h-5 w-5" /> Comentar
               </button>
             )}
-            {canDelete && (
+            {perms.canDelete && (
               confirmDelete ? (
                 <div className="flex items-center gap-2 rounded-sm border border-red-300 dark:border-red-700 bg-red-50 dark:bg-red-900/30 px-4 py-2">
                   <span className="text-sm text-red-700 dark:text-red-400">¿Eliminar?</span>
@@ -515,7 +384,7 @@ export function TaskDetailPage() {
                 </div>
               ) : (
                 <button type="button" onClick={() => setConfirmDelete(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-red-200 dark:border-red-800 px-4 py-2 text-sm font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30">
-                  <HiOutlineTrash className="h-4 w-4" /> Eliminar
+                  <HiOutlineTrash className="h-5 w-5" /> Eliminar
                 </button>
               )
             )}
@@ -542,28 +411,22 @@ export function TaskDetailPage() {
           {showUploadForm && (
             <UploadFormPanelV2
               taskId={taskId}
-              areaId={task?.area_id ?? undefined}
-              onUploaded={() => {
-                showMessage('Archivo subido');
-                setShowUploadForm(false);
-                setAttachmentsKey((k) => k + 1);
-                loadTask();
-              }}
+              onUploaded={() => { setShowUploadForm(false); setAttachmentsKey((k) => k + 1); showMessage('Archivo subido'); }}
               onClose={() => setShowUploadForm(false)}
             />
           )}
         </AnimatePresence>
 
-      <TaskComments comments={task.comments ?? []} />
-      {task.requires_attachment && (
-        <TaskAttachmentsV2
-          key={attachmentsKey}
-          taskId={taskId}
-          requiresAttachment={task.requires_attachment}
-        />
-      )}
-      <TaskStatusHistory history={task.status_history ?? []} />
-      <TaskUpdates updates={task.updates ?? []} />
+        {task.requires_attachment && (
+          <TaskAttachmentsV2
+            key={attachmentsKey}
+            taskId={taskId}
+            requiresAttachment={task.requires_attachment}
+          />
+        )}
+        <TaskComments comments={task.comments ?? []} />
+        <TaskStatusHistory history={task.status_history ?? []} />
+        <TaskUpdates updates={task.updates ?? []} />
       </div>
     </PageTransition>
   );

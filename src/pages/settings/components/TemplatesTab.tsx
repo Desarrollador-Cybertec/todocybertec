@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { HiOutlineInformationCircle } from 'react-icons/hi';
 import type { MessageTemplate } from '../../../types';
 import { FadeIn, Badge } from '../../../components/ui';
@@ -51,7 +51,7 @@ export function TemplatesTab({
     <div className="space-y-3">
       <FadeIn className="rounded-sm border border-cyber-navy/10 dark:border-cyber-navy/20 bg-cyber-navy/5/50 dark:bg-cyber-navy/20/20 p-4 shadow-sm">
         <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-cyber-navy dark:text-cyber-radar-light">
-          <HiOutlineInformationCircle className="h-4 w-4" /> Variables disponibles
+          <HiOutlineInformationCircle className="h-5 w-5" /> Variables disponibles
         </div>
         <p className="mb-2 text-xs text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light/70">Haz clic en una variable para insertarla, o arrástrala al campo de asunto o cuerpo.</p>
         <div className="flex flex-wrap gap-2">

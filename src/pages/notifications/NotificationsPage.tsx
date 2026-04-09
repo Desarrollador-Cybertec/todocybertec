@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useNotifications } from '../../context/useNotifications';
 import type { Notification, NotificationType } from '../../types/notification';
 import { NOTIFICATION_CONFIG } from '../../types/notification';
 import { HiOutlineCheck, HiOutlineChevronRight } from 'react-icons/hi';
+import { formatDateTime } from '../../utils';
 
 type TabKey = 'all' | 'organizational' | 'personal';
 
@@ -103,7 +104,7 @@ export function NotificationsPage() {
             onClick={() => markAllAsRead()}
             className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/5 dark:bg-cyber-radar/20/20 hover:bg-cyber-radar/10 dark:hover:bg-cyber-radar/20 rounded-lg transition-colors"
           >
-            <HiOutlineCheck className="h-4 w-4" />
+            <HiOutlineCheck className="h-5 w-5" />
             Marcar todas como leídas ({unreadFiltered.length})
           </button>
         )}
@@ -159,7 +160,7 @@ export function NotificationsPage() {
                       <div className="flex items-center justify-between mt-3 pt-3 border-t border-slate-200 dark:border-white/10 border-opacity-40">
                         <div className="flex flex-col gap-1">
                           <p className="text-xs text-slate-500 dark:text-slate-500">
-                            {new Date(notification.created_at).toLocaleString('es-ES')}
+                            {formatDateTime(notification.created_at)}
                           </p>
                           {notification.data.task_title && (
                             <p className="text-xs font-medium text-slate-700 dark:text-slate-300 truncate">
@@ -167,7 +168,7 @@ export function NotificationsPage() {
                             </p>
                           )}
                         </div>
-                        <HiOutlineChevronRight className="h-4 w-4 text-slate-400 dark:text-slate-600 shrink-0" />
+                        <HiOutlineChevronRight className="h-5 w-5 text-slate-400 dark:text-slate-600 shrink-0" />
                       </div>
                     </div>
                   </div>

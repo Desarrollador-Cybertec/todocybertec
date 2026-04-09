@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from 'react';
+﻿import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
 import { NotificationBell } from '../../components/notifications';
 import { dashboardApi } from '../../api/dashboard';
@@ -19,20 +19,7 @@ import {
   HiOutlinePlus,
 } from 'react-icons/hi';
 import { FadeIn, SkeletonDashboard, Badge, PRIORITY_BADGE_VARIANT } from '../../components/ui';
-
-function formatRelativeDate(dateStr: string | null): string {
-  if (!dateStr) return '';
-  const date = new Date(dateStr);
-  const now = new Date();
-  const diffMs = date.getTime() - now.getTime();
-  const diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-  if (diffDays < 0) return `Hace ${Math.abs(diffDays)} día${Math.abs(diffDays) !== 1 ? 's' : ''}`;
-  if (diffDays === 0) return 'Hoy';
-  if (diffDays === 1) return 'Mañana';
-  const weekdays = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
-  if (diffDays <= 6) return weekdays[date.getDay()];
-  return date.toLocaleDateString('es-PE', { day: 'numeric', month: 'short' });
-}
+import { formatRelativeDate } from '../../utils';
 
 const TIPS = [
   { icon: '💡', text: 'Una tarea con "Adjunto obligatorio" no se puede cerrar sin evidencia.' },
@@ -177,7 +164,7 @@ export function PersonalDashboardView() {
             to="/tasks/create"
             className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2 sm:px-5 sm:py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
-            <HiOutlinePlus className="h-4 w-4" />
+            <HiOutlinePlus className="h-5 w-5" />
             Nueva tarea
           </Link>
           <div className="hidden sm:block w-px h-8 bg-slate-200 dark:bg-white/10" />
@@ -216,10 +203,10 @@ export function PersonalDashboardView() {
           <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen rápido</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-4.5 w-4.5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-4.5 w-4.5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
-              <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-4.5 w-4.5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
-              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-4.5 w-4.5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+              <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-5 w-5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
+              <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-5 w-5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
+              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {data.due_soon_tasks > 0 && (
               <div className="mt-4 rounded-sm bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-inset ring-amber-200 dark:ring-amber-800/60">
@@ -266,7 +253,7 @@ export function PersonalDashboardView() {
           {/* Próximas actividades */}
           <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-              <HiOutlineCalendar className="h-4.5 w-4.5 text-cyber-navy dark:text-cyber-radar-light" />
+              <HiOutlineCalendar className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
               Por iniciar
             </h3>
             {pendingTasks.length === 0 ? (
@@ -281,7 +268,7 @@ export function PersonalDashboardView() {
                         {t.due_date ? `Vence ${formatRelativeDate(t.due_date)}` : 'Sin fecha límite'}
                       </p>
                     </div>
-                    <HiOutlineChevronRight className="ml-2 h-4 w-4 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
+                    <HiOutlineChevronRight className="ml-2 h-5 w-5 shrink-0 text-slate-400 dark:text-slate-500 group-hover:text-cyber-radar dark:group-hover:text-cyber-radar-light" />
                   </Link>
                 ))}
               </div>
@@ -291,7 +278,7 @@ export function PersonalDashboardView() {
           {/* Ayuda rápida */}
           <FadeIn delay={0.25} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-3 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-              <HiOutlineQuestionMarkCircle className="h-4.5 w-4.5 text-cyber-radar dark:text-cyber-radar-light" />
+              <HiOutlineQuestionMarkCircle className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
               Ayuda rápida
             </h3>
             <div className="space-y-2">
@@ -314,11 +301,13 @@ export function PersonalDashboardView() {
 function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
   return (
     <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-      <div className="flex items-center gap-2">
-        <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+        </div>
+        <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
       </div>
-      <p className={`mt-1.5 text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
     </div>
   );
 }
@@ -342,10 +331,10 @@ function UrgentTaskRow({ task }: { task: UpcomingTask }) {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Link to={`/tasks/${task.id}`} className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-          <HiOutlineEye className="inline h-3.5 w-3.5" /> Ver
+          <HiOutlineEye className="inline h-5 w-5" /> Ver
         </Link>
         <Link to={`/tasks/${task.id}`} className="rounded-lg bg-cyber-radar px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-cyber-radar-light">
-          <HiOutlineLightningBolt className="inline h-3.5 w-3.5" /> Resolver
+          <HiOutlineLightningBolt className="inline h-5 w-5" /> Resolver
         </Link>
       </div>
     </div>

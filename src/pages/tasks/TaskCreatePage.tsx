@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+﻿import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -227,7 +227,7 @@ export function TaskCreatePage() {
           {serverError && (
             <SlideDown>
               <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                 {serverError}
               </div>
             </SlideDown>
@@ -272,7 +272,7 @@ export function TaskCreatePage() {
                                 : 'border-slate-200 dark:border-white/10 text-slate-500 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-white/5'
                             }`}
                           >
-                            <HiOutlineUser className="mr-1 inline h-4 w-4" />
+                            <HiOutlineUser className="mr-1 inline h-5 w-5" />
                             Para mí
                           </button>
                           <button
@@ -290,7 +290,7 @@ export function TaskCreatePage() {
                         {workerDest === 'self' && (
                           <>
                             <div className="mt-2 flex items-center gap-2 rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 px-4 py-2.5 text-sm text-slate-700 dark:text-slate-300">
-                              <HiOutlineUser className="h-4 w-4 text-slate-400 dark:text-slate-500" />
+                              <HiOutlineUser className="h-5 w-5 text-slate-400 dark:text-slate-500" />
                               {user?.name} (tú)
                             </div>
                             <input type="hidden" {...register('assigned_to_user_id', { value: user?.id })} />
@@ -371,7 +371,7 @@ export function TaskCreatePage() {
                       className="flex w-full items-center justify-between rounded-sm border border-dashed border-cyber-radar/30 dark:border-cyber-radar bg-cyber-radar/5/50 dark:bg-cyber-radar/20/20 px-4 py-3 text-sm transition-all hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20"
                     >
                       <div className="flex items-center gap-2">
-                        <HiOutlineShieldCheck className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
+                        <HiOutlineShieldCheck className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" />
                         <span className="font-medium text-cyber-radar dark:text-cyber-radar-light">Configurar requisitos, notificaciones y más</span>
                       </div>
                       <span className="text-xs text-cyber-radar-light">Recomendado</span>
@@ -383,7 +383,7 @@ export function TaskCreatePage() {
                       onClick={() => setShowAdvanced(false)}
                       className="flex items-center gap-1.5 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light hover:text-cyber-radar"
                     >
-                      <HiOutlineChevronDown className="h-4 w-4 rotate-180 transition-transform" />
+                      <HiOutlineChevronDown className="h-5 w-5 rotate-180 transition-transform" />
                       Ocultar opciones avanzadas
                     </button>
                   )}

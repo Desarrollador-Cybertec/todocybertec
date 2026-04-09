@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate, NavLink } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/useAuth';
@@ -29,47 +29,47 @@ const NAV_ITEMS: NavItem[] = [
   {
     label: 'Dashboard',
     path: '/dashboard',
-    icon: <HiOutlineHome className="h-5 w-5" />,
+    icon: <HiOutlineHome className="h-6 w-6" />,
   },
   {
     label: 'Tareas',
     path: '/tasks',
-    icon: <HiOutlineClipboardList className="h-5 w-5" />,
+    icon: <HiOutlineClipboardList className="h-6 w-6" />,
   },
   {
     label: 'Áreas',
     path: '/areas',
-    icon: <HiOutlineUserGroup className="h-5 w-5" />,
+    icon: <HiOutlineUserGroup className="h-6 w-6" />,
     roles: [...ADMIN_ROLES],
   },
   {
     label: 'Mi equipo',
     path: '/claim-workers',
-    icon: <HiOutlineUserGroup className="h-5 w-5" />,
+    icon: <HiOutlineUserGroup className="h-6 w-6" />,
     roles: [...MANAGER_ROLES],
   },
   {
     label: 'Reuniones',
     path: '/meetings',
-    icon: <HiOutlineCalendar className="h-5 w-5" />,
+    icon: <HiOutlineCalendar className="h-6 w-6" />,
     roles: [...ADMIN_ROLES, ...MANAGER_ROLES],
   },
   {
     label: 'Usuarios',
     path: '/users',
-    icon: <HiOutlineUsers className="h-5 w-5" />,
+    icon: <HiOutlineUsers className="h-6 w-6" />,
     roles: [...ADMIN_ROLES],
   },
   {
     label: 'Consolidado',
     path: '/consolidated',
-    icon: <HiOutlineChartBar className="h-5 w-5" />,
+    icon: <HiOutlineChartBar className="h-6 w-6" />,
     roles: [...ADMIN_ROLES],
   },
   {
     label: 'Configuración',
     path: '/settings',
-    icon: <HiOutlineCog className="h-5 w-5" />,
+    icon: <HiOutlineCog className="h-6 w-6" />,
     roles: [Role.SUPERADMIN],
   },
 ];
@@ -146,7 +146,7 @@ export function AppLayout() {
             onClick={() => setSidebarOpen(false)}
             aria-label="Cerrar menú"
           >
-            <HiOutlineX className="h-5 w-5" />
+            <HiOutlineX className="h-6 w-6" />
           </button>
         </div>
 
@@ -206,7 +206,7 @@ export function AppLayout() {
             onClick={handleLogout}
             className="flex w-full items-center gap-3 rounded-sm px-3 py-0.5 text-sm font-medium text-white/40 transition-colors hover:bg-red-500/10 hover:text-red-400"
           >
-            <HiOutlineLogout className="h-5 w-5" />
+            <HiOutlineLogout className="h-6 w-6" />
             Cerrar sesión
           </button>
           <div className="-mt-4 flex items-center justify-center gap-2">
@@ -225,7 +225,7 @@ export function AppLayout() {
             onClick={() => setSidebarOpen(true)}
             aria-label="Abrir menú"
           >
-            <HiOutlineMenu className="h-5 w-5" />
+            <HiOutlineMenu className="h-6 w-6" />
           </button>
         </header>
 

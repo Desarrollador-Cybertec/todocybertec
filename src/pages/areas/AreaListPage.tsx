@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,8 @@ import { updateAreaSchema, type UpdateAreaFormData } from '../../schemas';
 import type { Area } from '../../types';
 import { HiOutlinePlus, HiOutlineUserGroup, HiOutlinePencil, HiOutlineTrash, HiOutlineX } from 'react-icons/hi';
 import { PageTransition, StaggerList, StaggerItem, EmptyState, SkeletonCard, Badge, ConfirmModal, Spinner } from '../../components/ui';
+import { AreaIconDisplay, DEFAULT_ICON_KEY } from '../../utils/areaIcons';
+import { AreaIconPicker } from './components/AreaIconPicker';
 
 export function AreaListPage() {
   const { user } = useAuth();
@@ -21,6 +23,7 @@ export function AreaListPage() {
   const [editingArea, setEditingArea] = useState<Area | null>(null);
   const [editSaving, setEditSaving] = useState(false);
   const [editError, setEditError] = useState('');
+  const [editIconKey, setEditIconKey] = useState(DEFAULT_ICON_KEY);
   const [deletingArea, setDeletingArea] = useState<Area | null>(null);
   const [deleteLoading, setDeleteLoading] = useState(false);
   const [deleteError, setDeleteError] = useState('');
@@ -45,6 +48,7 @@ export function AreaListPage() {
   const openEdit = (area: Area) => {
     setEditingArea(area);
     setEditError('');
+    setEditIconKey(area.icon_key ?? DEFAULT_ICON_KEY);
     editForm.reset({
       name: area.name,
       description: area.description ?? '',
@@ -58,7 +62,7 @@ export function AreaListPage() {
     setEditSaving(true);
     setEditError('');
     try {
-      await areasApi.update(editingArea.id, data);
+      await areasApi.update(editingArea.id, { ...data, icon_key: editIconKey });
       setEditingArea(null);
       loadAreas();
     } catch (err) {
@@ -96,11 +100,11 @@ export function AreaListPage() {
               title={license.status === 'expired' ? 'Suscripción vencida' : 'Suscripción suspendida'}
               className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm opacity-50 cursor-not-allowed"
             >
-              <HiOutlinePlus className="h-4 w-4" /> Nueva área
+              <HiOutlinePlus className="h-5 w-5" /> Nueva área
             </button>
           ) : (
             <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
-              <HiOutlinePlus className="h-4 w-4" /> Nueva área
+              <HiOutlinePlus className="h-5 w-5" /> Nueva área
             </Link>
           )
         )}
@@ -121,7 +125,7 @@ export function AreaListPage() {
           icon={<HiOutlineUserGroup className="h-12 w-12" />}
           title="No hay áreas registradas"
           description="Crea una nueva área para organizar tus tareas y equipos."
-          action={isSuperAdmin && !license.isBlocked ? <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white hover:bg-cyber-radar-light"><HiOutlinePlus className="h-4 w-4" /> Nueva área</Link> : undefined}
+          action={isSuperAdmin && !license.isBlocked ? <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white hover:bg-cyber-radar-light"><HiOutlinePlus className="h-5 w-5" /> Nueva área</Link> : undefined}
         />
       ) : (
         <StaggerList className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -136,7 +140,7 @@ export function AreaListPage() {
                       className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-600 dark:hover:text-slate-300"
                       title="Editar área"
                     >
-                      <HiOutlinePencil className="h-4 w-4" />
+                      <HiOutlinePencil className="h-5 w-5" />
                     </button>
                     <button
                       type="button"
@@ -144,14 +148,14 @@ export function AreaListPage() {
                       className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400"
                       title="Eliminar área"
                     >
-                      <HiOutlineTrash className="h-4 w-4" />
+                      <HiOutlineTrash className="h-5 w-5" />
                     </button>
                   </div>
                 )}
                 <Link to={`/areas/${area.id}`} className="block">
                   <div className="flex items-center gap-3">
                     <div className="flex h-10 w-10 items-center justify-center rounded-sm bg-linear-to-br from-cyber-radar/5 dark:from-cyber-radar/20 to-cyber-navy/5 dark:to-cyber-navy/20">
-                      <HiOutlineUserGroup className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
+                      <AreaIconDisplay iconKey={area.icon_key} className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" />
                     </div>
                     <div>
                       <h3 className="font-semibold text-slate-900 dark:text-white">{area.name}</h3>
@@ -172,7 +176,7 @@ export function AreaListPage() {
                     </div>
                     {area.members_count != null && (
                       <span className="flex items-center gap-1 rounded-full bg-slate-100 dark:bg-white/10 px-2 py-0.5 text-xs font-medium text-slate-600 dark:text-slate-400">
-                        <HiOutlineUserGroup className="h-3.5 w-3.5" />
+                        <HiOutlineUserGroup className="h-5 w-5" />
                         {area.members_count} Empleado{area.members_count !== 1 ? 's' : ''}
                       </span>
                     )}
@@ -208,10 +212,13 @@ export function AreaListPage() {
               <div className="mb-4 flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Editar área</h3>
                 <button type="button" onClick={() => setEditingArea(null)} className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-white/10">
-                  <HiOutlineX className="h-5 w-5" />
+                  <HiOutlineX className="h-6 w-6" />
                 </button>
               </div>
               <form onSubmit={editForm.handleSubmit(saveEdit)} className="space-y-4">
+                <div>
+                  <AreaIconPicker value={editIconKey} onChange={setEditIconKey} />
+                </div>
                 <div>
                   <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
                   <input

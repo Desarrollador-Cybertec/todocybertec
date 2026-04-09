@@ -1,4 +1,4 @@
-import {
+﻿import {
   HiOutlineEye,
   HiOutlineCalendar,
   HiOutlineUser,
@@ -48,7 +48,7 @@ export function TaskCreatePreview({
       <div className="sticky top-6 space-y-6">
         <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
           <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
-            <HiOutlineEye className="h-4 w-4 text-cyber-radar dark:text-cyber-radar-light" /> Vista previa
+            <HiOutlineEye className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" /> Vista previa
           </h4>
           <div className="space-y-3 text-sm">
             <div>
@@ -67,14 +67,14 @@ export function TaskCreatePreview({
             <div>
               <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Responsable</span>
               <p className="flex items-center gap-1 text-slate-700 dark:text-slate-300">
-                <HiOutlineUser className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" /> {assigneeName}
+                <HiOutlineUser className="h-5 w-5 text-slate-400 dark:text-slate-500" /> {assigneeName}
               </p>
             </div>
             {dueDate && (
               <div>
                 <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Fecha límite</span>
                 <p className="flex items-center gap-1 text-slate-700 dark:text-slate-300">
-                  <HiOutlineCalendar className="h-3.5 w-3.5 text-slate-400 dark:text-slate-500" /> {dueDate}
+                  <HiOutlineCalendar className="h-5 w-5 text-slate-400 dark:text-slate-500" /> {dueDate}
                 </p>
               </div>
             )}
@@ -82,7 +82,7 @@ export function TaskCreatePreview({
               <div>
                 <span className="text-xs font-medium text-slate-400 dark:text-slate-500">Requisitos activos</span>
                 <div className="mt-1 flex flex-wrap gap-1">
-                  {reqAttach   && <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs text-cyber-radar dark:text-cyber-radar-light"><HiOutlinePaperClip className="mr-0.5 inline h-3 w-3" />Adjunto</span>}
+                  {reqAttach   && <span className="rounded-full bg-cyber-radar/5 dark:bg-cyber-radar/20/30 px-2 py-0.5 text-xs text-cyber-radar dark:text-cyber-radar-light"><HiOutlinePaperClip className="mr-0.5 inline h-5 w-5" />Adjunto</span>}
                   {reqComment  && <span className="rounded-full bg-purple-50 dark:bg-purple-900/30 px-2 py-0.5 text-xs text-purple-600 dark:text-purple-400">Comentario</span>}
                   {reqApproval && <span className="rounded-full bg-amber-50 dark:bg-amber-900/30 px-2 py-0.5 text-xs text-amber-600 dark:text-amber-400">Aprobación</span>}
                 </div>
@@ -93,7 +93,7 @@ export function TaskCreatePreview({
 
         <FadeIn delay={0.15} className="rounded-sm border border-amber-100 dark:border-amber-900 bg-amber-50/50 dark:bg-amber-900/20 p-5 shadow-sm">
           <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-amber-800 dark:text-amber-300">
-            <HiOutlineLightBulb className="h-4 w-4" /> Consejos
+            <HiOutlineLightBulb className="h-5 w-5" /> Consejos
           </h4>
           <ul className="space-y-2">
             {TIPS.map((tip, i) => (

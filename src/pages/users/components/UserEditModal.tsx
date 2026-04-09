@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
 import { Role, ADMIN_ROLES } from '../../../types/enums';
@@ -78,7 +78,7 @@ export function UserEditModal({
             <div className="mb-4 flex items-center justify-between">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Editar usuario</h3>
               <button type="button" onClick={onCancel} className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-600 dark:hover:text-slate-400">
-                <HiOutlineX className="h-5 w-5" />
+                <HiOutlineX className="h-6 w-6" />
               </button>
             </div>
 
@@ -170,7 +170,7 @@ export function UserEditModal({
                 <div className="rounded-sm border border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-4">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-2">
-                      <HiOutlineLockClosed className="h-4 w-4 text-slate-500 dark:text-slate-400" />
+                      <HiOutlineLockClosed className="h-5 w-5 text-slate-500 dark:text-slate-400" />
                       <span className="text-sm font-medium text-slate-700 dark:text-slate-300">Cambiar contraseña</span>
                     </div>
                     <button
@@ -220,7 +220,7 @@ export function UserEditModal({
                         disabled={!newPassword || !newPasswordConfirm}
                         className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-navy px-4 py-2 text-sm font-medium text-white transition-all hover:bg-cyber-navy-light disabled:opacity-50"
                       >
-                        <HiOutlineLockClosed className="h-4 w-4" /> Actualizar contraseña
+                        <HiOutlineLockClosed className="h-5 w-5" /> Actualizar contraseña
                       </button>
                     </div>
                   )}

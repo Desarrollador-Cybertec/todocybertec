@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import { TaskStatus, TASK_PRIORITY_LABELS } from '../../../types/enums';
 import type { UpcomingTask, ResponsibleLoad } from '../../../types';
 import {
@@ -40,11 +40,13 @@ export function ResponsibleRow({ responsible, max }: { responsible: ResponsibleL
 export function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
   return (
     <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-      <div className="flex items-center gap-2">
-        <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2">
+          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+          <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
+        </div>
+        <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
       </div>
-      <p className={`mt-1.5 text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
     </div>
   );
 }
@@ -68,10 +70,10 @@ export function UrgentTaskRow({ task }: { task: UpcomingTask }) {
       </div>
       <div className="flex shrink-0 items-center gap-2">
         <Link to={`/tasks/${task.id}`} className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-3 py-1.5 text-xs font-medium text-slate-600 dark:text-slate-400 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
-          <HiOutlineEye className="inline h-3.5 w-3.5" /> Ver
+          <HiOutlineEye className="inline h-5 w-5" /> Ver
         </Link>
         <Link to={`/tasks/${task.id}`} className="rounded-lg bg-cyber-radar px-3 py-1.5 text-xs font-medium text-white transition-colors hover:bg-cyber-radar-light">
-          <HiOutlineLightningBolt className="inline h-3.5 w-3.5" /> Gestionar
+          <HiOutlineLightningBolt className="inline h-5 w-5" /> Gestionar
         </Link>
       </div>
     </div>
@@ -96,7 +98,7 @@ export function TaskRow({ task }: { task: UpcomingTask }) {
         to={`/tasks/${task.id}`}
         className="flex shrink-0 items-center gap-1 rounded-lg bg-cyber-radar px-3.5 py-1.5 text-xs font-medium text-white transition-colors hover:bg-cyber-radar-light"
       >
-        Revisar <HiOutlineChevronRight className="h-3.5 w-3.5" />
+        Revisar <HiOutlineChevronRight className="h-5 w-5" />
       </Link>
     </div>
   );

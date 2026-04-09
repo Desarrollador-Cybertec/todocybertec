@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -12,6 +12,8 @@ import { sileo } from 'sileo';
 import type { User } from '../../types';
 import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft, HiOutlineExclamationCircle } from 'react-icons/hi';
+import { DEFAULT_ICON_KEY } from '../../utils/areaIcons';
+import { AreaIconPicker } from './components/AreaIconPicker';
 import { PageTransition, FadeIn, SlideDown, Spinner, ConfirmModal } from '../../components/ui';
 import { useNavigationGuard } from '../../utils/useNavigationGuard';
 
@@ -23,6 +25,7 @@ export function AreaCreatePage() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [pendingFormData, setPendingFormData] = useState<CreateAreaFormData | null>(null);
   const [users, setUsers] = useState<User[]>([]);
+  const [selectedIcon, setSelectedIcon] = useState(DEFAULT_ICON_KEY);
 
   useEffect(() => {
     usersApi.listAll().then((res) => setUsers(res)).catch(() => {});
@@ -49,6 +52,7 @@ export function AreaCreatePage() {
         description: pendingFormData.description || undefined,
         process_identifier: pendingFormData.process_identifier || undefined,
         manager_user_id: pendingFormData.manager_user_id || undefined,
+        icon_key: selectedIcon,
       });
       navGuard.skip();
       navigate('/areas');
@@ -74,7 +78,7 @@ export function AreaCreatePage() {
     <PageTransition>
       <div className="mx-auto max-w-2xl">
         <button type="button" onClick={() => navigate('/areas')} className="mb-4 flex items-center gap-2 text-sm text-slate-500 dark:text-slate-400 transition-colors hover:text-slate-900 dark:hover:text-white">
-          <HiOutlineArrowLeft className="h-4 w-4" /> Volver a áreas
+          <HiOutlineArrowLeft className="h-5 w-5" /> Volver a áreas
         </button>
 
         <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Nueva Área</h2>
@@ -83,7 +87,7 @@ export function AreaCreatePage() {
           {serverError && (
             <SlideDown>
               <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-                <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+                <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                 {serverError}
               </div>
             </SlideDown>
@@ -104,6 +108,9 @@ export function AreaCreatePage() {
             <div>
               <label htmlFor="process_identifier" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Identificador de proceso</label>
               <input id="process_identifier" {...register('process_identifier')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" />
+            </div>
+            <div>
+              <AreaIconPicker value={selectedIcon} onChange={setSelectedIcon} />
             </div>
             <div>
               <label htmlFor="manager_user_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Encargado</label>

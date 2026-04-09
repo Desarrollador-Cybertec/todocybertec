@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+﻿import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
 import { usersApi } from '../../../api/users';
 import { ApiError } from '../../../api/client';
@@ -7,6 +7,8 @@ import type { Area, User } from '../../../types';
 import { HiOutlineCheckCircle, HiOutlineTrash, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { AnimatePresence, motion } from 'framer-motion';
 import { FadeIn, SlideDown, Badge, SkeletonDetail, Spinner } from '../../../components/ui';
+import { AreaIconDisplay } from '../../../utils/areaIcons';
+import { AreaIconPicker } from './AreaIconPicker';
 
 interface AreaInfoSectionProps {
   areaId: number;
@@ -27,6 +29,8 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [deleting, setDeleting] = useState(false);
   const [deleteError, setDeleteError] = useState('');
+  const [iconKey, setIconKey] = useState<string | null>(null);
+  const [showIconPicker, setShowIconPicker] = useState(false);
 
   const isSuperadmin = ADMIN_ROLES.includes(userRole as typeof Role[keyof typeof Role]);
 
@@ -39,6 +43,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
         isSuperadmin ? usersApi.listAll().catch(() => [] as User[]) : Promise.resolve([] as User[]),
       ]);
       setArea(areaRes);
+      setIconKey(areaRes.icon_key);
       setManagerCandidates(
         usersRes.filter((u) => u.role.slug && MANAGER_ROLES.includes(u.role.slug) && u.active),
       );
@@ -97,9 +102,26 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
   return (
     <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-6 shadow-sm">
       <div className="flex flex-wrap items-start justify-between gap-3">
-        <div>
-          <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{area.name}</h2>
-          {area.description && <p className="mt-2 text-slate-600 dark:text-slate-400">{area.description}</p>}
+        <div className="flex items-center gap-4">
+          <div className="relative">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-sm bg-linear-to-br from-cyber-radar/5 dark:from-cyber-radar/20 to-cyber-navy/5 dark:to-cyber-navy/20">
+              <AreaIconDisplay iconKey={iconKey} className="h-7 w-7 text-cyber-radar dark:text-cyber-radar-light" />
+            </div>
+            {isSuperadmin && (
+              <button
+                type="button"
+                title="Cambiar icono"
+                onClick={() => setShowIconPicker((s) => !s)}
+                className="absolute -bottom-1.5 -right-1.5 flex h-5 w-5 items-center justify-center rounded-full border border-slate-200 dark:border-white/10 bg-white dark:bg-cyber-grafito text-slate-400 dark:text-slate-500 shadow-sm transition-colors hover:text-cyber-radar dark:hover:text-cyber-radar-light text-[10px] font-bold"
+              >
+                ✎
+              </button>
+            )}
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{area.name}</h2>
+            {area.description && <p className="mt-1 text-slate-600 dark:text-slate-400">{area.description}</p>}
+          </div>
         </div>
         <div className="flex items-center gap-2">
           <Badge variant={area.active ? 'green' : 'red'} size="md">{area.active ? 'Activa' : 'Inactiva'}</Badge>
@@ -129,7 +151,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
                 onClick={() => { setConfirmDelete(true); setDeleteError(''); }}
                 className="inline-flex items-center gap-1.5 rounded-sm border border-red-200 dark:border-red-800 px-3 py-1.5 text-xs font-medium text-red-600 dark:text-red-400 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30"
               >
-                <HiOutlineTrash className="h-3.5 w-3.5" /> Eliminar
+                <HiOutlineTrash className="h-5 w-5" /> Eliminar
               </button>
             )
           )}
@@ -137,10 +159,33 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
       </div>
 
       <AnimatePresence>
+        {showIconPicker && isSuperadmin && (
+          <SlideDown>
+            <div className="mt-4">
+              <AreaIconPicker
+                value={iconKey ?? 'office'}
+                onChange={async (key) => {
+                  setIconKey(key);
+                  setShowIconPicker(false);
+                  try {
+                    await areasApi.update(areaId, { icon_key: key });
+                  } catch {
+                    // revert on error
+                    setIconKey(area?.icon_key ?? null);
+                  }
+                }}
+                label="Cambiar icono del área"
+              />
+            </div>
+          </SlideDown>
+        )}
+      </AnimatePresence>
+
+      <AnimatePresence>
         {deleteError && (
           <SlideDown>
             <div className="mt-3 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-2 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-              <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" /> {deleteError}
+              <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" /> {deleteError}
             </div>
           </SlideDown>
         )}
@@ -218,7 +263,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
         {managerMsg && !showManagerSelect && (
           <SlideDown>
             <div className="mt-3 flex items-center gap-2 rounded-sm bg-green-50 dark:bg-green-900/30 p-2 text-sm text-green-600 dark:text-green-400 ring-1 ring-inset ring-green-200 dark:ring-green-800">
-              <HiOutlineCheckCircle className="h-4 w-4 shrink-0" /> {managerMsg}
+              <HiOutlineCheckCircle className="h-5 w-5 shrink-0" /> {managerMsg}
             </div>
           </SlideDown>
         )}

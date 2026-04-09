@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   HiOutlinePlus,
@@ -13,6 +13,7 @@ import { areasApi } from '../../../api/areas';
 import { usersApi } from '../../../api/users';
 import { TASK_PRIORITY_LABELS } from '../../../types/enums';
 import type { TaskPriorityType } from '../../../types/enums';
+import { formatDate } from '../../../utils';
 import type { User, Area } from '../../../types';
 import { Badge, PRIORITY_BADGE_VARIANT, Spinner, FadeIn } from '../../../components/ui';
 import { MeetingDraftTaskForm } from './MeetingDraftTaskForm';
@@ -249,7 +250,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
     return (
       <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
         <h3 className="mb-2 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-          <HiOutlineUserGroup className="h-5 w-5 text-slate-400 dark:text-slate-500" />
+          <HiOutlineUserGroup className="h-6 w-6 text-slate-400 dark:text-slate-500" />
           Compromisos de reunión
         </h3>
         <p className="text-sm text-slate-400 dark:text-slate-500">
@@ -262,13 +263,13 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
   return (
     <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
       <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-        <HiOutlineUserGroup className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" />
+        <HiOutlineUserGroup className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" />
         Crear compromisos de reunión
       </h3>
 
       {error && (
         <div className="mb-4 flex items-center gap-2 rounded-sm bg-red-50 dark:bg-red-900/30 p-3 text-sm text-red-600 dark:text-red-400 ring-1 ring-inset ring-red-200 dark:ring-red-800">
-          <HiOutlineExclamationCircle className="h-4 w-4 shrink-0" />
+          <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
           {error}
         </div>
       )}
@@ -296,7 +297,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
                       <span className="text-xs text-slate-500 dark:text-slate-400">{getAssigneeName(draft)}</span>
                       {draft.due_date && (
                         <span className="text-xs text-slate-400 dark:text-slate-500">
-                          📅 {new Date(draft.due_date + 'T00:00:00').toLocaleDateString('es-PE')}
+                          📅 {formatDate(draft.due_date)}
                         </span>
                       )}
                     </div>
@@ -308,7 +309,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
                       className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 transition-colors hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
                       title="Editar"
                     >
-                      <HiOutlinePencil className="h-4 w-4" />
+                      <HiOutlinePencil className="h-5 w-5" />
                     </button>
                     <button
                       type="button"
@@ -316,7 +317,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
                       className="rounded-lg p-1.5 text-slate-400 dark:text-slate-500 transition-colors hover:bg-red-50 dark:hover:bg-red-900/30 hover:text-red-600 dark:hover:text-red-400"
                       title="Eliminar"
                     >
-                      <HiOutlineTrash className="h-4 w-4" />
+                      <HiOutlineTrash className="h-5 w-5" />
                     </button>
                   </div>
                 </motion.div>
@@ -340,7 +341,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
             }}
             className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-dashed border-slate-300 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-600 dark:text-slate-400 transition-all hover:border-cyber-radar hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
           >
-            <HiOutlinePlus className="h-4 w-4" /> Agregar compromiso
+            <HiOutlinePlus className="h-5 w-5" /> Agregar compromiso
           </button>
         )}
 
@@ -357,7 +358,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
               </>
             ) : (
               <>
-                <HiOutlineCheck className="h-4 w-4" /> Guardar compromisos ({drafts.length})
+                <HiOutlineCheck className="h-5 w-5" /> Guardar compromisos ({drafts.length})
               </>
             )}
           </button>

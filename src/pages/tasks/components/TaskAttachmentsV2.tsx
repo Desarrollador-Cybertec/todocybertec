@@ -1,13 +1,10 @@
-import { useState, useCallback, useEffect} from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+﻿import { useState, useCallback, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import {
   HiOutlinePaperClip,
-  HiOutlineDownload,
   HiOutlineTrash,
   HiOutlineEye,
   HiOutlineRefresh,
-  HiOutlineExclamationCircle,
-  HiOutlineX,
   HiOutlineDocumentText,
   HiOutlinePhotograph,
 } from 'react-icons/hi';
@@ -18,6 +15,7 @@ import { ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
 import type { Attachment, ProcessingStatus } from '../../../types/attachment';
 import { FadeIn, StaggerList, StaggerItem, Badge } from '../../../components/ui';
 import { ConfirmModal } from '../../../components/ui/ConfirmModal';
+import { AttachmentPreviewModal } from './AttachmentPreview';
 
 /* ── Helpers ── */
 
@@ -49,150 +47,6 @@ function validateFile(file: File): string | null {
   const ext = file.name.split('.').pop()?.toLowerCase() ?? '';
   if (!ALLOWED_EXTENSIONS.includes(ext)) return `Tipo no permitido (.${ext}). Tipos: ${ALLOWED_EXTENSIONS.join(', ')}.`;
   return null;
-}
-
-/* ── Attachment Preview Modal ── */
-
-export function AttachmentPreviewModal({
-  attachment,
-  open,
-  onClose,
-}: {
-  attachment: Attachment | null;
-  open: boolean;
-  onClose: () => void;
-}) {
-  const [url, setUrl] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
-
-  // Reset state when attachment changes, derive initial loading from open state
-  const attachmentId = open && attachment ? attachment.id : null;
-
-  useEffect(() => {
-    if (attachmentId == null) return;
-    let cancelled = false;
-    attachmentsApi.getSignedUrl(attachmentId)
-      .then((res) => { if (!cancelled) { setUrl(res.url); setLoading(false); } })
-      .catch((err) => {
-        if (!cancelled) { setError(err instanceof ApiError ? err.data.message : 'No se pudo cargar el archivo'); setLoading(false); }
-      });
-    return () => {
-      cancelled = true;
-      setUrl(null);
-      setLoading(true);
-      setError('');
-    };
-  }, [attachmentId]);
-
-  if (!attachment) return null;
-
-  const imageFile = isImage(attachment.extension);
-
-  return (
-    <AnimatePresence>
-      {open && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          className="fixed inset-0 z-50 flex items-center justify-center p-4"
-        >
-          <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.15 }}
-            className="relative w-full max-w-3xl rounded-sm bg-white dark:bg-cyber-grafito shadow-xl overflow-hidden"
-          >
-            {/* Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-6 py-4">
-              <div className="min-w-0 flex-1">
-                <h3 className="truncate text-lg font-semibold text-slate-900 dark:text-white">{attachment.original_name}</h3>
-                <p className="text-xs text-slate-400 dark:text-slate-500">
-                  {formatBytes(attachment.size_processed ?? attachment.size_original)} · Subido por {attachment.uploader?.name ?? 'Desconocido'}
-                </p>
-              </div>
-              <button type="button" onClick={onClose} className="ml-4 rounded-lg p-1.5 text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-600 dark:hover:text-slate-300">
-                <HiOutlineX className="h-5 w-5" />
-              </button>
-            </div>
-
-            {/* Body */}
-            <div className="flex items-center justify-center bg-slate-50 dark:bg-white/5 p-6" style={{ minHeight: 300 }}>
-              {loading && (
-                <div className="flex flex-col items-center gap-2 text-slate-400 dark:text-slate-500">
-                  <HiOutlineRefresh className="h-8 w-8 animate-spin" />
-                  <span className="text-sm">Cargando vista previa…</span>
-                </div>
-              )}
-              {error && (
-                <div className="flex flex-col items-center gap-2 text-red-500 dark:text-red-400">
-                  <HiOutlineExclamationCircle className="h-8 w-8" />
-                  <span className="text-sm">{error}</span>
-                </div>
-              )}
-              {!loading && !error && url && imageFile && (
-                <img src={url} alt={attachment.original_name} className="max-h-[60vh] max-w-full rounded-lg object-contain" />
-              )}
-              {!loading && !error && url && !imageFile && (
-                <div className="flex flex-col items-center gap-3 text-slate-500 dark:text-slate-400">
-                  <HiOutlineDocumentText className="h-16 w-16" />
-                  <p className="text-sm">Vista previa no disponible para este tipo de archivo.</p>
-                  <a
-                    href={url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light"
-                  >
-                    <HiOutlineDownload className="h-4 w-4" /> Descargar archivo
-                  </a>
-                </div>
-              )}
-            </div>
-
-            {/* Footer */}
-            {url && (
-              <div className="flex justify-end gap-2 border-t border-slate-200 dark:border-white/5 px-6 py-3">
-                <DownloadButton attachmentId={attachment.id} label="Descargar" />
-              </div>
-            )}
-          </motion.div>
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-}
-
-/* ── Download Button (requests download signed URL) ── */
-
-function DownloadButton({ attachmentId, label }: { attachmentId: number; label: string }) {
-  const [loading, setLoading] = useState(false);
-
-  const handleDownload = async () => {
-    setLoading(true);
-    try {
-      const { url } = await attachmentsApi.getSignedUrl(attachmentId, true);
-      window.open(url, '_blank', 'noopener');
-    } catch {
-      // silent fail — user can retry
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  return (
-    <button
-      type="button"
-      onClick={handleDownload}
-      disabled={loading}
-      className="inline-flex items-center gap-1.5 rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light disabled:opacity-50"
-    >
-      <HiOutlineDownload className="h-4 w-4" />
-      {loading ? 'Generando enlace…' : label}
-    </button>
-  );
 }
 
 /* ── Attachment Thumbnail ── */
@@ -268,7 +122,7 @@ function AttachmentThumbnail({
             className="rounded-lg bg-white/90 dark:bg-cyber-grafito/90 p-1.5 text-slate-600 dark:text-slate-400 shadow-sm hover:bg-white dark:hover:bg-white/5 hover:text-cyber-radar dark:hover:text-cyber-radar-light"
             title="Ver"
           >
-            <HiOutlineEye className="h-4 w-4" />
+            <HiOutlineEye className="h-5 w-5" />
           </button>
           {canDelete && (
             <button
@@ -277,7 +131,7 @@ function AttachmentThumbnail({
               className="rounded-lg bg-white/90 dark:bg-cyber-grafito/90 p-1.5 text-slate-600 dark:text-slate-400 shadow-sm hover:bg-white dark:hover:bg-white/5 hover:text-red-600 dark:hover:text-red-400"
               title="Eliminar"
             >
-              <HiOutlineTrash className="h-4 w-4" />
+              <HiOutlineTrash className="h-5 w-5" />
             </button>
           )}
         </div>
@@ -320,8 +174,8 @@ export function TaskAttachmentsV2({
 
   const canDeleteAttachment = (a: Attachment) => {
     if (isSuperAdmin) return true;
-    if (isManager) return true; // manager can delete attachments from their areas
-    return a.uploaded_by === Number(user?.id); // worker can only delete own
+    if (isManager) return true;
+    return a.uploaded_by === Number(user?.id);
   };
 
   const handleDelete = async () => {
@@ -340,17 +194,16 @@ export function TaskAttachmentsV2({
 
   const hasAttachments = attachments.length > 0;
 
-  // Don't render anything until we know there are attachments to show
   if (!loading && !hasAttachments) return null;
 
   return (
     <>
       <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
         <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
-          <HiOutlinePaperClip className="h-5 w-5 text-cyber-navy dark:text-cyber-radar-light" />
+          <HiOutlinePaperClip className="h-6 w-6 text-cyber-navy dark:text-cyber-radar-light" />
           Adjuntos
           {hasAttachments && (
-            <span className="rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 px-2 py-0.5 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light">
+            <span className="rounded-full bg-cyber-navy/5 dark:bg-cyber-navy/20/30 px-2 py-0.5 text-xs font-medium text-cyber-navy dark:text-cyber-radar-light">
               {attachments.length}
             </span>
           )}
@@ -457,40 +310,27 @@ export function UploadFormPanelV2({
       <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
         <h3 className="mb-3 font-semibold text-slate-900 dark:text-white">Subir archivo</h3>
         <div className="space-y-3">
-          <div className="flex items-center justify-center rounded-sm border-2 border-dashed border-slate-200 dark:border-white/10 bg-slate-50 dark:bg-white/5 p-6 transition-colors hover:border-cyber-radar/30 dark:hover:border-cyber-radar">
-            <label className="flex cursor-pointer flex-col items-center gap-2 text-center">
-              <HiOutlinePaperClip className="h-8 w-8 text-slate-400 dark:text-slate-500" />
-              <span className="text-sm text-slate-600 dark:text-slate-400">
-                {file ? file.name : 'Selecciona o arrastra un archivo'}
-              </span>
-              <input
-                type="file"
-                accept={ALLOWED_EXTENSIONS.map(e => `.${e}`).join(',')}
-                onChange={handleFileChange}
-                className="hidden"
-              />
-              {file && (
-                <span className="text-xs text-slate-400 dark:text-slate-500">{formatBytes(file.size)}</span>
-              )}
-            </label>
-          </div>
+          <input
+            type="file"
+            accept={ALLOWED_EXTENSIONS.map((e) => `.${e}`).join(',')}
+            onChange={handleFileChange}
+            className="block w-full text-sm text-slate-500 dark:text-slate-400 file:mr-4 file:rounded-sm file:border-0 file:bg-cyber-radar/10 dark:file:bg-cyber-radar/20 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-cyber-radar dark:file:text-cyber-radar-light hover:file:bg-cyber-radar/20 dark:hover:file:bg-cyber-radar/20"
+          />
           {fileError && <p className="text-sm text-red-500 dark:text-red-400">{fileError}</p>}
-          <p className="text-xs text-slate-400 dark:text-slate-500">
-            Máx. 20 MB. Tipos: {ALLOWED_EXTENSIONS.join(', ')}
-          </p>
+          <p className="text-xs text-slate-400 dark:text-slate-500">Máx. {MAX_FILE_SIZE / 1024 / 1024} MB. Tipos: {ALLOWED_EXTENSIONS.join(', ')}</p>
           <div className="flex gap-2">
             <button
               type="button"
               onClick={handleUpload}
               disabled={!file || uploading}
-              className="rounded-sm bg-cyber-radar px-4 py-2 text-sm font-medium text-white hover:bg-cyber-radar-light disabled:opacity-50"
+              className="rounded-sm bg-cyber-radar px-5 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-cyber-radar-light active:scale-[0.98] disabled:opacity-50"
             >
               {uploading ? 'Subiendo…' : 'Subir'}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-white/5"
+              className="rounded-sm border border-slate-200 dark:border-white/10 px-5 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5"
             >
               Cancelar
             </button>
