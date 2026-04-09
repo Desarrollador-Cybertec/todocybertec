@@ -5,7 +5,6 @@ import type {
   CreateTaskRequest,
   UpdateTaskRequest,
   DelegateTaskRequest,
-  ApproveTaskRequest,
   RejectTaskRequest,
   AddCommentRequest,
   AddUpdateRequest,

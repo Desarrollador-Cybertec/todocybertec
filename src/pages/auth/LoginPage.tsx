@@ -9,7 +9,6 @@ import { useAuth } from '../../context/useAuth';
 import { loginSchema, type LoginFormData } from '../../schemas';
 import { ApiError } from '../../api/client';
 import { Spinner } from '../../components/ui';
-import { CybertecLogo } from '../../components/ui/CybertecLogo';
 
 export function LoginPage() {
   const { login } = useAuth();
@@ -79,7 +78,7 @@ export function LoginPage() {
             transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
             className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-cyber-navy to-cyber-navy/80 shadow-xl shadow-cyber-navy/40 ring-1 ring-white/10"
           >
-            <CybertecLogo variant="isotipo" size="lg" />
+            <img src="/isotipo.png" alt="S!NTyC" className="h-14 w-14 object-contain" />
           </m.div>
           <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">S!NTyC</h1>
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema Integral de Tareas y Compromisos</p>
@@ -175,9 +174,11 @@ export function LoginPage() {
             </button>
           </form>
 
-          <div className="mt-4 flex flex-col items-center gap-0 border-t border-slate-100 dark:border-white/5 pt-4">
+          <div className="mt-4 flex flex-col items-center gap-2 border-t border-slate-100 dark:border-white/5 pt-4">
             <p className="text-[9px] uppercase tracking-widest text-slate-400 dark:text-white/25">Powered by</p>
-            <img src="/logotipo.png" alt="S!NTyC" className="-mt-2 h-30 w-auto opacity-50 dark:opacity-40 brightness-0 dark:brightness-100" />
+            <div className="flex items-center justify-center rounded-2xl bg-linear-to-br from-cyber-navy to-cyber-navy/80 px-4 py-2 shadow-lg shadow-cyber-navy/30 ring-1 ring-white/10">
+              <img src="/logotipo.png" alt="S!NTyC" className="h- w-auto object-contain" />
+            </div>
           </div>
         </div>
       </m.div>
