@@ -1,6 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
+import { LazyMotion, domAnimation } from 'framer-motion'
 import { AuthProvider } from './context/AuthContext'
 import { LicenseProvider } from './context/LicenseContext'
 import { NotificationProvider } from './context/NotificationContext'
@@ -11,15 +12,17 @@ import App from './App.tsx'
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <ThemeProvider>
-        <AuthProvider>
-          <LicenseProvider>
-            <NotificationProvider>
-              <App />
-            </NotificationProvider>
-          </LicenseProvider>
-        </AuthProvider>
-      </ThemeProvider>
+      <LazyMotion features={domAnimation} strict>
+        <ThemeProvider>
+          <AuthProvider>
+            <LicenseProvider>
+              <NotificationProvider>
+                <App />
+              </NotificationProvider>
+            </LicenseProvider>
+          </AuthProvider>
+        </ThemeProvider>
+      </LazyMotion>
     </BrowserRouter>
   </StrictMode>,
 )

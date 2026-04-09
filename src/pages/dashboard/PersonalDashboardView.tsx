@@ -282,8 +282,8 @@ export function PersonalDashboardView() {
               Ayuda rápida
             </h3>
             <div className="space-y-2">
-              {TIPS.slice(0, 3).map((tip, i) => (
-                <div key={i} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
+              {TIPS.slice(0, 3).map((tip) => (
+                <div key={tip.text} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
                   <span className="mt-0.5 text-sm shrink-0">{tip.icon}</span>
                   <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
                 </div>

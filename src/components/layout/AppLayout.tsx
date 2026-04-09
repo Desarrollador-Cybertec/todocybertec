@@ -1,6 +1,6 @@
-﻿import { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, Outlet, useLocation, useNavigate, NavLink } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { useAuth } from '../../context/useAuth';
 import { Role, ROLE_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { areasApi } from '../../api/areas';
@@ -117,7 +117,7 @@ export function AppLayout() {
       {/* Mobile overlay */}
       <AnimatePresence>
         {sidebarOpen && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}

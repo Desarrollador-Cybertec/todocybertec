@@ -47,3 +47,13 @@ body {
 .dark .login-dot-grid {
   background-image: radial-gradient(circle, rgba(27,146,208,0.06) 1px, transparent 1px);
 }
+
+/* ── Accessibility: respect reduced-motion preference (WCAG 2.3.3) ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

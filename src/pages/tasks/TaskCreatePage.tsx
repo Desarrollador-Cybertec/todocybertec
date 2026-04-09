@@ -261,8 +261,7 @@ export function TaskCreatePage() {
                     {/* responsible */}
                     {isWorker ? (
                       <div>
-                        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Destino</label>
-                        <div className="flex gap-2">
+                        <span id="destLabel" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Destino</span>\n                        <div className="flex gap-2" role="group" aria-labelledby="destLabel">
                           <button
                             type="button"
                             onClick={() => { setWorkerDest('self'); setValue('assigned_to_user_id', user?.id ?? null); setValue('external_email', ''); setValue('external_name', ''); }}

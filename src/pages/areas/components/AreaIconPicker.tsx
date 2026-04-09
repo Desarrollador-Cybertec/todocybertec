@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect, useCallback } from 'react';
 import { AREA_ICONS } from '../../../utils/areaIconDefs';
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi';
 
@@ -12,6 +12,13 @@ export function AreaIconPicker({ value, onChange, label = 'Icono del área' }: P
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
   const ref = useRef<HTMLDivElement>(null);
+  const searchRef = useRef<HTMLInputElement>(null);
+
+  const focusSearch = useCallback(() => {
+    if (open && searchRef.current) searchRef.current.focus();
+  }, [open]);
+
+  useEffect(focusSearch, [focusSearch]);
 
   const current = AREA_ICONS.find((i) => i.key === value) ?? AREA_ICONS[0];
   const Icon = current.icon;
@@ -52,7 +59,7 @@ export function AreaIconPicker({ value, onChange, label = 'Icono del área' }: P
             <div className="relative">
               <HiOutlineSearch className="absolute left-2.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
               <input
-                autoFocus
+                ref={searchRef}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar icono..."

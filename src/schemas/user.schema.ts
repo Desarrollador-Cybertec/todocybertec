@@ -41,16 +41,5 @@ export const updateUserSchema = z
     },
   );
 
-export const changePasswordSchema = z
-  .object({
-    password: passwordRules,
-    password_confirmation: z.string().min(1, 'Confirma la contraseña'),
-  })
-  .refine((data) => data.password === data.password_confirmation, {
-    message: 'Las contraseñas no coinciden',
-    path: ['password_confirmation'],
-  });
-
 export type CreateUserFormData = z.infer<typeof createUserSchema>;
 export type UpdateUserFormData = z.infer<typeof updateUserSchema>;
-export type ChangePasswordFormData = z.infer<typeof changePasswordSchema>;

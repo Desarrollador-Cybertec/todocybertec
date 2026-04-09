@@ -1,11 +1,11 @@
-﻿import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { areasApi } from '../../../api/areas';
 import { usersApi } from '../../../api/users';
 import { ApiError } from '../../../api/client';
 import { Role, ADMIN_ROLES, MANAGER_ROLES } from '../../../types/enums';
 import type { Area, User } from '../../../types';
 import { HiOutlineCheckCircle, HiOutlineTrash, HiOutlineExclamationCircle } from 'react-icons/hi';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { FadeIn, SlideDown, Badge, SkeletonDetail, Spinner } from '../../../components/ui';
 import { AreaIconDisplay } from '../../../utils/areaIcons';
 import { AreaIconPicker } from './AreaIconPicker';
@@ -217,7 +217,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
           </div>
           <AnimatePresence>
             {showManagerSelect && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -247,7 +247,7 @@ export function AreaInfoSection({ areaId, userRole, refreshKey, onDelete }: Area
                 {managerMsg && (
                   <p className="mt-1.5 text-xs font-medium text-green-600 dark:text-green-400">{managerMsg}</p>
                 )}
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </div>

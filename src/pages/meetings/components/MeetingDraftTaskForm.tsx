@@ -1,4 +1,4 @@
-﻿import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { HiOutlineCheck, HiOutlineX } from 'react-icons/hi';
 import { TASK_PRIORITY_LABELS } from '../../../types/enums';
 import type { TaskPriorityType } from '../../../types/enums';
@@ -46,7 +46,7 @@ export function MeetingDraftTaskForm({
   onAssigneeChange,
 }: Props) {
   return (
-    <motion.div
+    <m.div
       initial={{ opacity: 0, height: 0 }}
       animate={{ opacity: 1, height: 'auto' }}
       exit={{ opacity: 0, height: 0 }}
@@ -55,8 +55,9 @@ export function MeetingDraftTaskForm({
     >
       <div className="rounded-sm border border-cyber-radar/20 dark:border-cyber-radar/20 bg-cyber-radar/5/30 dark:bg-cyber-radar/20/20 p-4 space-y-3">
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Título *</label>
+          <label htmlFor="draftTitle" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Título *</label>
           <input
+            id="draftTitle"
             value={form.title}
             onChange={(e) => setForm((f) => ({ ...f, title: e.target.value }))}
             placeholder="Ej: Enviar informe semanal"
@@ -66,8 +67,9 @@ export function MeetingDraftTaskForm({
 
         <div className="grid gap-3 sm:grid-cols-3">
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Responsable</label>
+            <label htmlFor="draftAssignee" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Responsable</label>
             <select
+              id="draftAssignee"
               value={assigneeValue}
               onChange={(e) => onAssigneeChange(e.target.value)}
               className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-4 py-2 text-sm focus:border-cyber-radar focus:outline-none text-slate-900 dark:text-white"
@@ -95,8 +97,9 @@ export function MeetingDraftTaskForm({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</label>
+            <label htmlFor="draftPriority" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</label>
             <select
+              id="draftPriority"
               value={form.priority}
               onChange={(e) =>
                 setForm((f) => ({ ...f, priority: e.target.value as TaskPriorityType }))
@@ -112,8 +115,9 @@ export function MeetingDraftTaskForm({
           </div>
 
           <div>
-            <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Fecha límite</label>
+            <label htmlFor="draftDueDate" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Fecha límite</label>
             <input
+              id="draftDueDate"
               type="date"
               value={form.due_date}
               onChange={(e) => setForm((f) => ({ ...f, due_date: e.target.value }))}
@@ -123,8 +127,9 @@ export function MeetingDraftTaskForm({
         </div>
 
         <div>
-          <label className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
+          <label htmlFor="draftDescription" className="mb-1 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
           <textarea
+            id="draftDescription"
             rows={2}
             value={form.description}
             onChange={(e) => setForm((f) => ({ ...f, description: e.target.value }))}
@@ -194,6 +199,6 @@ export function MeetingDraftTaskForm({
           </button>
         </div>
       </div>
-    </motion.div>
+    </m.div>
   );
 }

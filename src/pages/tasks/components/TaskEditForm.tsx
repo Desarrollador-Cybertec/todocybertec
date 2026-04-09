@@ -1,4 +1,4 @@
-﻿import {  motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { HiOutlineX } from 'react-icons/hi';
 import { TASK_PRIORITY_LABELS } from '../../../types/enums';
 import { Spinner } from '../../../components/ui';
@@ -31,7 +31,7 @@ export function TaskEditForm({
   saving, onSave, onCancel,
 }: Props) {
   return (
-    <motion.div
+    <m.div
       key="edit-mode"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -46,8 +46,9 @@ export function TaskEditForm({
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Título</label>
+        <label htmlFor="editTitle" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Título</label>
         <input
+          id="editTitle"
           type="text"
           value={editTitle}
           onChange={(e) => setEditTitle(e.target.value)}
@@ -56,8 +57,9 @@ export function TaskEditForm({
       </div>
 
       <div>
-        <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
+        <label htmlFor="editDescription" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
         <textarea
+          id="editDescription"
           value={editDescription}
           onChange={(e) => setEditDescription(e.target.value)}
           rows={3}
@@ -67,8 +69,9 @@ export function TaskEditForm({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div>
-          <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</label>
+          <label htmlFor="editPriority" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</label>
           <select
+            id="editPriority"
             value={editPriority}
             onChange={(e) => setEditPriority(e.target.value)}
             className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
@@ -96,7 +99,7 @@ export function TaskEditForm({
           {saving ? <><Spinner size="sm" /> Guardando...</> : 'Guardar cambios'}
         </button>
       </div>
-    </motion.div>
+    </m.div>
   );
 }
 

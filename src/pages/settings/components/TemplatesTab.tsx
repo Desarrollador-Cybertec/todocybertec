@@ -97,8 +97,9 @@ export function TemplatesTab({
             </div>
             <div className="space-y-2">
               <div>
-                <label className="text-xs font-medium text-slate-500 dark:text-slate-400">Asunto</label>
+                <label htmlFor={`subject-${t.id}`} className="text-xs font-medium text-slate-500 dark:text-slate-400">Asunto</label>
                 <input
+                  id={`subject-${t.id}`}
                   type="text"
                   value={currentSubject}
                   onChange={(e) => updateTemplateDraft(t.id, { subject: e.target.value })}
@@ -111,8 +112,9 @@ export function TemplatesTab({
                 />
               </div>
               <div>
-                <label className="text-xs font-medium text-slate-500 dark:text-slate-400">Cuerpo</label>
+                <label htmlFor={`body-${t.id}`} className="text-xs font-medium text-slate-500 dark:text-slate-400">Cuerpo</label>
                 <textarea
+                  id={`body-${t.id}`}
                   value={currentBody}
                   onChange={(e) => updateTemplateDraft(t.id, { body: e.target.value })}
                   onFocus={(e) => { lastFocusedRef.current = { templateId: t.id, field: 'body', element: e.target }; }}

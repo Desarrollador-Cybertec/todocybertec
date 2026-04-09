@@ -1,8 +1,8 @@
-﻿import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { areasApi } from '../../api/areas';
 import { useAuth } from '../../context/useAuth';
 import { useLicense } from '../../context/useLicense';
@@ -195,7 +195,7 @@ export function AreaListPage() {
       {/* Edit modal */}
       <AnimatePresence>
         {editingArea && (
-          <motion.div
+          <m.div
             key="edit-modal"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -203,7 +203,7 @@ export function AreaListPage() {
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={() => setEditingArea(null)}
           >
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -221,8 +221,9 @@ export function AreaListPage() {
                   <AreaIconPicker value={editIconKey} onChange={setEditIconKey} />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
+                  <label htmlFor="areaEditName" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
                   <input
+                    id="areaEditName"
                     type="text"
                     {...editForm.register('name')}
                     className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-4 py-2.5 text-sm text-slate-900 dark:text-white transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
@@ -230,16 +231,18 @@ export function AreaListPage() {
                   {editForm.formState.errors.name && <p className="mt-1 text-xs text-red-500 dark:text-red-400">{editForm.formState.errors.name.message}</p>}
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
+                  <label htmlFor="areaEditDesc" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Descripción</label>
                   <textarea
+                    id="areaEditDesc"
                     {...editForm.register('description')}
                     rows={3}
                     className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-4 py-2.5 text-sm text-slate-900 dark:text-white transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 resize-none"
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Identificador de proceso</label>
+                  <label htmlFor="areaEditProcess" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Identificador de proceso</label>
                   <input
+                    id="areaEditProcess"
                     type="text"
                     {...editForm.register('process_identifier')}
                     className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-4 py-2.5 text-sm text-slate-900 dark:text-white transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
@@ -268,8 +271,8 @@ export function AreaListPage() {
                   </button>
                 </div>
               </form>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
 

@@ -1,5 +1,5 @@
-﻿import { useState, useEffect } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useState, useEffect } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
 import {
   HiOutlineDownload,
   HiOutlineExclamationCircle,
@@ -93,14 +93,14 @@ export function AttachmentPreviewModal({
   return (
     <AnimatePresence>
       {open && (
-        <motion.div
+        <m.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           className="fixed inset-0 z-50 flex items-center justify-center p-4"
         >
-          <div className="absolute inset-0 bg-black/60" onClick={onClose} />
-          <motion.div
+          <div className="absolute inset-0 bg-black/60" onClick={onClose} onKeyDown={(e) => e.key === 'Enter' && onClose()} role="button" tabIndex={0} aria-label="Cerrar" />
+          <m.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
@@ -159,8 +159,8 @@ export function AttachmentPreviewModal({
                 <DownloadButton attachmentId={attachment.id} label="Descargar" />
               </div>
             )}
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

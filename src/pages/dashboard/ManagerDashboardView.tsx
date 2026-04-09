@@ -347,8 +347,8 @@ export function ManagerDashboardView() {
           Consejos
         </h3>
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {TIPS.map((tip, i) => (
-            <div key={i} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
+          {TIPS.map((tip) => (
+            <div key={tip.text} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
               <span className="mt-0.5 shrink-0 text-sm">{tip.icon}</span>
               <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
             </div>

@@ -16,11 +16,5 @@ export const updateAreaSchema = z.object({
   icon_key: z.string().optional(),
 });
 
-export const claimWorkerSchema = z.object({
-  user_id: z.number({ message: 'Selecciona un trabajador' }).int().positive(),
-  area_id: z.number({ message: 'Selecciona un área' }).int().positive(),
-});
-
 export type CreateAreaFormData = z.infer<typeof createAreaSchema>;
 export type UpdateAreaFormData = z.infer<typeof updateAreaSchema>;
-export type ClaimWorkerFormData = z.infer<typeof claimWorkerSchema>;

@@ -1,5 +1,5 @@
-﻿import { useEffect, useState, useCallback, useRef } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect, useState, useCallback, useRef } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
 import { settingsApi } from '../../api/settings';
 import { rolesApi } from '../../api/roles';
 import { ApiError } from '../../api/client';
@@ -243,14 +243,14 @@ export function SettingsPage() {
       {/* Confirmation Modal */}
       <AnimatePresence>
         {confirmAction && (
-          <motion.div
+          <m.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
             onClick={() => setConfirmAction(null)}
           >
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.95 }}
@@ -275,8 +275,8 @@ export function SettingsPage() {
                   Confirmar
                 </button>
               </div>
-            </motion.div>
-          </motion.div>
+            </m.div>
+          </m.div>
         )}
       </AnimatePresence>
 
@@ -308,7 +308,7 @@ export function SettingsPage() {
             }`}
           >
             {activeTab === tab.key && (
-              <motion.div
+              <m.div
                 layoutId="settings-tab"
                 className="absolute inset-0 rounded-lg bg-white dark:bg-cyber-grafito shadow-sm text-slate-900 dark:text-white"
                 transition={{ type: 'spring', bounce: 0.15, duration: 0.5 }}
@@ -326,7 +326,7 @@ export function SettingsPage() {
         </div>
       ) : (
         <AnimatePresence mode="wait">
-          <motion.div
+          <m.div
             key={activeTab}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
@@ -379,7 +379,7 @@ export function SettingsPage() {
             {activeTab === 'import' && (
               <ImportTab onSuccess={showMessage} onError={showError} />
             )}
-          </motion.div>
+          </m.div>
         </AnimatePresence>
       )}
     </PageTransition>

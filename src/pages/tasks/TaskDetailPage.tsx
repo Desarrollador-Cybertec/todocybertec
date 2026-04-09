@@ -1,8 +1,8 @@
-﻿import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { tasksApi } from '../../api/tasks';
 import { useAuth } from '../../context/useAuth';
 import { ApiError } from '../../api/client';
@@ -256,7 +256,7 @@ export function TaskDetailPage() {
                 onCancel={edit.cancelEditing}
               />
             ) : (
-              <motion.div key="view-mode" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+              <m.div key="view-mode" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <div className="flex flex-wrap items-start justify-between gap-4">
             <div>
               <h2 className="text-2xl font-bold text-slate-900 dark:text-white">{task.title}</h2>
@@ -389,7 +389,7 @@ export function TaskDetailPage() {
               )
             )}
           </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
         </FadeIn>

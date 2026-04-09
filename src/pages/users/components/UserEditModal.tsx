@@ -1,5 +1,5 @@
-﻿import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
 import { HiOutlineX, HiOutlineLockClosed } from 'react-icons/hi';
 import { Role, ADMIN_ROLES } from '../../../types/enums';
 import type { Area, RoleInfo } from '../../../types';
@@ -60,7 +60,7 @@ export function UserEditModal({
   return (
     <AnimatePresence>
       {editingUserId != null && (
-        <motion.div
+        <m.div
           key="edit-panel"
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -68,7 +68,7 @@ export function UserEditModal({
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 p-4"
           onClick={onCancel}
         >
-          <motion.div
+          <m.div
             initial={{ opacity: 0, scale: 0.95, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
@@ -85,8 +85,9 @@ export function UserEditModal({
             <div className="space-y-4">
               <div className="grid gap-4 sm:grid-cols-2">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
+                  <label htmlFor="editName" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre</label>
                   <input
+                    id="editName"
                     type="text"
                     value={editName}
                     onChange={(e) => setEditName(e.target.value)}
@@ -94,8 +95,9 @@ export function UserEditModal({
                   />
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Correo</label>
+                  <label htmlFor="editEmail" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Correo</label>
                   <input
+                    id="editEmail"
                     type="email"
                     value={editEmail}
                     onChange={(e) => setEditEmail(e.target.value)}
@@ -106,8 +108,9 @@ export function UserEditModal({
 
               {editOriginalRoleSlug !== Role.SUPERADMIN && (
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Rol</label>
+                  <label htmlFor="editRoleId" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Rol</label>
                   <select
+                    id="editRoleId"
                     value={editRoleId}
                     onChange={(e) => setEditRoleId(Number(e.target.value))}
                     className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
@@ -143,7 +146,7 @@ export function UserEditModal({
 
               {!ADMIN_ROLES.includes(editOriginalRoleSlug as typeof Role[keyof typeof Role]) && (
                 <div className="rounded-sm border border-cyber-navy/10 dark:border-cyber-navy/20 bg-cyber-navy/5/50 dark:bg-cyber-navy/20/20 p-4">
-                  <label className="mb-1.5 block text-sm font-semibold text-cyber-navy dark:text-cyber-radar-light">Asignar a un área</label>
+                  <label htmlFor="editAreaId" className="mb-1.5 block text-sm font-semibold text-cyber-navy dark:text-cyber-radar-light">Asignar a un área</label>
                   <p className="mb-2 text-xs text-cyber-navy dark:text-cyber-radar-light dark:text-cyber-radar-light/70">Selecciona un área para agregar a este usuario como miembro.</p>
                   {editAreaLoading ? (
                     <div className="flex items-center gap-2 py-2 text-sm text-cyber-navy dark:text-cyber-radar-light">
@@ -151,6 +154,7 @@ export function UserEditModal({
                     </div>
                   ) : (
                     <select
+                      id="editAreaId"
                       value={editAreaId}
                       onChange={(e) => setEditAreaId(e.target.value)}
                       className="w-full rounded-sm border border-slate-300 dark:border-white/10 bg-white dark:bg-cyber-grafito px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20 text-slate-900 dark:text-white"
@@ -184,8 +188,9 @@ export function UserEditModal({
                   {showPasswordSection && (
                     <div className="mt-3 space-y-3">
                       <div>
-                        <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Nueva contraseña</label>
+                        <label htmlFor="newPassword" className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Nueva contraseña</label>
                         <input
+                          id="newPassword"
                           type="password"
                           value={newPassword}
                           onChange={(e) => { setNewPassword(e.target.value); setPasswordError(''); }}
@@ -194,8 +199,9 @@ export function UserEditModal({
                         />
                       </div>
                       <div>
-                        <label className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Confirmar contraseña</label>
+                        <label htmlFor="newPasswordConfirm" className="mb-1 block text-xs font-medium text-slate-600 dark:text-slate-400">Confirmar contraseña</label>
                         <input
+                          id="newPasswordConfirm"
                           type="password"
                           value={newPasswordConfirm}
                           onChange={(e) => { setNewPasswordConfirm(e.target.value); setPasswordError(''); }}
@@ -245,8 +251,8 @@ export function UserEditModal({
                 </button>
               </div>
             </div>
-          </motion.div>
-        </motion.div>
+          </m.div>
+        </m.div>
       )}
     </AnimatePresence>
   );

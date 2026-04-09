@@ -1,6 +1,6 @@
-﻿import { useTheme } from '../../context/ThemeContext';
+import { useTheme } from '../../context/ThemeContext';
 import { HiOutlineSun, HiOutlineMoon } from 'react-icons/hi';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 
 export function DarkModeToggle() {
   const { dark, toggle } = useTheme();
@@ -14,7 +14,7 @@ export function DarkModeToggle() {
     >
       <AnimatePresence mode="wait" initial={false}>
         {dark ? (
-          <motion.span
+          <m.span
             key="sun"
             initial={{ rotate: -90, opacity: 0 }}
             animate={{ rotate: 0, opacity: 1 }}
@@ -22,9 +22,9 @@ export function DarkModeToggle() {
             transition={{ duration: 0.15 }}
           >
             <HiOutlineSun className="h-6 w-6 text-white" />
-          </motion.span>
+          </m.span>
         ) : (
-          <motion.span
+          <m.span
             key="moon"
             initial={{ rotate: 90, opacity: 0 }}
             animate={{ rotate: 0, opacity: 1 }}
@@ -32,7 +32,7 @@ export function DarkModeToggle() {
             transition={{ duration: 0.15 }}
           >
             <HiOutlineMoon className="h-6 w-6 text-white" />
-          </motion.span>
+          </m.span>
         )}
       </AnimatePresence>
     </button>

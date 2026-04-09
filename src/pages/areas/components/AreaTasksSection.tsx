@@ -1,11 +1,11 @@
-﻿import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { tasksApi } from '../../../api/tasks';
 import { areasApi } from '../../../api/areas';
 import { ApiError } from '../../../api/client';
 import { TASK_STATUS_LABELS, TASK_PRIORITY_LABELS, WORKER_ROLES } from '../../../types/enums';
 import type { Task } from '../../../types';
 import { HiOutlineUserAdd, HiOutlineCheckCircle, HiOutlineX } from 'react-icons/hi';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, m } from 'framer-motion';
 import { FadeIn, SlideDown, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT, SkeletonCard, Spinner } from '../../../components/ui';
 import { formatDate } from '../../../utils';
 
@@ -150,7 +150,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
 
               <AnimatePresence>
                 {assigningTaskId === task.id && (
-                  <motion.div
+                  <m.div
                     initial={{ opacity: 0, height: 0, marginTop: 0 }}
                     animate={{ opacity: 1, height: 'auto', marginTop: 12 }}
                     exit={{ opacity: 0, height: 0, marginTop: 0 }}
@@ -177,7 +177,7 @@ export function AreaTasksSection({ areaId, isManager, refreshKey }: AreaTasksSec
                         Asignar
                       </button>
                     </div>
-                  </motion.div>
+                  </m.div>
                 )}
               </AnimatePresence>
             </div>

@@ -1,5 +1,5 @@
-﻿import { useState, useEffect, useCallback } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
+import { useState, useEffect, useCallback } from 'react';
+import { AnimatePresence, m } from 'framer-motion';
 import {
   HiOutlinePlus,
   HiOutlinePencil,
@@ -282,7 +282,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
               {editingId === draft.tempId ? (
                 <AnimatePresence><MeetingDraftTaskForm {...draftFormProps} isEditing onSave={saveEdit} /></AnimatePresence>
               ) : (
-                <motion.div
+                <m.div
                   layout
                   initial={{ opacity: 0, y: -8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -320,7 +320,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
                       <HiOutlineTrash className="h-5 w-5" />
                     </button>
                   </div>
-                </motion.div>
+                </m.div>
               )}
             </div>
           ))}

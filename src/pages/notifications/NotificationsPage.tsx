@@ -133,6 +133,9 @@ export function NotificationsPage() {
                 <div
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleNotificationClick(notification)}
+                  role="button"
+                  tabIndex={0}
                   className={`p-4 rounded-lg border transition-all cursor-pointer hover:shadow-md ${
                     isUnread
                       ? `border-cyber-radar/20 dark:border-cyber-radar/20 ${iconConfig.bgColor}`

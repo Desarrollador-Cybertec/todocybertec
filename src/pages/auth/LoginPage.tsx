@@ -1,8 +1,8 @@
-﻿import { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion, AnimatePresence } from 'framer-motion';
+import { m, AnimatePresence } from 'framer-motion';
 import { sileo } from 'sileo';
 import { HiOutlineMail, HiOutlineLockClosed, HiOutlineExclamationCircle } from 'react-icons/hi';
 import { useAuth } from '../../context/useAuth';
@@ -66,21 +66,21 @@ export function LoginPage() {
 
   return (
     <div className="login-dot-grid flex min-h-screen items-center justify-center bg-slate-50 dark:bg-cyber-deep px-4">
-      <motion.div
+      <m.div
         initial={{ opacity: 0, y: 24 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: 'easeOut' }}
         className="w-full max-w-md"
       >
         <div className="mb-8 text-center">
-          <motion.div
+          <m.div
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ delay: 0.15, duration: 0.4, ease: 'easeOut' }}
             className="mx-auto mb-5 flex h-20 w-20 items-center justify-center rounded-2xl bg-gradient-to-br from-cyber-navy to-cyber-navy/80 shadow-xl shadow-cyber-navy/40 ring-1 ring-white/10"
           >
             <CybertecLogo variant="isotipo" size="lg" />
-          </motion.div>
+          </m.div>
           <h1 className="text-2xl font-black uppercase tracking-widest text-cyber-navy dark:text-white">S!NTyC</h1>
           <p className="mt-1 text-xs font-semibold uppercase tracking-[0.2em] text-slate-400 dark:text-slate-500">Sistema Integral de Tareas y Compromisos</p>
           <p className="mt-0.5 text-[10px] uppercase tracking-[0.15em] text-slate-300 dark:text-slate-600">Plataforma Cybertec</p>
@@ -91,7 +91,7 @@ export function LoginPage() {
 
           <AnimatePresence mode="wait">
             {serverError && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -101,10 +101,10 @@ export function LoginPage() {
                   <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                   {serverError}
                 </div>
-              </motion.div>
+              </m.div>
             )}
             {licenseError && (
-              <motion.div
+              <m.div
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: 'auto' }}
                 exit={{ opacity: 0, height: 0 }}
@@ -114,7 +114,7 @@ export function LoginPage() {
                   <HiOutlineExclamationCircle className="h-5 w-5 shrink-0" />
                   {licenseError}
                 </div>
-              </motion.div>
+              </m.div>
             )}
           </AnimatePresence>
 
@@ -180,7 +180,7 @@ export function LoginPage() {
             <img src="/logotipo.png" alt="S!NTyC" className="-mt-2 h-30 w-auto opacity-50 dark:opacity-40 brightness-0 dark:brightness-100" />
           </div>
         </div>
-      </motion.div>
+      </m.div>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export interface NotificationUnreadCountResponse {
   unread_count: number;
 }
 
-export interface NotificationIcon {
+interface NotificationIcon {
   emoji: string;
   label: string;
   color: string;

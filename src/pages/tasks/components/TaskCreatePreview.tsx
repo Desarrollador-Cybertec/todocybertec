@@ -96,8 +96,8 @@ export function TaskCreatePreview({
             <HiOutlineLightBulb className="h-5 w-5" /> Consejos
           </h4>
           <ul className="space-y-2">
-            {TIPS.map((tip, i) => (
-              <li key={i} className="flex gap-2 text-xs text-amber-700 dark:text-amber-400">
+            {TIPS.map((tip) => (
+              <li key={tip} className="flex gap-2 text-xs text-amber-700 dark:text-amber-400">
                 <span className="mt-0.5 h-1.5 w-1.5 shrink-0 rounded-full bg-amber-400" />
                 {tip}
               </li>

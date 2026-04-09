@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
+import { m } from 'framer-motion';
 import { dashboardApi } from '../../api/dashboard';
 import { areasApi } from '../../api/areas';
 import type { ConsolidatedDashboard, ConsolidatedArea } from '../../types';
@@ -54,7 +54,7 @@ export function ConsolidatedPage() {
 
       <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((card, i) => (
-          <motion.div
+          <m.div
             key={card.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -66,7 +66,7 @@ export function ConsolidatedPage() {
               <p className="text-xs font-semibold text-slate-600 dark:text-slate-300 truncate">{card.label}</p>
             </div>
             <p className={`text-xl font-black tabular-nums shrink-0 ${card.text}`}>{card.value}</p>
-          </motion.div>
+          </m.div>
         ))}
       </div>
 
@@ -88,7 +88,7 @@ export function ConsolidatedPage() {
             const statusEntries = Object.entries(byStatus).filter(([, c]) => c > 0);
 
             return (
-              <motion.div
+              <m.div
                 key={area.area_id}
                 initial={{ opacity: 0, y: 12 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -164,7 +164,7 @@ export function ConsolidatedPage() {
                     )}
                   </div>
                 )}
-              </motion.div>
+              </m.div>
             );
           })}
         </FadeIn>

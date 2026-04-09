@@ -128,6 +128,9 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                 <div
                   key={notification.id}
                   onClick={() => handleNotificationClick(notification)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleNotificationClick(notification)}
+                  role="button"
+                  tabIndex={0}
                   className={`p-4 cursor-pointer transition-colors ${
                     isUnread
                       ? iconConfig.bgColor

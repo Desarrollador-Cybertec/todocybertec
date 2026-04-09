@@ -52,13 +52,7 @@ export const addCommentSchema = z.object({
   comment: z.string().min(1, 'El comentario es obligatorio').max(2000),
 });
 
-export const cancelTaskSchema = z.object({
-  comment: z.string().min(1, 'El motivo de cancelación es obligatorio').max(2000),
-});
 
-export const reopenTaskSchema = z.object({
-  comment: z.string().min(1, 'El motivo de reapertura es obligatorio').max(2000),
-});
 
 export const addUpdateSchema = z.object({
   update_type: z.enum([UpdateType.PROGRESS, UpdateType.EVIDENCE, UpdateType.NOTE], {
@@ -74,6 +68,5 @@ export type DelegateTaskFormData = z.infer<typeof delegateTaskSchema>;
 export type ApproveTaskFormData = z.infer<typeof approveTaskSchema>;
 export type RejectTaskFormData = z.infer<typeof rejectTaskSchema>;
 export type AddCommentFormData = z.infer<typeof addCommentSchema>;
-export type CancelTaskFormData = z.infer<typeof cancelTaskSchema>;
-export type ReopenTaskFormData = z.infer<typeof reopenTaskSchema>;
+
 export type AddUpdateFormData = z.infer<typeof addUpdateSchema>;

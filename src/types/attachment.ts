@@ -1,14 +1,7 @@
 import type { User } from './user';
 
 export type ProcessingStatus = 'pending' | 'processing' | 'ready' | 'failed';
-export type VisibilityScope = 'user' | 'area' | 'task' | 'system';
-
-export const PROCESSING_STATUS_LABELS: Record<ProcessingStatus, string> = {
-  pending: 'Pendiente',
-  processing: 'Procesando',
-  ready: 'Listo',
-  failed: 'Error',
-};
+type VisibilityScope = 'user' | 'area' | 'task' | 'system';
 
 export interface Attachment {
   id: number;
@@ -36,10 +29,4 @@ export interface Attachment {
 export interface AttachmentSignedUrl {
   url: string;
   expires_at: string;
-}
-
-export interface UploadAttachmentRequest {
-  file: File;
-  task_id?: number;
-  area_id?: number;
 }

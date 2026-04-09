@@ -95,11 +95,12 @@ export function ProfilePage() {
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label htmlFor="profileName" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                 <HiOutlineUser className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                 Nombre
               </label>
               <input
+                id="profileName"
                 {...register('name')}
                 className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20"
               />
@@ -110,11 +111,12 @@ export function ProfilePage() {
               <p className="mb-3 text-xs text-slate-400 dark:text-slate-500">Deja en blanco si no quieres cambiar la contraseña.</p>
               <div className="space-y-3">
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label htmlFor="profilePassword" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                     Nueva contraseña
                   </label>
                   <input
+                    id="profilePassword"
                     type="password"
                     {...register('password')}
                     placeholder="••••••••"
@@ -123,11 +125,12 @@ export function ProfilePage() {
                   {errors.password && <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.password.message}</p>}
                 </div>
                 <div>
-                  <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label htmlFor="profilePasswordConfirm" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     <HiOutlineLockClosed className="mb-0.5 mr-1 inline h-5 w-5 text-slate-400 dark:text-slate-500" />
                     Confirmar contraseña
                   </label>
                   <input
+                    id="profilePasswordConfirm"
                     type="password"
                     {...register('password_confirmation')}
                     placeholder="••••••••"
