@@ -12,7 +12,8 @@ import { updateAreaSchema, type UpdateAreaFormData } from '../../schemas';
 import type { Area } from '../../types';
 import { HiOutlinePlus, HiOutlineUserGroup, HiOutlinePencil, HiOutlineTrash, HiOutlineX } from 'react-icons/hi';
 import { PageTransition, StaggerList, StaggerItem, EmptyState, SkeletonCard, Badge, ConfirmModal, Spinner } from '../../components/ui';
-import { AreaIconDisplay, DEFAULT_ICON_KEY } from '../../utils/areaIcons';
+import { AreaIconDisplay } from '../../utils/areaIcons';
+import { DEFAULT_ICON_KEY } from '../../utils/areaIconDefs';
 import { AreaIconPicker } from './components/AreaIconPicker';
 
 export function AreaListPage() {

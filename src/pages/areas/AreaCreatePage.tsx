@@ -12,7 +12,7 @@ import { sileo } from 'sileo';
 import type { User } from '../../types';
 import { ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { HiOutlineArrowLeft, HiOutlineExclamationCircle } from 'react-icons/hi';
-import { DEFAULT_ICON_KEY } from '../../utils/areaIcons';
+import { DEFAULT_ICON_KEY } from '../../utils/areaIconDefs';
 import { AreaIconPicker } from './components/AreaIconPicker';
 import { PageTransition, FadeIn, SlideDown, Spinner, ConfirmModal } from '../../components/ui';
 import { useNavigationGuard } from '../../utils/useNavigationGuard';

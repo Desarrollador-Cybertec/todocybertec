@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { AREA_ICONS } from '../../../utils/areaIcons';
+import { AREA_ICONS } from '../../../utils/areaIconDefs';
 import { HiOutlineSearch, HiOutlineX } from 'react-icons/hi';
 
 interface Props {
