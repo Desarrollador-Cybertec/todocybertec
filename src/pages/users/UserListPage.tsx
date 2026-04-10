@@ -305,7 +305,7 @@ export function UserListPage() {
           <FadeIn className="hidden overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm sm:block">
             <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
-              <thead className="border-b bg-slate-50/80 dark:bg-white/5/80">
+              <thead className="border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5">
                 <tr>
                   <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Usuario</th>
                   <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Correo</th>
@@ -314,12 +314,12 @@ export function UserListPage() {
                   <th className="px-6 py-3.5 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Acciones</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-50 dark:divide-white/5">
+              <tbody className="divide-y divide-slate-100 dark:divide-white/10">
                 {users.map((u) => (
-                  <tr key={u.id} className="group transition-colors hover:bg-slate-50 dark:hover:bg-white/5/50">
+                  <tr key={u.id} className="group transition-colors hover:bg-slate-50 dark:hover:bg-white/6">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
-                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-linear-to-br from-cyber-radar/10 dark:from-cyber-radar/20 to-cyber-navy/10 dark:to-cyber-navy/20 text-sm font-medium text-cyber-radar dark:text-cyber-radar-light">{u.name.charAt(0)}</span>
+                        <span className="flex h-8 w-8 items-center justify-center rounded-full bg-cyber-radar/15 dark:bg-cyber-radar/25 text-sm font-bold text-cyber-radar dark:text-cyber-radar-light">{u.name.charAt(0)}</span>
                         <span className="font-medium text-slate-900 dark:text-white">{u.name}</span>
                       </div>
                     </td>
@@ -335,7 +335,7 @@ export function UserListPage() {
                         <button
                           type="button"
                           onClick={() => startEditing(u)}
-                          className="rounded-lg bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 p-1.5 text-slate-500 dark:text-slate-400 transition-colors hover:bg-slate-100 dark:hover:bg-white/10 hover:text-slate-700 dark:hover:text-slate-300"
+                          className="rounded-lg bg-slate-100 dark:bg-white/10 border border-slate-200 dark:border-white/15 p-1.5 text-slate-500 dark:text-slate-300 transition-colors hover:bg-slate-200 dark:hover:bg-white/20 hover:text-slate-700 dark:hover:text-white"
                           title="Editar"
                         >
                           <HiOutlinePencil className="h-5 w-5" />

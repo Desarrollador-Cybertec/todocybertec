@@ -42,7 +42,7 @@ export function MiniStat({ label, value, icon, color, alert }: { label: string; 
     <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2">
-          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+          <span className={`flex h-8 w-8 items-center justify-center rounded-lg ${color}`}>{icon}</span>
           <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
         </div>
         <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>

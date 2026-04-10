@@ -17,16 +17,19 @@ import {
   HiOutlineCalendar,
   HiOutlineQuestionMarkCircle,
   HiOutlinePlus,
+  HiOutlineLightBulb,
+  HiOutlineRefresh,
+  HiOutlinePaperClip,
 } from 'react-icons/hi';
 import { FadeIn, SkeletonDashboard, Badge, PRIORITY_BADGE_VARIANT } from '../../components/ui';
 import { formatRelativeDate } from '../../utils';
 
 const TIPS = [
-  { icon: '💡', text: 'Una tarea con "Adjunto obligatorio" no se puede cerrar sin evidencia.' },
-  { icon: '🔄', text: 'Usa "Actualizar" para dejar comentario y porcentaje de avance.' },
-  { icon: '✅', text: 'Marca como resuelta solo cuando ya esté lista para revisión o cierre.' },
-  { icon: '📎', text: 'Puedes adjuntar archivos de evidencia en cualquier momento.' },
-  { icon: '⏰', text: 'Las tareas vencidas aparecen resaltadas en rojo para priorizar.' },
+  { icon: <HiOutlineLightBulb className="h-5 w-5 text-amber-500" />, text: 'Una tarea con "Adjunto obligatorio" no se puede cerrar sin evidencia.' },
+  { icon: <HiOutlineRefresh className="h-5 w-5 text-cyber-radar" />, text: 'Usa "Actualizar" para dejar comentario y porcentaje de avance.' },
+  { icon: <HiOutlineCheckCircle className="h-5 w-5 text-green-500" />, text: 'Marca como resuelta solo cuando ya esté lista para revisión o cierre.' },
+  { icon: <HiOutlinePaperClip className="h-5 w-5 text-slate-500" />, text: 'Puedes adjuntar archivos de evidencia en cualquier momento.' },
+  { icon: <HiOutlineClock className="h-5 w-5 text-amber-500" />, text: 'Las tareas vencidas aparecen resaltadas en rojo para priorizar.' },
 ];
 
 export function PersonalDashboardView() {
@@ -177,7 +180,7 @@ export function PersonalDashboardView() {
         {/* Lo importante hoy - 3 cols */}
         <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
           <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
-            <span className="text-xl">🔥</span>
+            <HiOutlineLightningBolt className="h-6 w-6 text-amber-500" />
             <div>
               <h3 className="font-semibold text-slate-900 dark:text-white">Lo importante hoy</h3>
               <p className="text-xs text-slate-500 dark:text-slate-400">Empieza por estas tareas para evitar atrasos.</p>
@@ -203,10 +206,10 @@ export function PersonalDashboardView() {
           <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen rápido</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-5 w-5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
-              <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-5 w-5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
-              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+              <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-6 w-6" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
+              <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-6 w-6" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
+              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {data.due_soon_tasks > 0 && (
               <div className="mt-4 rounded-sm bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-inset ring-amber-200 dark:ring-amber-800/60">
@@ -284,7 +287,7 @@ export function PersonalDashboardView() {
             <div className="space-y-2">
               {TIPS.slice(0, 3).map((tip) => (
                 <div key={tip.text} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
-                  <span className="mt-0.5 text-sm shrink-0">{tip.icon}</span>
+                  <span className="mt-0.5 shrink-0">{tip.icon}</span>
                   <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
                 </div>
               ))}

@@ -15,16 +15,19 @@ import {
   HiOutlinePlusCircle,
   HiOutlineClock,
   HiOutlineEye,
+  HiOutlineChartBar,
+  HiOutlineCalendar,
+  HiOutlineExclamationCircle,
 } from 'react-icons/hi';
 import { FadeIn, SkeletonDashboard, Badge, STATUS_BADGE_VARIANT, PRIORITY_BADGE_VARIANT } from '../../components/ui';
 import { NotificationBell } from '../../components/notifications';
 import { formatRelativeDate } from '../../utils';
 
 const TIPS = [
-  { icon: '📊', text: 'Revisa el consolidado para un panorama completo de todas las áreas.' },
-  { icon: '⚠️', text: 'Las tareas vencidas impactan la tasa de cumplimiento global.' },
-  { icon: '👥', text: 'Monitorea la carga de trabajo para balancear asignaciones.' },
-  { icon: '📅', text: 'Las reuniones generan tareas automáticamente cuando se registran acuerdos.' },
+  { icon: <HiOutlineChartBar className="h-5 w-5 text-cyber-radar" />, text: 'Revisa el consolidado para un panorama completo de todas las áreas.' },
+  { icon: <HiOutlineExclamationCircle className="h-5 w-5 text-red-500" />, text: 'Las tareas vencidas impactan la tasa de cumplimiento global.' },
+  { icon: <HiOutlineUserGroup className="h-5 w-5 text-blue-500" />, text: 'Monitorea la carga de trabajo para balancear asignaciones.' },
+  { icon: <HiOutlineCalendar className="h-5 w-5 text-purple-500" />, text: 'Las reuniones generan tareas automáticamente cuando se registran acuerdos.' },
 ];
 
 export function SuperAdminDashboard() {
@@ -92,10 +95,10 @@ export function SuperAdminDashboard() {
         <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
           <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen general</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-            <MiniStat label="Por revisar" value={(data.tasks_by_status as Record<string, number>)['in_review'] ?? 0} icon={<HiOutlineEye className="h-5 w-5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
-            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
-            <MiniStat label="Por vencer" value={data.due_soon} icon={<HiOutlineClock className="h-5 w-5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} />
+            <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+            <MiniStat label="Por revisar" value={(data.tasks_by_status as Record<string, number>)['in_review'] ?? 0} icon={<HiOutlineEye className="h-6 w-6" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
+            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+            <MiniStat label="Por vencer" value={data.due_soon} icon={<HiOutlineClock className="h-6 w-6" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} />
           </div>
 
           {/* progress bar for completion rate */}
@@ -280,7 +283,7 @@ export function SuperAdminDashboard() {
             <div className="space-y-2">
               {TIPS.slice(0, 3).map((tip) => (
                 <div key={tip.text} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
-                  <span className="mt-0.5 shrink-0 text-sm">{tip.icon}</span>
+                  <span className="mt-0.5 shrink-0">{tip.icon}</span>
                   <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
                 </div>
               ))}

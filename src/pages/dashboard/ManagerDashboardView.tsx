@@ -15,16 +15,20 @@ import {
   HiOutlineLightBulb,
   HiOutlinePlusCircle,
   HiOutlineUserGroup,
+  HiOutlineChartBar,
+  HiOutlineOfficeBuilding,
+  HiOutlineUser,
+  HiOutlineLightningBolt,
 } from 'react-icons/hi';
 import { FadeIn, SkeletonDashboard, Badge, STATUS_BADGE_VARIANT } from '../../components/ui';
 import { PRIORITY_ORDER } from '../../utils';
 import { ResponsibleRow, MiniStat, UrgentTaskRow, TaskRow } from './components/DashboardWidgets';
 
 const TIPS = [
-  { icon: '✅', text: 'Revisa las tareas pendientes de aprobación para no frenar a tu equipo.' },
-  { icon: '📋', text: 'Usa "Reclamar trabajadores" para gestionar tu equipo.' },
-  { icon: '⏰', text: 'Las tareas vencidas del equipo aparecen resaltadas en rojo.' },
-  { icon: '📊', text: 'Monitorea el estado de cada tarea para anticipar retrasos.' },
+  { icon: <HiOutlineCheckCircle className="h-5 w-5 text-green-500" />, text: 'Revisa las tareas pendientes de aprobación para no frenar a tu equipo.' },
+  { icon: <HiOutlineUserGroup className="h-5 w-5 text-blue-500" />, text: 'Usa "Reclamar trabajadores" para gestionar tu equipo.' },
+  { icon: <HiOutlineClock className="h-5 w-5 text-amber-500" />, text: 'Las tareas vencidas del equipo aparecen resaltadas en rojo.' },
+  { icon: <HiOutlineChartBar className="h-5 w-5 text-cyber-radar" />, text: 'Monitorea el estado de cada tarea para anticipar retrasos.' },
 ];
 
 export function ManagerDashboardView() {
@@ -183,7 +187,7 @@ export function ManagerDashboardView() {
         <div className="flex flex-col gap-6 lg:col-span-2 lg:order-1">
           {/* Section header */}
           <div className="flex items-center gap-2">
-            <span className="text-base">🏢</span>
+            <HiOutlineOfficeBuilding className="h-5 w-5 text-slate-500 dark:text-slate-400" />
             <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Panel del área</h3>
             <div className="flex-1 border-t border-slate-200 dark:border-white/10" />
           </div>
@@ -192,10 +196,10 @@ export function ManagerDashboardView() {
           <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Resumen del área</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-5 w-5" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} />
-              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-5 w-5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} />
-              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
+              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-6 w-6" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} />
+              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-6 w-6" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} />
+              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {areaData?.completion_rate != null && (
               <div className="mt-4">
@@ -288,7 +292,7 @@ export function ManagerDashboardView() {
         <div className="flex flex-col gap-6 lg:order-2">
           {/* Section header */}
           <div className="flex items-center gap-2">
-            <span className="text-base">👤</span>
+            <HiOutlineUser className="h-5 w-5 text-slate-500 dark:text-slate-400" />
             <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">Mi panel personal</h3>
             <div className="flex-1 border-t border-slate-200 dark:border-white/10" />
           </div>
@@ -296,7 +300,7 @@ export function ManagerDashboardView() {
           {/* Urgent tasks */}
           <FadeIn delay={0.1} className="flex-1 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
               <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-5 py-4">
-              <span className="text-lg">🔥</span>
+              <HiOutlineLightningBolt className="h-6 w-6 text-amber-500" />
               <div>
                 <h3 className="font-semibold text-slate-900 dark:text-white">Urgentes</h3>
                 <p className="text-xs text-slate-500 dark:text-slate-400">Vencidas o alta prioridad.</p>
@@ -349,7 +353,7 @@ export function ManagerDashboardView() {
         <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
           {TIPS.map((tip) => (
             <div key={tip.text} className="flex items-start gap-2.5 rounded-sm bg-slate-50 dark:bg-white/5 px-3.5 py-2.5 text-slate-700 dark:text-slate-300">
-              <span className="mt-0.5 shrink-0 text-sm">{tip.icon}</span>
+              <span className="mt-0.5 shrink-0">{tip.icon}</span>
               <p className="text-xs leading-relaxed text-slate-600 dark:text-slate-400">{tip.text}</p>
             </div>
           ))}

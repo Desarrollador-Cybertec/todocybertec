@@ -85,7 +85,7 @@ export function LoginPage() {
 
         </div>
 
-        <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-8 shadow-xl shadow-slate-200/40 dark:shadow-black/40">
+        <div className="rounded-sm border border-slate-300 dark:border-white/5 bg-white dark:bg-cyber-grafito p-8 shadow-2xl shadow-cyber-navy/15 dark:shadow-black/40 ring-1 ring-slate-200 dark:ring-transparent">
           <h2 className="mb-6 text-sm font-black uppercase tracking-[0.2em] text-cyber-radar">Iniciar sesión</h2>
 
           <AnimatePresence mode="wait">
