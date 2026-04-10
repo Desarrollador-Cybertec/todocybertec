@@ -136,9 +136,8 @@ export function AppLayout() {
       >
         {/* Brand header */}
         <div className="relative border-b border-white/10 px-4 py-4">
-          <div className="rounded-xl bg-[#1a2a5e] px-4 py-4 ring-1 ring-cyan-400/20 shadow-lg shadow-cyan-500/10 flex flex-col items-center gap-0">
-            <img src="/magnotipo.png" alt="S!NTyC" className="h-16 w-auto drop-shadow-[0_2px_12px_rgba(27,198,208,0.6)]" />
-            <span className="-mt-3 ml-16 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/60">by cybertec</span>
+          <div className="rounded-xl bg-[#1a2a5e] px-1 py-1 ring-1 ring-cyan-400/20 shadow-lg shadow-cyan-500/10 flex flex-col items-center gap-0">
+            <img src="/s!ntyc.png" alt="S!NTyC" className="h-28 w-auto drop-shadow-[0_2px_12px_rgba(27,198,208,0.6)]" />
           </div>
           <button
             type="button"
@@ -209,10 +208,6 @@ export function AppLayout() {
             <HiOutlineLogout className="h-6 w-6" />
             Cerrar sesión
           </button>
-          <div className="-mt-4 flex items-center justify-center gap-2">
-            <p className="text-[9px] uppercase tracking-widest text-white/25">Powered by</p>
-            <img src="/hero-logo.png" alt="Cybertec" className="h-15 w-auto opacity-30" />
-          </div>
         </div>
       </aside>
 

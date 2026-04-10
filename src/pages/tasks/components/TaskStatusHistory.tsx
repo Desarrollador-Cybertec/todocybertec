@@ -21,7 +21,9 @@ export function TaskStatusHistory({
 }) {
   if (history.length === 0) return null;
 
-  const visible = history;
+  const visible = [...history].sort(
+    (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
 
   return (
     <FadeIn delay={0.2} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">

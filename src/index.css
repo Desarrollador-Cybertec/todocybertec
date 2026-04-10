@@ -41,11 +41,11 @@ body {
 
 /* ── Login dot-grid background ── */
 .login-dot-grid {
-  background-image: radial-gradient(circle, rgba(24,29,94,0.08) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(24,29,94,0.18) 1.5px, transparent 1.5px);
   background-size: 24px 24px;
 }
 .dark .login-dot-grid {
-  background-image: radial-gradient(circle, rgba(27,146,208,0.06) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(27,146,208,0.15) 1.5px, transparent 1.5px);
 }
 
 /* ── Accessibility: respect reduced-motion preference (WCAG 2.3.3) ── */

@@ -6,6 +6,16 @@ function isDateOnly(str: string): boolean {
 }
 
 /**
+ * The backend stores timestamps in America/Bogota local time but Laravel
+ * serializes them with a trailing 'Z' (UTC designator), causing JavaScript to
+ * incorrectly subtract 5 hours. Replace 'Z' with the fixed Bogotá offset so
+ * new Date() interprets the value as Colombia time.
+ */
+function fixBackendTimestamp(str: string): string {
+  return str.replace(/Z$/, '-05:00');
+}
+
+/**
  * Format a date string to locale date (es-CO, America/Bogota).
  * Date-only strings (YYYY-MM-DD) are parsed as local calendar dates to avoid
  * UTC-midnight timezone shift (e.g. "2026-04-10" showing as April 9 in Bogota).
@@ -17,7 +27,7 @@ export function formatDate(dateStr: string | null | undefined): string {
     const [y, m, d] = dateStr.split('-').map(Number);
     return new Date(y, m - 1, d).toLocaleDateString('es-CO');
   }
-  return new Date(dateStr).toLocaleDateString('es-CO', { timeZone: TZ });
+  return new Date(fixBackendTimestamp(dateStr)).toLocaleDateString('es-CO', { timeZone: TZ });
 }
 
 /**
@@ -25,7 +35,7 @@ export function formatDate(dateStr: string | null | undefined): string {
  */
 export function formatDateTime(dateStr: string | null | undefined): string {
   if (!dateStr) return '';
-  return new Date(dateStr).toLocaleString('es-CO', { timeZone: TZ });
+  return new Date(fixBackendTimestamp(dateStr)).toLocaleString('es-CO', { timeZone: TZ });
 }
 
 /**
@@ -42,7 +52,7 @@ export function formatRelativeDate(dateStr: string | null): string {
   const isDateOnly = /^\d{4}-\d{2}-\d{2}$/.test(dateStr);
   const targetBogota = isDateOnly
     ? dateStr
-    : new Date(dateStr).toLocaleDateString('en-CA', { timeZone: TZ });
+    : new Date(fixBackendTimestamp(dateStr)).toLocaleDateString('en-CA', { timeZone: TZ });
 
   // Compare as plain dates (midnight local)
   const today = new Date(todayBogota + 'T00:00:00');
