@@ -133,7 +133,7 @@ export function TaskListPage() {
         {/* Single flat flex container: full-width search + selects side-by-side on desktop, 2-col grid on mobile */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Search — full width on mobile, grows on desktop */}
-          <div className="relative w-full sm:min-w-[160px] sm:flex-1">
+          <div className="relative w-full sm:min-w-40 sm:flex-1">
             <HiOutlineSearch className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
             <input
               type="text"
