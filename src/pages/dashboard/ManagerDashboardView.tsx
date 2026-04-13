@@ -196,10 +196,10 @@ export function ManagerDashboardView() {
           <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Resumen del área</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-6 w-6" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} />
-              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-6 w-6" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} />
-              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" to={areaData?.area?.id ? `/tasks?area_id=${areaData.area.id}&type=org` : '/tasks'} />
+              <MiniStat label="Vencidas" value={areaData?.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-6 w-6" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={(areaData?.overdue_tasks ?? 0) > 0} to={areaData?.area?.id ? `/tasks?status=overdue&area_id=${areaData.area.id}&type=org` : '/tasks?status=overdue'} />
+              <MiniStat label="Sin progreso" value={areaData?.without_progress ?? 0} icon={<HiOutlineClock className="h-6 w-6" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={(areaData?.without_progress ?? 0) > 0} to={areaData?.area?.id ? `/tasks?status=pending&area_id=${areaData.area.id}&type=org` : '/tasks?status=pending'} />
+              <MiniStat label="Completadas" value={areaData?.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" to={areaData?.area?.id ? `/tasks?status=completed&area_id=${areaData.area.id}&type=org` : '/tasks?status=completed'} />
             </div>
             {areaData?.completion_rate != null && (
               <div className="mt-4">

@@ -1,5 +1,5 @@
 ﻿import { useEffect, useState, useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import { tasksApi } from '../../api/tasks';
 import { areasApi } from '../../api/areas';
@@ -23,13 +23,14 @@ import { taskProgress, formatRelativeDate } from '../../utils';
 
 export function TaskListPage() {
   const { user } = useAuth();
+  const [searchParams] = useSearchParams();
   const [tasks, setTasks] = useState<Task[]>([]);
   const [areas, setAreas] = useState<Area[]>([]);
   const [loading, setLoading] = useState(true);
-  const [filterStatus, setFilterStatus] = useState<string>('');
-  const [filterAreaId, setFilterAreaId] = useState<string>('');
-  const [filterPriority, setFilterPriority] = useState<string>('');
-  const [filterType, setFilterType] = useState<string>('org');
+  const [filterStatus, setFilterStatus] = useState<string>(searchParams.get('status') ?? '');
+  const [filterAreaId, setFilterAreaId] = useState<string>(searchParams.get('area_id') ?? '');
+  const [filterPriority, setFilterPriority] = useState<string>(searchParams.get('priority') ?? '');
+  const [filterType, setFilterType] = useState<string>(searchParams.get('type') ?? 'org');
   const [sortBy, setSortBy] = useState<string>('');
   const [search, setSearch] = useState('');
 
