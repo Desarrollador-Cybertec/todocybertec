@@ -10,8 +10,10 @@ import { getToken } from '../api/client';
 import type { Notification } from '../types/notification';
 import { NotificationContext } from './notificationContextDef';
 import { showNotificationToast } from '../utils/notificationToast';
+import { useAuth } from './useAuth';
 
 export function NotificationProvider({ children }: { children: ReactNode }) {
+  const { isAuthenticated } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -114,21 +116,32 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
     setNotifications((prev) => prev.filter((notif) => notif.id !== id));
   }, []);
 
+  // Reset al hacer logout
+  useEffect(() => {
+    if (!isAuthenticated) {
+      initializedRef.current = false;
+      knownIdsRef.current = new Set();
+      prevUnreadCountRef.current = null;
+      setNotifications([]);
+      setUnreadCount(0);
+    }
+  }, [isAuthenticated]);
+
   // Inicialización: sembrar knownIdsRef con las notificaciones actuales (sin toasts)
   useEffect(() => {
-    if (initializedRef.current || !getToken()) return;
+    if (!isAuthenticated || !getToken()) return;
+    if (initializedRef.current) return;
     initializedRef.current = true;
 
     notificationsApi.list().then((response) => {
       knownIdsRef.current = new Set(response.data.map((n) => n.id));
       setNotifications(response.data);
     }).catch(() => {});
-  }, []);
+  }, [isAuthenticated]);
 
   // Polling cada 15 segundos para el contador de no leídas.
-  // El primer tick lo saltamos si la inicialización ya terminó (evita doble llamada en mount).
   useEffect(() => {
-    if (!getToken()) return;
+    if (!isAuthenticated || !getToken()) return;
     // Pequeño delay para que la inicialización termine primero
     const initialTimeout = setTimeout(() => {
       fetchUnreadCount();
@@ -138,7 +151,7 @@ export function NotificationProvider({ children }: { children: ReactNode }) {
       clearTimeout(initialTimeout);
       clearInterval(interval);
     };
-  }, [fetchUnreadCount]);
+  }, [isAuthenticated, fetchUnreadCount]);
 
   return (
     <NotificationContext.Provider
