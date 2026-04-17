@@ -57,3 +57,116 @@ body {
     scroll-behavior: auto !important;
   }
 }
+
+/* ── Tutorial (driver.js) custom theme ── */
+.sintyc-tutorial-popover {
+  background: #181D5E !important;
+  color: #fff !important;
+  border: 1px solid rgba(27, 146, 208, 0.3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(27, 146, 208, 0.15) !important;
+  max-width: 380px !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-title {
+  color: #fff !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: 'Bahnschrift', 'Segoe UI', system-ui, sans-serif !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-description {
+  color: rgba(255, 255, 255, 0.75) !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+  font-family: 'Bahnschrift', 'Segoe UI', system-ui, sans-serif !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-progress-text {
+  color: rgba(255, 255, 255, 0.4) !important;
+  font-size: 12px !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-prev-btn {
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  padding: 6px 14px !important;
+  transition: all 0.15s ease !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-prev-btn:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #fff !important;
+  border-color: rgba(255, 255, 255, 0.3) !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-next-btn,
+.sintyc-tutorial-popover button.driver-popover-done-btn {
+  background: #1B92D0 !important;
+  color: #fff !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  padding: 6px 16px !important;
+  box-shadow: 0 2px 8px rgba(27, 146, 208, 0.3) !important;
+  transition: all 0.15s ease !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-next-btn:hover,
+.sintyc-tutorial-popover button.driver-popover-done-btn:hover {
+  background: #2ba3e0 !important;
+  box-shadow: 0 4px 16px rgba(27, 146, 208, 0.4) !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-close-btn {
+  color: rgba(255, 255, 255, 0.4) !important;
+  transition: color 0.15s ease !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-close-btn:hover {
+  color: #fff !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-arrow-side-left .driver-popover-arrow {
+  border-right-color: #181D5E !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-arrow-side-right .driver-popover-arrow {
+  border-left-color: #181D5E !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-arrow-side-top .driver-popover-arrow {
+  border-bottom-color: #181D5E !important;
+}
+
+.sintyc-tutorial-popover .driver-popover-arrow-side-bottom .driver-popover-arrow {
+  border-top-color: #181D5E !important;
+}
+
+/* Dark mode variant */
+.dark .sintyc-tutorial-popover {
+  background: #202020 !important;
+  border-color: rgba(27, 146, 208, 0.25) !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), 0 0 40px rgba(27, 146, 208, 0.1) !important;
+}
+
+.dark .sintyc-tutorial-popover .driver-popover-arrow-side-left .driver-popover-arrow {
+  border-right-color: #202020 !important;
+}
+
+.dark .sintyc-tutorial-popover .driver-popover-arrow-side-right .driver-popover-arrow {
+  border-left-color: #202020 !important;
+}
+
+.dark .sintyc-tutorial-popover .driver-popover-arrow-side-top .driver-popover-arrow {
+  border-bottom-color: #202020 !important;
+}
+
+.dark .sintyc-tutorial-popover .driver-popover-arrow-side-bottom .driver-popover-arrow {
+  border-top-color: #202020 !important;
+}

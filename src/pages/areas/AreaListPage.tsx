@@ -104,7 +104,7 @@ export function AreaListPage() {
               <HiOutlinePlus className="h-5 w-5" /> Nueva área
             </button>
           ) : (
-            <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+            <Link to="/areas/create" id="area-create-btn" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
               <HiOutlinePlus className="h-5 w-5" /> Nueva área
             </Link>
           )
@@ -129,7 +129,7 @@ export function AreaListPage() {
           action={isSuperAdmin && !license.isBlocked ? <Link to="/areas/create" className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-4 py-2.5 text-sm font-medium text-white hover:bg-cyber-radar-light"><HiOutlinePlus className="h-5 w-5" /> Nueva área</Link> : undefined}
         />
       ) : (
-        <StaggerList className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerList id="areas-list" className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {areas.map((area) => (
             <StaggerItem key={area.id}>
               <div className="relative block rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm transition-all hover:shadow-md hover:border-cyber-radar/10 dark:hover:border-cyber-radar/20">

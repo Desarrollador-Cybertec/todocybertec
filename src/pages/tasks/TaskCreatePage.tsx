@@ -240,7 +240,7 @@ export function TaskCreatePage() {
             <div className="space-y-6 lg:col-span-2">
 
               {/* quick creation card */}
-              <FadeIn delay={0.05} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+              <FadeIn delay={0.05} id="task-create-form" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
                 <h3 className="mb-4 flex items-center gap-2 text-lg font-semibold text-slate-900 dark:text-white">
                   ⚡ Creación rápida
                 </h3>
@@ -338,7 +338,7 @@ export function TaskCreatePage() {
                   </div>
 
                   {/* priority pills */}
-                  <div>
+                  <div id="task-create-priority">
                     <span className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">Prioridad</span>
                     <div className="flex flex-wrap gap-2">
                       {Object.entries(TASK_PRIORITY_LABELS).map(([value, label]) => {
@@ -365,6 +365,7 @@ export function TaskCreatePage() {
                 <div className="mt-5 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
                   {!showAdvanced && (
                     <button
+                      id="task-create-advanced-btn"
                       type="button"
                       onClick={() => setShowAdvanced(true)}
                       className="flex w-full items-center justify-between rounded-sm border border-dashed border-cyber-radar/30 dark:border-cyber-radar bg-cyber-radar/5/50 dark:bg-cyber-radar/20/20 px-4 py-3 text-sm transition-all hover:bg-cyber-radar/5 dark:hover:bg-cyber-radar/20"
@@ -390,6 +391,7 @@ export function TaskCreatePage() {
                   {!showAdvanced && (
                     <div className="mt-4 flex justify-end">
                       <button
+                        id="task-create-submit"
                         type="submit"
                         disabled={isSubmitting}
                         className="flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-lg active:scale-[0.98] disabled:opacity-50"

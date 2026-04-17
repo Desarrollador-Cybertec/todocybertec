@@ -5,6 +5,7 @@ import { useAuth } from '../../context/useAuth';
 import { Role, ROLE_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { areasApi } from '../../api/areas';
 import { LicenseBanner } from '../ui/LicenseBanner';
+import { TutorialMenu } from '../../tutorial';
 import {
   HiOutlineHome,
   HiOutlineClipboardList,
@@ -23,6 +24,7 @@ interface NavItem {
   path: string;
   icon: React.ReactNode;
   roles?: string[];
+  navId?: string;
 }
 
 const NAV_ITEMS: NavItem[] = [
@@ -30,11 +32,13 @@ const NAV_ITEMS: NavItem[] = [
     label: 'Dashboard',
     path: '/dashboard',
     icon: <HiOutlineHome className="h-6 w-6" />,
+    navId: 'nav-dashboard',
   },
   {
     label: 'Tareas',
     path: '/tasks',
     icon: <HiOutlineClipboardList className="h-6 w-6" />,
+    navId: 'nav-tasks',
   },
   {
     label: 'Áreas',
@@ -135,7 +139,7 @@ export function AppLayout() {
         }`}
       >
         {/* Brand header */}
-        <div className="relative border-b border-white/10 px-4 py-4">
+        <div id="sidebar-brand" className="relative border-b border-white/10 px-4 py-4">
           <div className="rounded-xl bg-[#1a2a5e] px-1 py-1 ring-1 ring-cyan-400/20 shadow-lg shadow-cyan-500/10 flex flex-col items-center gap-0">
             <img src="/s!ntyc.png" alt="S!NTyC" className="h-28 w-auto drop-shadow-[0_2px_12px_rgba(27,198,208,0.6)]" />
           </div>
@@ -150,11 +154,12 @@ export function AppLayout() {
         </div>
 
         {/* Navigation */}
-        <nav className="flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
+        <nav id="sidebar-nav" className="flex-1 space-y-0.5 overflow-y-auto px-3 py-4">
           {visibleItems.map((item) => {
             const active = isActive(item.path);
             return (
               <Link
+                id={item.navId}
                 key={item.path}
                 to={item.path}
                 onClick={() => setSidebarOpen(false)}
@@ -173,9 +178,15 @@ export function AppLayout() {
           })}
         </nav>
 
+        {/* Tutorial menu */}
+        <div className="px-3 pb-1">
+          <TutorialMenu />
+        </div>
+
         {/* User profile + logout */}
         <div className="border-t border-white/10 p-4 space-y-3">
             <NavLink
+              id="sidebar-user-card"
               to="/profile"
               onClick={() => setSidebarOpen(false)}
               className={({ isActive }) =>

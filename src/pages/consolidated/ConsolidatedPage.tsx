@@ -52,7 +52,7 @@ export function ConsolidatedPage() {
     <PageTransition>
       <h2 className="mb-6 text-2xl font-bold text-slate-900 dark:text-white">Dashboard Consolidado</h2>
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+      <div id="consolidated-filters" className="mb-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((card, i) => (
           <m.div
             key={card.label}
@@ -75,7 +75,7 @@ export function ConsolidatedPage() {
           <p className="text-slate-400 dark:text-slate-500">No hay áreas con datos para mostrar.</p>
         </FadeIn>
       ) : (
-        <FadeIn delay={0.2} className="space-y-3">
+        <FadeIn delay={0.2} id="consolidated-content" className="space-y-3">
           {areas.map((area: ConsolidatedArea, i) => {
             const rateColor = area.completion_rate >= 80
               ? 'bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-400'

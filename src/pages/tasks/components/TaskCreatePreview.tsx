@@ -45,7 +45,7 @@ export function TaskCreatePreview({
 
   return (
     <div className="hidden space-y-6 lg:block">
-      <div className="sticky top-6 space-y-6">
+      <div id="task-create-preview" className="sticky top-6 space-y-6">
         <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
           <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white">
             <HiOutlineEye className="h-5 w-5 text-cyber-radar dark:text-cyber-radar-light" /> Vista previa

@@ -80,7 +80,7 @@ export function TaskCreateAdvanced({
         className="space-y-6 overflow-hidden"
       >
         {/* description + dates + meeting */}
-        <FadeIn delay={0.05} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <FadeIn delay={0.05} id="task-create-details" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">Detalles adicionales</h3>
           <div className="space-y-4">
             <div>
@@ -157,7 +157,7 @@ export function TaskCreateAdvanced({
         )}
 
         {/* requirements */}
-        <FadeIn delay={0.15} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <FadeIn delay={0.15} id="task-create-requirements" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
             <HiOutlineShieldCheck className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" /> Requisitos
           </h3>
@@ -175,7 +175,7 @@ export function TaskCreateAdvanced({
 
         {/* notifications */}
         {!isPersonalTask && (
-        <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <FadeIn delay={0.2} id="task-create-notifications" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
             <HiOutlineBell className="h-6 w-6 text-yellow-500 dark:text-yellow-400" /> Notificaciones
           </h3>

@@ -225,7 +225,7 @@ export function MeetingDetailPage() {
         </FadeIn>
 
         {meeting.tasks && meeting.tasks.length > 0 && (
-          <FadeIn delay={0.1} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+          <FadeIn delay={0.1} id="meeting-existing-tasks" className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
             <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
               Compromisos de esta reunión
               <span className="rounded-full bg-purple-50 dark:bg-purple-900/30 px-2 py-0.5 text-xs font-medium text-purple-600 dark:text-purple-400">{meeting.tasks.length}</span>
@@ -255,12 +255,14 @@ export function MeetingDetailPage() {
           </FadeIn>
         )}
 
-        <MeetingTasksSection
-          meetingId={meeting.id}
-          areaId={meeting.area_id ?? meeting.area?.id ?? null}
-          isClosed={meeting.is_closed}
-          onTasksCreated={loadMeeting}
-        />
+        <div id="meeting-quick-tasks">
+          <MeetingTasksSection
+            meetingId={meeting.id}
+            areaId={meeting.area_id ?? meeting.area?.id ?? null}
+            isClosed={meeting.is_closed}
+            onTasksCreated={loadMeeting}
+          />
+        </div>
 
         <ConfirmModal
           open={showCloseConfirm}

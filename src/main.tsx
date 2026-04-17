@@ -6,6 +6,8 @@ import { AuthProvider } from './context/AuthContext'
 import { LicenseProvider } from './context/LicenseContext'
 import { NotificationProvider } from './context/NotificationContext'
 import { ThemeProvider } from './context/ThemeContext'
+import { TutorialProvider } from './tutorial'
+import 'driver.js/dist/driver.css'
 import './index.css'
 import App from './App.tsx'
 
@@ -17,7 +19,9 @@ createRoot(document.getElementById('root')!).render(
           <AuthProvider>
             <LicenseProvider>
               <NotificationProvider>
-                <App />
+                <TutorialProvider>
+                  <App />
+                </TutorialProvider>
               </NotificationProvider>
             </LicenseProvider>
           </AuthProvider>

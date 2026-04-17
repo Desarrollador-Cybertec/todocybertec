@@ -145,8 +145,8 @@ export function ManagerDashboardView() {
   const attentionCount = urgentTasks.length;
 
   return (
-    <div className="max-w-full overflow-hidden space-y-6">
-      {/* Hero greeting */}
+    <div id="dashboard-content" className="max-w-full overflow-hidden space-y-6">
+      {/* Hero greeting */
       <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -193,7 +193,7 @@ export function ManagerDashboardView() {
           </div>
 
           {/* Area stats + completion rate — single card */}
-          <FadeIn delay={0.2} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
+          <FadeIn delay={0.2} id="dashboard-stats" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 text-sm font-semibold text-slate-700 dark:text-slate-300">Resumen del área</h3>
             <div className="grid grid-cols-2 gap-3">
               <MiniStat label="Total" value={areaData?.total_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" to={areaData?.area?.id ? `/tasks?area_id=${areaData.area.id}&type=org` : '/tasks'} />

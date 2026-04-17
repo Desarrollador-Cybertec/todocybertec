@@ -95,7 +95,7 @@ export function AreaCreatePage() {
         </AnimatePresence>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
+          <FadeIn id="area-create-form" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
             <div>
               <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Nombre *</label>
               <input id="name" {...register('name')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-cyber-radar focus:outline-none focus:ring-2 focus:ring-cyber-radar/20" />

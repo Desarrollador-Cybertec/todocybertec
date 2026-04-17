@@ -29,7 +29,7 @@ export function MeetingListPage() {
     <PageTransition>
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-2xl font-bold text-slate-900 dark:text-white">Reuniones</h2>
-        <Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
+        <Link to="/meetings/create" id="meeting-create-btn" className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-4 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98]">
           <HiOutlinePlus className="h-5 w-5" /> Nueva reunión
         </Link>
       </div>
@@ -44,7 +44,7 @@ export function MeetingListPage() {
           action={<Link to="/meetings/create" className="inline-flex items-center gap-2 rounded-sm bg-purple-600 px-4 py-2.5 text-sm font-medium text-white hover:bg-purple-700"><HiOutlinePlus className="h-5 w-5" /> Nueva reunión</Link>}
         />
       ) : (
-        <StaggerList className="space-y-3">
+        <StaggerList id="meetings-list" className="space-y-3">
           {meetings.map((m) => (
             <StaggerItem key={m.id}>
               <Link to={`/meetings/${m.id}`} className="block rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm transition-all hover:shadow-md hover:border-purple-100 dark:hover:border-purple-900">

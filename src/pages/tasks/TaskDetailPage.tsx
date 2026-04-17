@@ -239,7 +239,7 @@ export function TaskDetailPage() {
         </AnimatePresence>
 
         {/* Task Header */}
-        <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <FadeIn id="task-detail-header" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <AnimatePresence mode="wait">
             {edit.editing ? (
               <TaskEditForm
@@ -272,7 +272,7 @@ export function TaskDetailPage() {
             </div>
           </div>
 
-          <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div id="task-detail-info" className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             <div>
               <p className="text-xs font-medium uppercase tracking-wider text-slate-400 dark:text-slate-500">Creado por</p>
               <div className="mt-1 flex items-center gap-2">
@@ -340,7 +340,7 @@ export function TaskDetailPage() {
           </div>
 
           {/* Actions */}
-          <div className="mt-6 flex flex-wrap gap-2 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
+          <div id="task-detail-actions" className="mt-6 flex flex-wrap gap-2 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
             <TaskStatusSelect
               task={task}
               userId={user?.id}
@@ -351,22 +351,22 @@ export function TaskDetailPage() {
               }}
             />
             {perms.canEdit && (
-              <button type="button" onClick={() => edit.startEditing()} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
+              <button id="task-edit-btn" type="button" onClick={() => edit.startEditing()} className="inline-flex items-center gap-1.5 rounded-sm bg-amber-500 px-4 py-2 text-sm font-medium text-white shadow-sm transition-all hover:bg-amber-600 active:scale-[0.98]">
                 <HiOutlinePencil className="h-5 w-5" /> Editar
               </button>
             )}
             {perms.canDelegate && (
-              <button type="button" onClick={handleDelegateOpen} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+              <button id="task-delegate-btn" type="button" onClick={handleDelegateOpen} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
                 <HiOutlineRefresh className="h-5 w-5" /> Delegar
               </button>
             )}
             {perms.canUpload && (
-              <button type="button" onClick={() => setShowUploadForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+              <button id="task-upload-btn" type="button" onClick={() => setShowUploadForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
                 <HiOutlineUpload className="h-5 w-5" /> Adjuntar
               </button>
             )}
             {perms.canComment && (
-              <button type="button" onClick={() => setShowCommentForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
+              <button id="task-comment-btn" type="button" onClick={() => setShowCommentForm(true)} className="inline-flex items-center gap-1.5 rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-4 py-2 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">
                 <HiOutlineChatAlt className="h-5 w-5" /> Comentar
               </button>
             )}

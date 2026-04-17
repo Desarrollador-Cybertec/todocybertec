@@ -148,7 +148,7 @@ export function PersonalDashboardView() {
   const firstName = user?.name?.split(' ')[0] ?? '';
 
   return (
-    <div className="max-w-full overflow-hidden space-y-6">
+    <div id="dashboard-content" className="max-w-full overflow-hidden space-y-6">
       {/* Hero greeting */}
       <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
@@ -178,7 +178,7 @@ export function PersonalDashboardView() {
       {/* Lo importante hoy + Resumen rápido */}
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Lo importante hoy - 3 cols */}
-        <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
+        <FadeIn delay={0.05} id="dashboard-stats" className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
           <div className="flex items-center gap-2 border-b border-slate-200 dark:border-white/5 px-4 py-4 sm:px-6">
             <HiOutlineLightningBolt className="h-6 w-6 text-amber-500" />
             <div>

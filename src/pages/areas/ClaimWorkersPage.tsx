@@ -80,13 +80,17 @@ export function ClaimWorkersPage() {
       </div>
 
       {/* Team members - endpoint: GET /areas/:id (members) */}
-      <TeamMembersSection areaId={myArea.id} refreshKey={refreshKey} canRemove onMemberRemoved={handleClaimed} />
+      <div id="claim-current-team">
+        <TeamMembersSection areaId={myArea.id} refreshKey={refreshKey} canRemove onMemberRemoved={handleClaimed} />
+      </div>
 
       {/* Divider */}
       <div className="mb-8 border-t border-slate-200 dark:border-white/10" />
 
       {/* Available workers - endpoint: GET /areas/:id/available-workers */}
-      <AvailableWorkersSection areaId={myArea.id} refreshKey={refreshKey} onClaimed={handleClaimed} />
+      <div id="claim-available">
+        <AvailableWorkersSection areaId={myArea.id} refreshKey={refreshKey} onClaimed={handleClaimed} />
+      </div>
     </PageTransition>
   );
 }

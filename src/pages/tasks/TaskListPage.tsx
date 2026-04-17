@@ -120,6 +120,7 @@ export function TaskListPage() {
         {canCreate && (
           <Link
             to="/tasks/create"
+            id="task-create-btn"
             className="inline-flex items-center gap-2 rounded-sm bg-cyber-radar px-5 py-2.5 text-sm font-medium text-white shadow-lg shadow-cyber-radar/25 transition-all hover:shadow-xl hover:shadow-cyber-radar/30 active:scale-[0.98]"
           >
             <HiOutlinePlus className="h-5 w-5" />
@@ -129,7 +130,7 @@ export function TaskListPage() {
       </FadeIn>
 
       {/* Search + Filters */}
-      <FadeIn delay={0.05} className="mb-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-3 sm:p-4 shadow-sm">
+      <FadeIn delay={0.05} id="tasks-filters" className="mb-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-3 sm:p-4 shadow-sm">
         {/* Single flat flex container: full-width search + selects side-by-side on desktop, 2-col grid on mobile */}
         <div className="flex flex-wrap items-center gap-2 sm:gap-3">
           {/* Search — full width on mobile, grows on desktop */}
@@ -253,7 +254,7 @@ export function TaskListPage() {
             </div>
           </FadeIn>
         ) : (
-          <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
+          <FadeIn delay={0.1} id="tasks-list" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm">
             {/* List header */}
             <div className="flex items-center justify-between border-b border-slate-200 dark:border-white/5 px-4 py-3 sm:px-6">
               <p className="text-xs font-medium text-slate-400 dark:text-slate-500">

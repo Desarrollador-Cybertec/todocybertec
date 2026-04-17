@@ -219,6 +219,7 @@ export function UserListPage() {
             ))}
           </select>
           <button
+          id="user-create-btn"
           type="button"
           onClick={() => setShowCreateForm(!showCreateForm)}
           disabled={license.isBlocked}
@@ -249,13 +250,15 @@ export function UserListPage() {
 
       <AnimatePresence>
         {showCreateForm && (
-          <UserCreateForm
-            form={createForm}
-            roles={roles}
-            areas={areas}
-            onSubmit={onCreateUser}
-            onCancel={() => { setShowCreateForm(false); createForm.reset(); }}
-          />
+          <div id="user-create-form">
+            <UserCreateForm
+              form={createForm}
+              roles={roles}
+              areas={areas}
+              onSubmit={onCreateUser}
+              onCancel={() => { setShowCreateForm(false); createForm.reset(); }}
+            />
+          </div>
         )}
       </AnimatePresence>
 
@@ -302,7 +305,7 @@ export function UserListPage() {
           </div>
 
           {/* Desktop table layout */}
-          <FadeIn className="hidden overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm sm:block">
+          <FadeIn id="users-list" className="hidden overflow-hidden rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito shadow-sm sm:block">
             <div className="overflow-x-auto">
             <table className="w-full text-left text-sm">
               <thead className="border-b border-slate-200 dark:border-white/10 bg-slate-100 dark:bg-white/5">

@@ -55,8 +55,8 @@ export function SuperAdminDashboard() {
   const healthColor = data.completion_rate >= 75 ? 'text-green-600 dark:text-green-400' : data.completion_rate >= 50 ? 'text-amber-600 dark:text-amber-400' : 'text-red-600 dark:text-red-400';
 
   return (
-    <div className="max-w-full overflow-hidden space-y-6">
-      {/* Hero greeting */}
+    <div id="dashboard-content" className="max-w-full overflow-hidden space-y-6">
+      {/* Hero greeting */
       <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
@@ -92,7 +92,7 @@ export function SuperAdminDashboard() {
       {/* Resumen rápido + Tareas por estado */}
       <div className="grid gap-6 lg:grid-cols-5">
         {/* Resumen rápido - 3 cols */}
-        <FadeIn delay={0.05} className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
+        <FadeIn delay={0.05} id="dashboard-stats" className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
           <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen general</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
             <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" to="/tasks?status=in_progress&type=org" />
@@ -334,16 +334,25 @@ function MyTaskRow({ task }: { task: MyTask }) {
   );
 }
 
-function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
-  return (
-    <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-          <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
-        </div>
-        <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
+function MiniStat({ label, value, icon, color, alert, to }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean; to?: string }) {
+  const inner = (
+    <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center gap-2">
+        <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+        <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
       </div>
+      <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
     </div>
   );
+
+  const baseClass = `group rounded-sm border px-4 py-3 transition-all ${
+    alert
+      ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20'
+      : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'
+  } ${to ? 'cursor-pointer hover:border-cyber-radar/40 dark:hover:border-cyber-radar/30 hover:shadow-sm' : ''}`;
+
+  if (to) {
+    return <Link to={to} className={baseClass}>{inner}</Link>;
+  }
+  return <div className={baseClass}>{inner}</div>;
 }

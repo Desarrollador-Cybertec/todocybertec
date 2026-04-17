@@ -103,7 +103,7 @@ export function MeetingCreatePage() {
         </AnimatePresence>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
+          <FadeIn id="meeting-create-form" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm space-y-4">
             <div>
               <label htmlFor="title" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Título *</label>
               <input id="title" {...register('title')} className="w-full rounded-sm bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border border-slate-300 dark:border-white/10 px-4 py-2.5 text-sm transition-colors focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20" />
@@ -148,7 +148,7 @@ export function MeetingCreatePage() {
 
           <div className="flex flex-wrap justify-end gap-3">
             <button type="button" onClick={() => setShowLeaveModal(true)} className="rounded-sm bg-white dark:bg-cyber-grafito border border-slate-200 dark:border-white/10 px-6 py-2.5 text-sm font-medium text-slate-700 dark:text-slate-300 transition-colors hover:bg-slate-50 dark:hover:bg-white/5">Cancelar</button>
-            <button type="submit" disabled={isSubmitting} className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
+            <button type="submit" disabled={isSubmitting} id="meeting-create-submit" className="inline-flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-6 py-2.5 text-sm font-medium text-white shadow-sm transition-all hover:shadow-md active:scale-[0.98] disabled:opacity-50">
               {isSubmitting ? <><Spinner size="sm" /> Creando...</> : 'Crear reunión'}
             </button>
           </div>
