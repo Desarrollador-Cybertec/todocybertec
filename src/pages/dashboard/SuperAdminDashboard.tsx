@@ -56,7 +56,7 @@ export function SuperAdminDashboard() {
 
   return (
     <div id="dashboard-content" className="max-w-full overflow-hidden space-y-6">
-      {/* Hero greeting */
+      {/* Hero greeting */}
       <FadeIn className="flex flex-wrap items-center justify-between gap-3 sm:gap-4 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito px-4 py-4 sm:px-6 sm:py-5 shadow-sm">
         <div>
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white">
