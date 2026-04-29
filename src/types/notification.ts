@@ -24,6 +24,8 @@ export interface NotificationData {
   assigned_by?: string;
   priority?: string;
   due_date?: string;
+  days_remaining?: number;
+  days_overdue?: number;
   tasks?: Array<{ id: number; title: string }>;
 }
 

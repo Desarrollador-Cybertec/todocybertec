@@ -206,10 +206,10 @@ export function PersonalDashboardView() {
           <div className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-5 shadow-sm">
             <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen rápido</h3>
             <div className="grid grid-cols-2 gap-3">
-              <MiniStat label="Activas" value={data.active_tasks ?? 0} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" />
-              <MiniStat label="Vencidas" value={data.overdue_tasks ?? 0} icon={<HiOutlineExclamation className="h-6 w-6" />} color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30" alert={data.overdue_tasks > 0} />
-              <MiniStat label="En revisión" value={inReviewCount} icon={<HiOutlineClock className="h-6 w-6" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
-              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
+              <MiniStat label="Activas"     value={data.active_tasks ?? 0}   icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10" />
+              <MiniStat label="Vencidas"    value={data.overdue_tasks ?? 0}  icon={<HiOutlineExclamation className="h-5 w-5" />}   color="text-red-600 dark:text-red-400 bg-red-50 dark:bg-red-900/30"         alert={data.overdue_tasks > 0} />
+              <MiniStat label="En revisión" value={inReviewCount}             icon={<HiOutlineClock className="h-5 w-5" />}         color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" />
+              <MiniStat label="Completadas" value={data.completed_tasks ?? 0} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" />
             </div>
             {data.due_soon_tasks > 0 && (
               <div className="mt-4 rounded-sm bg-amber-50 dark:bg-amber-900/30 px-4 py-3 ring-1 ring-inset ring-amber-200 dark:ring-amber-800/60">
@@ -303,13 +303,11 @@ export function PersonalDashboardView() {
 
 function MiniStat({ label, value, icon, color, alert }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean }) {
   return (
-    <div className={`rounded-sm border px-4 py-3 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'}`}>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className={`flex h-7 w-7 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-          <span className="text-xs text-slate-500 dark:text-slate-400">{label}</span>
-        </div>
-        <p className={`text-xl font-bold ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
+    <div className={`rounded-sm border px-3 py-2.5 transition-colors ${alert ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20' : 'border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito hover:bg-slate-50 dark:hover:bg-white/5'}`}>
+      <div className="flex items-center gap-3">
+        <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+        <span className="flex-1 text-sm font-medium text-slate-600 dark:text-slate-400">{label}</span>
+        <p className={`text-xl font-bold leading-none ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
       </div>
     </div>
   );

@@ -39,20 +39,17 @@ export function ResponsibleRow({ responsible, max }: { responsible: ResponsibleL
 
 export function MiniStat({ label, value, icon, color, alert, to }: { label: string; value: number; icon: React.ReactNode; color: string; alert?: boolean; to?: string }) {
   const inner = (
-    <>
-      <div className="flex items-center justify-between gap-1 mb-1.5">
-        <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg ${color}`}>{icon}</span>
-        <p className={`text-xl font-bold leading-none ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
-      </div>
-      <span className="block text-xs leading-tight text-slate-500 dark:text-slate-400">{label}</span>
-      {to && <span className="mt-1.5 block text-[10px] font-medium text-cyber-radar dark:text-cyber-radar-light opacity-0 group-hover:opacity-100 transition-opacity">Ver tareas →</span>}
-    </>
+    <div className="flex items-center gap-3">
+      <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-lg ${color}`}>{icon}</span>
+      <span className="flex-1 text-sm font-medium text-slate-600 dark:text-slate-400">{label}</span>
+      <p className={`text-xl font-bold leading-none ${alert ? 'text-red-700 dark:text-red-400' : 'text-slate-900 dark:text-white'}`}>{value}</p>
+    </div>
   );
 
-  const baseClass = `group rounded-sm border px-3 py-3 transition-all ${
+  const baseClass = `group rounded-sm border px-3 py-2.5 transition-all ${
     alert
       ? 'border-red-200 dark:border-red-800 bg-red-50/40 dark:bg-red-900/20'
-      : 'border-slate-200 dark:border-white/5 bg-slate-50/50 dark:bg-white/5 hover:bg-slate-50 dark:hover:bg-white/5'
+      : 'border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito hover:bg-slate-50 dark:hover:bg-white/5'
   } ${to ? 'cursor-pointer hover:border-cyber-radar/40 dark:hover:border-cyber-radar/30 hover:shadow-sm' : ''}`;
 
   if (to) {

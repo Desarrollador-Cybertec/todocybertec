@@ -5,7 +5,6 @@ import { useAuth } from '../../context/useAuth';
 import { Role, ROLE_LABELS, ADMIN_ROLES, MANAGER_ROLES } from '../../types/enums';
 import { areasApi } from '../../api/areas';
 import { LicenseBanner } from '../ui/LicenseBanner';
-import { TutorialMenu } from '../../tutorial';
 import {
   HiOutlineHome,
   HiOutlineClipboardList,
@@ -177,11 +176,6 @@ export function AppLayout() {
             );
           })}
         </nav>
-
-        {/* Tutorial menu */}
-        <div className="px-3 pb-1">
-          <TutorialMenu />
-        </div>
 
         {/* User profile + logout */}
         <div className="border-t border-white/10 p-4 space-y-3">

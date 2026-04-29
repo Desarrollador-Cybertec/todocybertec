@@ -95,10 +95,10 @@ export function SuperAdminDashboard() {
         <FadeIn delay={0.05} id="dashboard-stats" className="lg:col-span-3 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-4 sm:p-5 shadow-sm">
           <h3 className="mb-4 font-semibold text-slate-900 dark:text-white">Resumen general</h3>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <MiniStat label="Activas" value={data.total_active} icon={<HiOutlineClipboardList className="h-6 w-6" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10 dark:bg-cyber-radar/10" to="/tasks?status=in_progress&type=org" />
-            <MiniStat label="Por revisar" value={(data.tasks_by_status as Record<string, number>)['in_review'] ?? 0} icon={<HiOutlineEye className="h-6 w-6" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" to="/tasks?status=in_review&type=org" />
-            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-6 w-6" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" to="/tasks?status=completed&type=org" />
-            <MiniStat label="Por vencer" value={data.due_soon} icon={<HiOutlineClock className="h-6 w-6" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} to="/tasks?status=overdue&type=org" />
+            <MiniStat label="Activas"     value={data.total_active} icon={<HiOutlineClipboardList className="h-5 w-5" />} color="text-cyber-radar dark:text-cyber-radar-light bg-cyber-radar/10"     to="/tasks?status=in_progress&type=org" />
+            <MiniStat label="Por revisar" value={(data.tasks_by_status as Record<string, number>)['in_review'] ?? 0} icon={<HiOutlineEye className="h-5 w-5" />} color="text-purple-600 dark:text-purple-400 bg-purple-50 dark:bg-purple-900/30" to="/tasks?status=in_review&type=org" />
+            <MiniStat label="Completadas" value={data.total_completed} icon={<HiOutlineCheckCircle className="h-5 w-5" />} color="text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30" to="/tasks?status=completed&type=org" />
+            <MiniStat label="Por vencer"  value={data.due_soon} icon={<HiOutlineClock className="h-5 w-5" />} color="text-amber-600 dark:text-amber-400 bg-amber-50 dark:bg-amber-900/30" alert={data.due_soon > 0} to="/tasks?status=overdue&type=org" />
           </div>
 
           {/* progress bar for completion rate */}

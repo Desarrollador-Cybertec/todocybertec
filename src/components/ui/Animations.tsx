@@ -31,9 +31,10 @@ const staggerItem: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: 'easeOut' } },
 };
 
-export function StaggerList({ children, className = '' }: { children: ReactNode; className?: string }) {
+export function StaggerList({ children, className = '', id }: { children: ReactNode; className?: string; id?: string }) {
   return (
     <m.div
+      id={id}
       variants={staggerContainer}
       initial="hidden"
       animate="visible"

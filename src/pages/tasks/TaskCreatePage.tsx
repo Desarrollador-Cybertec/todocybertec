@@ -67,8 +67,8 @@ export function TaskCreatePage() {
       requires_manager_approval: !isWorker,   // workers have personal tasks — no approval needed
       requires_completion_notification: false,
       requires_due_date: false,
-      notify_on_due: !isWorker,
-      notify_on_overdue: !isWorker,
+      notify_on_due: true,
+      notify_on_overdue: true,
       notify_on_completion: false,
       ...(isWorker ? { assigned_to_user_id: user?.id } : {}),
     },
@@ -95,13 +95,12 @@ export function TaskCreatePage() {
     [isManager, watchAssignedUser, user?.id],
   );
 
-  // Reset fields that don't apply to personal tasks
+  // Adjust fields when personal task is toggled
   useEffect(() => {
     if (isPersonalTask) {
       setValue('requires_manager_approval', false);
-      setValue('notify_on_due', false);
-      setValue('notify_on_overdue', false);
-      setValue('notify_on_completion', false);
+      setValue('notify_on_due', true);
+      setValue('notify_on_overdue', true);
     }
   }, [isPersonalTask, setValue]);
 
@@ -260,8 +259,9 @@ export function TaskCreatePage() {
                   <div className="grid gap-4 sm:grid-cols-2">
                     {/* responsible */}
                     {isWorker ? (
-                      <div>
-                        <span id="destLabel" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Destino</span>\n                        <div className="flex gap-2" role="group" aria-labelledby="destLabel">
+                      <div id="task-field-responsible">
+                        <span id="destLabel" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Destino</span>
+                        <div className="flex gap-2" role="group" aria-labelledby="destLabel">
                           <button
                             type="button"
                             onClick={() => { setWorkerDest('self'); setValue('assigned_to_user_id', user?.id ?? null); setValue('external_email', ''); setValue('external_name', ''); }}
@@ -314,7 +314,7 @@ export function TaskCreatePage() {
                         )}
                       </div>
                     ) : (
-                      <div>
+                      <div id="task-field-responsible">
                         <label htmlFor="assigned_to_user_id" className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">Responsable</label>
                         <select
                           id="assigned_to_user_id"
@@ -362,7 +362,7 @@ export function TaskCreatePage() {
                 </div>
 
                 {/* toggle advanced */}
-                <div className="mt-5 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
+                <div id="task-advanced-toggle" className="mt-5 bg-white dark:bg-cyber-grafito text-slate-900 dark:text-white border-t border-slate-200 dark:border-white/5 pt-4">
                   {!showAdvanced && (
                     <button
                       id="task-create-advanced-btn"

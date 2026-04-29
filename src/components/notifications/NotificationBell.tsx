@@ -78,6 +78,7 @@ export function NotificationBell() {
   return (
     <div className="relative">
       <button
+        id="notification-bell-btn"
         ref={bellRef}
         onClick={() => setIsOpen(!isOpen)}
         className="relative inline-flex items-center justify-center p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-white/5 rounded-lg transition-colors"

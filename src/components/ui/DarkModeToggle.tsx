@@ -7,6 +7,7 @@ export function DarkModeToggle() {
 
   return (
     <button
+      id="dark-mode-toggle"
       type="button"
       onClick={toggle}
       className="fixed bottom-4 right-4 z-50 flex h-10 w-10 items-center justify-center rounded-sm bg-cyber-navy shadow-lg shadow-cyber-navy/30 ring-1 ring-white/10 transition-colors hover:bg-cyber-navy-light dark:bg-cyber-radar dark:shadow-cyber-radar/30 dark:ring-cyber-radar/30 dark:hover:bg-cyber-radar-light text-white"

@@ -92,7 +92,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       </div>
 
       {/* Pestañas de categoría */}
-      <div className="flex border-b border-slate-200 dark:border-white/10 px-2">
+      <div id="notification-tabs" className="flex border-b border-slate-200 dark:border-white/10 px-2">
         {TABS.map((tab) => (
           <button
             key={tab.key}
@@ -109,7 +109,7 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
       </div>
 
       {/* Lista de notificaciones */}
-      <div className="flex-1 overflow-y-auto">
+      <div id="notification-list" className="flex-1 overflow-y-auto">
         {isLoading && notifications.length === 0 ? (
           <div className="flex items-center justify-center h-32 text-slate-500 dark:text-slate-400">
             <p className="text-sm">Cargando...</p>
@@ -157,6 +157,26 @@ export function NotificationPanel({ onClose }: NotificationPanelProps) {
                       <p className={`text-sm mt-1 line-clamp-2 ${isUnread ? 'text-slate-600 dark:text-slate-400' : 'text-slate-400 dark:text-slate-500'}`}>
                         {notification.data.message}
                       </p>
+                      {notification.data.type === 'task_due_soon' && notification.data.days_remaining != null && (
+                        <span className={`mt-1.5 inline-block rounded-full px-2 py-0.5 text-xs font-semibold ${
+                          notification.data.days_remaining === 0
+                            ? 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+                            : notification.data.days_remaining === 1
+                            ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/30 dark:text-orange-400'
+                            : 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400'
+                        }`}>
+                          {notification.data.days_remaining === 0
+                            ? 'Vence hoy'
+                            : notification.data.days_remaining === 1
+                            ? 'Mañana'
+                            : `En ${notification.data.days_remaining} días`}
+                        </span>
+                      )}
+                      {notification.data.type === 'task_overdue' && notification.data.days_overdue != null && (
+                        <span className="mt-1.5 inline-block rounded-full bg-red-100 px-2 py-0.5 text-xs font-semibold text-red-700 dark:bg-red-900/30 dark:text-red-400">
+                          {`Vencida hace ${notification.data.days_overdue} día${notification.data.days_overdue === 1 ? '' : 's'}`}
+                        </span>
+                      )}
                       <p className="text-xs text-slate-500 dark:text-slate-500 mt-2">
                         {formatDateTime(notification.created_at)}
                       </p>

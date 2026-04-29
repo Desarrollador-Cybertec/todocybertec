@@ -261,7 +261,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
   }
 
   return (
-    <FadeIn delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+    <FadeIn id="meeting-commitments-section" delay={0.15} className="mt-6 rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
       <h3 className="mb-4 flex items-center gap-2 font-semibold text-slate-900 dark:text-white">
         <HiOutlineUserGroup className="h-6 w-6 text-cyber-radar dark:text-cyber-radar-light" />
         Crear compromisos de reunión
@@ -334,6 +334,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
       <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
         {!showForm && !editingId && (
           <button
+            id="meeting-add-commitment-btn"
             type="button"
             onClick={() => {
               setForm(EMPTY_DRAFT);
@@ -347,6 +348,7 @@ export function MeetingTasksSection({ meetingId, areaId, isClosed, onTasksCreate
 
         {drafts.length > 0 && !showForm && !editingId && (
           <button
+            id="meeting-save-commitments-btn"
             type="button"
             onClick={submitAll}
             disabled={submitting}

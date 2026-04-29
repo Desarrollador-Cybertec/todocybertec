@@ -22,12 +22,14 @@ import { NotificationsPage } from './pages/notifications/NotificationsPage';
 import { AttachmentsPage } from './pages/attachments/AttachmentsPage';
 import { DarkModeToggle } from './components/ui/DarkModeToggle';
 import { SileoToaster } from './components/notifications/SileoToaster';
+import { TutorialMenu } from './tutorial';
 import { ADMIN_ROLES, MANAGER_ROLES } from './types/enums';
 
 function App() {
   return (
     <>
       <DarkModeToggle />
+      <TutorialMenu />
       <SileoToaster />
       <Routes>
       {/* Guest routes */}

@@ -112,7 +112,7 @@ export function MeetingDetailPage() {
           <HiOutlineArrowLeft className="h-5 w-5" /> Volver a reuniones
         </button>
 
-        <FadeIn className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+        <FadeIn id="meeting-detail-header" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           {editing ? (
             <div className="space-y-4">
               <h3 className="text-lg font-semibold text-slate-900 dark:text-white">Editar reunión</h3>

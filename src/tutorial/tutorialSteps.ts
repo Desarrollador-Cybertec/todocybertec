@@ -11,8 +11,12 @@ export interface TutorialDef {
   description: string;
   icon: string;           // emoji for the menu
   roles: RoleType[];      // which roles see this tutorial
-  /** Route where the tutorial starts (null = any / current) */
+  /** Route where the tutorial starts (null = run on current page) */
   startRoute: string | null;
+  /** Module slug used to decide in which pages this tutorial appears in the menu.
+   *  Derived from startRoute when omitted. Use this when startRoute is null
+   *  but the tutorial belongs to a specific module (e.g. task detail). */
+  module?: string;
   steps: DriveStep[];
 }
 
@@ -297,54 +301,70 @@ const taskWorkflowWorkerTour: TutorialDef = {
   icon: '🔄',
   roles: [...WORKER_ROLES],
   startRoute: null,
+  module: 'tasks',
   steps: [
     {
       popover: {
         title: 'Tu flujo de trabajo diario 🔄',
         description:
-          'Como trabajador/analista, tu ciclo típico es: ver tareas asignadas → iniciar → reportar avance → enviar a revisión (o completar). Veamos cada paso.',
+          'Como trabajador/analista tu ciclo es: ver tareas asignadas → iniciar → reportar avance → enviar a revisión. Este tutorial te muestra cada paso desde el detalle de una tarea.',
       },
     },
     {
+      element: '#task-detail-header',
       popover: {
-        title: 'Paso 1: Revisar tareas',
+        title: 'Paso 1: Estado actual',
         description:
-          'Entra al Dashboard o a Tareas para ver qué tienes pendiente. Las tareas en "Pendiente" están listas para que las inicies.',
+          'El badge de estado te indica en qué punto está la tarea. Si dice "Pendiente", está lista para que la inicies. Usa el selector de estado para hacer la transición.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-detail-actions',
       popover: {
-        title: 'Paso 2: Iniciar tarea',
+        title: 'Paso 2: Iniciar la tarea',
         description:
-          'Abre una tarea pendiente y haz clic en "Iniciar". La tarea cambiará a "En progreso" y podrás comenzar a trabajar.',
+          'Desde la barra de acciones cambia el estado a "En progreso". La tarea quedará activa y podrás empezar a trabajar en ella.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
+      element: '#task-upload-btn',
       popover: {
-        title: 'Paso 3: Reportar avance',
+        title: 'Paso 3: Subir evidencia 📎',
         description:
-          'Dentro de la tarea puedes subir archivos de evidencia, dejar comentarios de progreso y registrar tus avances.',
+          'Adjunta archivos de evidencia de tu trabajo (capturas, documentos, etc.). Si la tarea requiere adjunto obligatorio, debes subir al menos uno antes de enviar a revisión.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-comment-btn',
       popover: {
-        title: 'Paso 4: Enviar a revisión',
+        title: 'Paso 4: Reportar avance 💬',
         description:
-          'Cuando termines, haz clic en "Enviar a revisión". Tu manager revisará y aprobará o te pedirá cambios. Si la tarea no requiere aprobación, puedes completarla directamente.',
+          'Deja comentarios con tu progreso. Tu manager y el creador pueden verlos. Es buena práctica actualizar el avance regularmente.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-detail-actions',
       popover: {
-        title: 'Paso 5: Reclamar tareas',
+        title: 'Paso 5: Enviar a revisión',
         description:
-          'En tu Dashboard verás tareas "Pendientes de asignación" en tu área. ¡Puedes reclamarlas para ti y comenzar a trabajar!',
+          'Cuando termines, cambia el estado a "En revisión". Tu manager recibirá una notificación y revisará tu trabajo. Si la tarea no requiere aprobación, puedes completarla directamente.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
       popover: {
         title: '¡Ya sabes el flujo! ✅',
         description:
-          'Recuerda: Pendiente → Iniciar → Reportar avance → Enviar a revisión → ¡Completada! Revisa tus notificaciones por si tu manager tiene feedback.',
+          'Pendiente → En progreso → Subir evidencia → Enviar a revisión → Completada. Revisa tus notificaciones para ver el feedback de tu manager.',
       },
     },
   ],
@@ -360,40 +380,60 @@ const taskApprovalTour: TutorialDef = {
   icon: '✅',
   roles: [...ADMIN_ROLES, ...MANAGER_ROLES],
   startRoute: null,
+  module: 'tasks',
   steps: [
     {
       popover: {
         title: 'Flujo de aprobación ✅',
         description:
-          'Cuando un miembro de tu equipo envía una tarea a revisión, tú decides si se aprueba o necesita ajustes.',
+          'Cuando alguien de tu equipo envía una tarea a revisión, recibirás una notificación. Abre la tarea para revisarla desde aquí.',
       },
     },
     {
+      element: '#task-detail-header',
       popover: {
-        title: 'Notificaciones de revisión',
+        title: 'Revisar estado y descripción',
         description:
-          'Recibirás una notificación cuando alguien envíe una tarea a revisión. También puedes filtrar tareas "En revisión" en el listado.',
+          'Verifica que el estado sea "En revisión". Lee la descripción completa para entender qué se pedía. El badge de prioridad te indica la urgencia.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-detail-info',
       popover: {
-        title: 'Revisar la tarea',
+        title: 'Verificar responsable y fechas',
         description:
-          'Abre la tarea, revisa los archivos adjuntos, comentarios y avances reportados. Verifica que cumple con lo solicitado.',
+          'Comprueba quién realizó la tarea, la fecha límite y la barra de progreso. Si hay archivos adjuntos y comentarios los verás en las secciones inferiores.',
+        side: 'top',
+        align: 'center',
       },
     },
     {
+      element: '#task-detail-actions',
       popover: {
         title: 'Aprobar o rechazar',
         description:
-          'Si todo está bien, haz clic en "Aprobar" para completar la tarea. Si necesita cambios, usa "Rechazar" con una nota explicando qué falta. La tarea volverá al trabajador.',
+          'Usa el selector de estado para aprobar (la tarea se completa) o rechazar (vuelve al trabajador). Al rechazar, agrega un comentario explicando qué falta — el trabajador lo recibirá como notificación.',
+        side: 'top',
+        align: 'start',
+      },
+    },
+    {
+      element: '#task-delegate-btn',
+      popover: {
+        title: 'Reasignar si es necesario',
+        description:
+          'Si la tarea debe ser realizada por otra persona, delégala antes de aprobar. El historial registra el cambio de responsable.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
       popover: {
-        title: 'Otras acciones',
+        title: '¡Flujo de aprobación completo! ✅',
         description:
-          'También puedes cancelar tareas que ya no son necesarias, reabrir tareas completadas si se requieren ajustes, o delegar a otro miembro del equipo.',
+          'Revisar adjuntos y comentarios → Aprobar o rechazar con nota → El trabajador recibe la notificación. Las tareas canceladas o reabiertras también quedan en el historial.',
       },
     },
   ],
@@ -690,34 +730,76 @@ const notificationsTour: TutorialDef = {
   description: 'Entiende cómo funcionan las notificaciones y alertas del sistema.',
   icon: '🔔',
   roles: ALL_ROLES,
-  startRoute: null,
+  startRoute: '/dashboard',
   steps: [
     {
       popover: {
         title: 'Sistema de Notificaciones 🔔',
         description:
-          'El sistema te notifica automáticamente sobre eventos importantes: tareas asignadas, cambios de estado, vencimientos y más.',
+          'El sistema te notifica en tiempo real sobre tareas asignadas, cambios de estado, vencimientos y más. Veamos cómo funciona.',
+      },
+    },
+    {
+      element: '#notification-bell-btn',
+      onHighlightStarted: () => {
+        // Cierra el panel si ya estaba abierto para que quede bien posicionado
+        const panel = document.getElementById('notification-list');
+        if (panel) {
+          const bell = document.getElementById('notification-bell-btn');
+          if (bell) bell.click();
+        }
+      },
+      popover: {
+        title: 'Campana de notificaciones 🔔',
+        description:
+          'El número en rojo indica notificaciones no leídas. Haz clic para abrir el panel con el historial completo. El contador se actualiza automáticamente en tiempo real.',
+        side: 'left',
+        align: 'start',
+      },
+    },
+    {
+      element: '#notification-bell-btn',
+      onHighlightStarted: () => {
+        // Abre el panel si aún está cerrado
+        const panel = document.getElementById('notification-list');
+        if (!panel) {
+          const bell = document.getElementById('notification-bell-btn');
+          if (bell) bell.click();
+        }
+      },
+      popover: {
+        title: 'Panel de notificaciones',
+        description:
+          'Al abrir la campana verás el historial con tres pestañas: "Todas", "Organización" (avisos globales y resúmenes) y "Personal" (eventos de tus tareas).',
+        side: 'left',
+        align: 'start',
+      },
+    },
+    {
+      element: '#notification-tabs',
+      popover: {
+        title: 'Filtrar por categoría',
+        description:
+          '"Todas" muestra el historial completo. "Organización" filtra avisos globales. "Personal" muestra solo los eventos de tus tareas.',
+        side: 'bottom',
+        align: 'center',
+      },
+    },
+    {
+      element: '#notification-list',
+      popover: {
+        title: 'Lista de notificaciones',
+        description:
+          'Cada notificación muestra el tipo, descripción y fecha. Las no leídas tienen fondo resaltado. Haz clic en una para ir directamente a la tarea relacionada.',
+        side: 'top',
+        align: 'center',
       },
     },
     {
       popover: {
-        title: 'Tipos de notificación',
+        title: 'Notificaciones en tiempo real ✅',
         description:
-          'Recibirás notificaciones de: nuevas asignaciones, tareas enviadas a revisión, aprobaciones/rechazos, vencimientos próximos y alertas de inactividad.',
-      },
-    },
-    {
-      popover: {
-        title: 'Notificaciones en tiempo real',
-        description:
-          'Las notificaciones se actualizan automáticamente. Verás un toast emergente cuando llegue una nueva notificación y el contador se actualizará.',
-      },
-    },
-    {
-      popover: {
-        title: 'Historial completo',
-        description:
-          'Accede al historial completo de notificaciones con pestañas para filtrar entre todas, organizacionales y personales.',
+          'Recibirás notificaciones de: nuevas asignaciones, tareas en revisión, aprobaciones/rechazos, vencimientos y alertas de inactividad. También aparecen toasts emergentes para no perderte nada.',
       },
     },
   ],
@@ -732,7 +814,7 @@ const taskCreationTour: TutorialDef = {
   description: 'Aprende a completar el formulario de creación con todos sus campos, opciones avanzadas y vista previa.',
   icon: '✏️',
   roles: ALL_ROLES,
-  startRoute: '/tasks/new',
+  startRoute: '/tasks/create',
   steps: [
     {
       popover: {
@@ -762,7 +844,7 @@ const taskCreationTour: TutorialDef = {
       },
     },
     {
-      element: '#assigned_to_user_id, [aria-labelledby="destLabel"]',
+      element: '#task-field-responsible',
       popover: {
         title: '2. Responsable / Destino',
         description:
@@ -792,17 +874,33 @@ const taskCreationTour: TutorialDef = {
       },
     },
     {
-      element: '#task-create-advanced-btn',
+      element: '#task-advanced-toggle',
+      onDeselected: () => {
+        // Expand advanced section only if not already open
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) {
+          const btn = document.getElementById('task-create-advanced-btn');
+          if (btn) btn.click();
+        }
+      },
       popover: {
         title: '5. Opciones avanzadas',
         description:
-          'Expande esta sección para acceder a descripción detallada, asignación por área, vincular con reuniones, requisitos de cumplimiento y configuración de notificaciones.',
+          'Expande esta sección para acceder a descripción detallada, asignación por área, vincular con reuniones, requisitos de cumplimiento y configuración de notificaciones. Al presionar Siguiente se expandirá automáticamente.',
         side: 'top',
         align: 'center',
       },
     },
     {
       element: '#task-create-preview',
+      onHighlightStarted: () => {
+        // Open advanced only if not already open
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) {
+          const btn = document.getElementById('task-create-advanced-btn');
+          if (btn) btn.click();
+        }
+      },
       popover: {
         title: 'Vista previa en tiempo real',
         description:
@@ -812,31 +910,59 @@ const taskCreationTour: TutorialDef = {
       },
     },
     {
+      element: '#task-create-details',
+      onHighlightStarted: () => {
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) document.getElementById('task-create-advanced-btn')?.click();
+      },
       popover: {
         title: 'Opciones avanzadas: Detalles adicionales 📋',
         description:
-          'Al expandir las opciones avanzadas, la primera sección te permite agregar: una descripción detallada de la tarea, fecha de inicio, y vincular la tarea con una reunión existente (solo para managers/admin).',
+          'Aquí puedes agregar una descripción detallada de la tarea, fecha de inicio, y vincular la tarea con una reunión existente (solo para managers/admin).',
+        side: 'top',
+        align: 'start',
       },
     },
     {
+      element: '#task-create-alt-assignment',
+      onHighlightStarted: () => {
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) document.getElementById('task-create-advanced-btn')?.click();
+      },
       popover: {
         title: 'Opciones avanzadas: Asignación alternativa 🔀',
         description:
           'Si eres manager o admin, puedes asignar la tarea a un área completa (cualquier miembro podrá reclamarla) o a un correo externo (persona fuera del sistema). Solo una opción de asignación puede estar activa.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
+      element: '#task-create-requirements',
+      onHighlightStarted: () => {
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) document.getElementById('task-create-advanced-btn')?.click();
+      },
       popover: {
         title: 'Opciones avanzadas: Requisitos ✅',
         description:
           'Configura qué necesita la tarea para completarse: "Requiere adjunto" obliga a subir evidencia, "Comentario de cierre" exige una nota al completar, "Aprobación del jefe" envía la tarea a revisión del manager antes de cerrarla.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
+      element: '#task-create-notifications',
+      onHighlightStarted: () => {
+        const isOpen = !!document.getElementById('task-create-details');
+        if (!isOpen) document.getElementById('task-create-advanced-btn')?.click();
+      },
       popover: {
         title: 'Opciones avanzadas: Notificaciones 🔔',
         description:
           'Personaliza los avisos: "Al vencer" avisa el día del vencimiento, "Si vencida" alerta cuando pasa la fecha, "Al completar" notifica cuando la tarea se cierra. Actívalos según la importancia.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
@@ -844,7 +970,7 @@ const taskCreationTour: TutorialDef = {
       popover: {
         title: '6. Crear la tarea',
         description:
-          'Haz clic en "Crear tarea". Se abrirá un modal de confirmación mostrando el título. Confirma para crear o vuelve a revisar los datos.',
+          'Haz clic en el botón "Crear tarea". Se abrirá un modal de confirmación mostrando el título. Confirma para crear o vuelve a revisar los datos.',
         side: 'top',
         align: 'end',
       },
@@ -869,96 +995,90 @@ const taskEditingTour: TutorialDef = {
   icon: '🛠️',
   roles: ALL_ROLES,
   startRoute: null,
+  module: 'tasks',
   steps: [
     {
       popover: {
-        title: 'Editar y gestionar tareas 🛠️',
+        title: 'Detalle de tarea 🛠️',
         description:
-          'Desde el detalle de una tarea puedes editar sus datos, cambiar su estado, delegar, adjuntar archivos y más. Veamos cada acción disponible.',
+          'Estás en el detalle de una tarea. Aquí puedes editar datos, cambiar estado, delegar, adjuntar archivos y dejar comentarios. Veamos cada sección.',
       },
     },
     {
+      element: '#task-detail-header',
       popover: {
-        title: 'Paso 1: Abrir el detalle',
+        title: 'Encabezado de la tarea',
         description:
-          'Desde el listado de tareas, haz clic en cualquier tarea para abrir su vista de detalle. Verás toda la información organizada en secciones.',
+          'Aquí ves el título, descripción y los badges de estado y prioridad. El estado se puede cambiar desde el selector desplegable que aparece en esta sección.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-detail-info',
       popover: {
-        title: 'Información de la tarea',
+        title: 'Información detallada',
         description:
-          'En la parte superior verás: título, descripción, badges de estado y prioridad. Debajo encontrarás el grid con creador, responsable, área, fecha límite, barra de avance y antigüedad.',
+          'Este grid muestra: creador, responsable actual, área, fecha límite, barra de avance y antigüedad. Toda la trazabilidad de la tarea en un vistazo.',
+        side: 'top',
+        align: 'center',
       },
     },
     {
+      element: '#task-detail-actions',
       popover: {
         title: 'Barra de acciones',
         description:
-          'Debajo de la información hay una barra con todas las acciones disponibles según tu rol y permisos. Las acciones se adaptan al estado actual de la tarea.',
+          'Las acciones disponibles se adaptan a tu rol y al estado actual de la tarea. Solo verás lo que puedes hacer en este momento.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
-      popover: {
-        title: 'Cambiar estado ↔️',
-        description:
-          'El selector de estado te muestra solo las transiciones válidas. Como worker: Pendiente → En progreso → En revisión. Como manager: puedes Aprobar, Rechazar, Reabrir o Cancelar.',
-      },
-    },
-    {
+      element: '#task-edit-btn',
       popover: {
         title: 'Editar tarea ✏️',
         description:
-          'El botón "Editar" (amarillo) activa el modo de edición inline. Podrás modificar: título, descripción, prioridad, requisitos (adjuntos, comentarios, aprobación) y configuración de notificaciones. Haz clic en "Guardar" para confirmar los cambios.',
+          'Haz clic aquí para activar el modo edición inline. Podrás modificar título, descripción, prioridad, requisitos y notificaciones sin salir del detalle.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
-      popover: {
-        title: 'Modo de edición: Campos',
-        description:
-          'En modo edición verás: campo de título editable, textarea de descripción, selector de prioridad (Baja/Media/Alta/Crítica), checkboxes de requisitos y checkboxes de notificaciones.',
-      },
-    },
-    {
+      element: '#task-delegate-btn',
       popover: {
         title: 'Delegar tarea 🔄',
         description:
-          'El botón "Delegar" permite reasignar la tarea a otro miembro. Selecciona al nuevo responsable de tu área (o de todo el sistema si eres admin) y agrega una nota explicativa. El historial registra la delegación.',
+          'Reasigna la tarea a otro miembro. Selecciona al nuevo responsable y agrega una nota. El historial registra la delegación con fecha y motivo.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-upload-btn',
       popover: {
         title: 'Adjuntar archivos 📎',
         description:
-          'Haz clic en "Adjuntar" para subir archivos de evidencia. Selecciona el tipo de archivo (evidencia, soporte, etc.), elige el archivo (máx. 20MB) y sube. Los adjuntos se muestran como tarjetas con vista previa.',
+          'Sube archivos de evidencia o soporte (máx. 20 MB). Los adjuntos aparecen como tarjetas con vista previa y son visibles para todos los participantes.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
+      element: '#task-comment-btn',
       popover: {
         title: 'Comentar 💬',
         description:
-          'El botón "Comentar" abre un formulario para dejar notas. Los comentarios quedan en el historial de la tarea y son visibles para todos los participantes (creador, responsable, manager del área).',
-      },
-    },
-    {
-      popover: {
-        title: 'Eliminar tarea 🗑️',
-        description:
-          'Si tienes permisos (creador o admin), puedes eliminar la tarea. Se pedirá confirmación doble antes de borrar permanentemente.',
-      },
-    },
-    {
-      popover: {
-        title: 'Secciones inferiores',
-        description:
-          'Debajo de la tarjeta principal encontrarás: Adjuntos (galería de archivos), Comentarios (paginados), Historial de estados (línea de tiempo) y Actualizaciones de progreso (reportes con %).',
+          'Deja notas sobre el avance o cualquier aclaración. Los comentarios quedan en el historial y son visibles para creador, responsable y manager del área.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
       popover: {
         title: '¡Dominas la gestión de tareas! 🏆',
         description:
-          'Ya conoces todas las acciones: editar datos, cambiar estado, delegar, adjuntar, comentar y eliminar. Cada acción queda registrada en el historial para trazabilidad completa.',
+          'Editar, cambiar estado, delegar, adjuntar y comentar — cada acción queda registrada en el historial para trazabilidad completa.',
       },
     },
   ],
@@ -973,7 +1093,7 @@ const meetingCreationTour: TutorialDef = {
   description: 'Paso a paso para crear una reunión con todos sus datos.',
   icon: '📝',
   roles: [...ADMIN_ROLES, ...MANAGER_ROLES],
-  startRoute: '/meetings/new',
+  startRoute: '/meetings/create',
   steps: [
     {
       popover: {
@@ -1068,72 +1188,68 @@ const meetingCreationTour: TutorialDef = {
 const meetingCommitmentsTour: TutorialDef = {
   id: 'meeting-commitments',
   title: 'Compromisos de reunión',
-  description: 'Aprende a crear tareas rápidas desde los acuerdos de una reunión (pendientes).',
+  description: 'Aprende a crear tareas rápidas desde los acuerdos de una reunión.',
   icon: '🤝',
   roles: [...ADMIN_ROLES, ...MANAGER_ROLES],
   startRoute: null,
+  module: 'meetings',
   steps: [
     {
       popover: {
         title: 'Compromisos de reunión 🤝',
         description:
-          'Los compromisos (pendientes) son tareas que nacen directamente de los acuerdos de una reunión. Vamos a ver cómo crearlos.',
+          'Desde el detalle de una reunión puedes registrar los acuerdos como tareas rastreables. Veamos cada sección.',
+      },
+    },
+    {
+      element: '#meeting-detail-header',
+      popover: {
+        title: 'Información de la reunión',
+        description:
+          'Aquí ves el título, fecha, clasificación, área y notas. El botón "Editar" permite modificar estos datos mientras la reunión esté abierta. "Cerrar reunión" congela los datos cuando todo está listo.',
+        side: 'bottom',
+        align: 'start',
       },
     },
     {
       popover: {
-        title: 'Paso 1: Abre la reunión',
+        title: 'Compromisos ya creados',
         description:
-          'Desde el listado de reuniones, haz clic en cualquier reunión abierta para ver su detalle.',
+          'Si la reunión ya tiene compromisos, verás una sección con las tareas vinculadas: su estado, prioridad y responsable. Haz clic en cualquiera para abrir su detalle completo.',
+      },
+    },
+    {
+      element: '#meeting-commitments-section',
+      popover: {
+        title: 'Crear nuevos compromisos',
+        description:
+          'Aquí creas los acuerdos de la reunión como tareas borrador. Puedes agregar varios antes de guardarlos todos en lote.',
+        side: 'top',
+        align: 'center',
+      },
+    },
+    {
+      element: '#meeting-add-commitment-btn',
+      popover: {
+        title: 'Agregar compromiso',
+        description:
+          'Haz clic aquí para abrir el formulario de un nuevo compromiso. Cada uno lleva título, responsable, prioridad y fecha límite opcional.',
+        side: 'top',
+        align: 'start',
       },
     },
     {
       popover: {
-        title: 'Paso 2: Compromisos existentes',
+        title: 'Guardar todos los compromisos',
         description:
-          'En el detalle de la reunión verás la sección "Compromisos de esta reunión" con las tareas ya creadas, su estado y responsable asignado.',
-      },
-    },
-    {
-      popover: {
-        title: 'Paso 3: Crear compromisos rápidos',
-        description:
-          'En la sección "Crear compromisos de reunión" puedes agregar múltiples tareas borrador. Cada una necesita un título, puedes asignar prioridad, responsable y fecha límite.',
-      },
-    },
-    {
-      popover: {
-        title: 'Paso 4: Asignar responsable',
-        description:
-          'Puedes asignar tareas a miembros de tu área (aparecen primero) o a otras áreas del sistema. Si la reunión tiene un área vinculada, sus miembros se muestran agrupados.',
-      },
-    },
-    {
-      popover: {
-        title: 'Paso 5: Opciones avanzadas de compromiso',
-        description:
-          'Cada compromiso puede requerir adjuntos, comentario obligatorio, aprobación del manager o reportes de progreso. Configúralos según la importancia del acuerdo.',
-      },
-    },
-    {
-      popover: {
-        title: 'Paso 6: Enviar compromisos',
-        description:
-          'Cuando tengas todos los borradores listos, haz clic en "Crear todas las tareas". Se crearán en lote y aparecerán en el módulo de Tareas automáticamente.',
-      },
-    },
-    {
-      popover: {
-        title: 'Paso 7: Cerrar la reunión',
-        description:
-          'Cuando todos los acuerdos estén registrados, puedes cerrar la reunión. Una vez cerrada, no se pueden agregar más compromisos.',
+          'Una vez que tengas borradores listos, aparece el botón "Guardar compromisos (N)". Los crea en lote y aparecen inmediatamente en el módulo de Tareas vinculados a esta reunión.',
       },
     },
     {
       popover: {
         title: '¡Flujo completo! ✅',
         description:
-          'Crear reunión → Registrar acuerdos → Crear compromisos como tareas → Cerrar reunión. Los compromisos quedan vinculados y se rastrean como cualquier otra tarea.',
+          'Agregar compromisos → Guardar en lote → Cerrar reunión. Los compromisos quedan vinculados y se rastrean como cualquier otra tarea del sistema.',
       },
     },
   ],

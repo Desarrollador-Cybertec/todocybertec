@@ -24,6 +24,35 @@ function saveCompleted(userId: string | number, map: CompletionMap) {
   localStorage.setItem(`${STORAGE_KEY}_${userId}`, JSON.stringify(map));
 }
 
+/**
+ * Polls the DOM for an element (by CSS selector) before calling `cb`.
+ * Falls back after ~2.5 s so the tutorial still starts even if the
+ * element never appears.
+ */
+function waitForElement(selector: string | undefined, cb: () => void) {
+  if (!selector) {
+    // No element to wait for – just give the route time to mount
+    setTimeout(cb, 600);
+    return;
+  }
+  let attempts = 0;
+  const maxAttempts = 25; // 25 × 100 ms = 2.5 s
+  const poll = () => {
+    attempts++;
+    if (document.querySelector(selector)) {
+      // Element exists – small extra delay for animations
+      setTimeout(cb, 150);
+    } else if (attempts < maxAttempts) {
+      setTimeout(poll, 100);
+    } else {
+      // Fallback: start anyway
+      cb();
+    }
+  };
+  // Initial delay for React Router to process the navigation
+  setTimeout(poll, 200);
+}
+
 export function TutorialProvider({ children }: { children: ReactNode }) {
   const { user } = useAuth();
   const navigate = useNavigate();
@@ -91,8 +120,13 @@ export function TutorialProvider({ children }: { children: ReactNode }) {
       // Navigate to the start route if needed
       if (def.startRoute && location.pathname !== def.startRoute) {
         navigate(def.startRoute);
-        // Wait for navigation + DOM to settle
-        setTimeout(() => runDriver(def.steps, tutorialId), 400);
+        // Poll for the first element-based step to appear in the DOM
+        const firstSelector = def.steps.find(
+          (s) => typeof s.element === 'string',
+        )?.element as string | undefined;
+        waitForElement(firstSelector, () =>
+          runDriver(def.steps, tutorialId),
+        );
         return;
       }
 

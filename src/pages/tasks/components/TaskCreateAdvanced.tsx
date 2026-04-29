@@ -109,7 +109,7 @@ export function TaskCreateAdvanced({
 
         {/* area / external (non-worker) */}
         {!isWorker && (
-          <FadeIn delay={0.1} className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
+          <FadeIn delay={0.1} id="task-create-alt-assignment" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
             <h3 className="mb-4 text-base font-semibold text-slate-900 dark:text-white">Asignación alternativa</h3>
             <p className="mb-3 text-xs text-slate-500 dark:text-slate-400">Si ya seleccionaste un usuario arriba, estas opciones se deshabilitan automáticamente.</p>
             <div className="grid gap-4 sm:grid-cols-2">
@@ -174,7 +174,6 @@ export function TaskCreateAdvanced({
         </FadeIn>
 
         {/* notifications */}
-        {!isPersonalTask && (
         <FadeIn delay={0.2} id="task-create-notifications" className="rounded-sm border border-slate-200 dark:border-white/5 bg-white dark:bg-cyber-grafito p-6 shadow-sm">
           <h3 className="mb-1 flex items-center gap-2 text-base font-semibold text-slate-900 dark:text-white">
             <HiOutlineBell className="h-6 w-6 text-yellow-500 dark:text-yellow-400" /> Notificaciones
@@ -186,7 +185,6 @@ export function TaskCreateAdvanced({
             <ToggleField label="Al completar" checked={!!notCompletion} onChange={(v) => setValue('notify_on_completion', v)} />
           </div>
         </FadeIn>
-        )}
 
         {/* bottom actions */}
         <div className="flex justify-end gap-3 pb-2">
@@ -194,6 +192,7 @@ export function TaskCreateAdvanced({
             Cancelar
           </button>
           <button
+            id="task-create-submit"
             type="submit"
             disabled={isSubmitting}
             className="flex items-center gap-2 rounded-sm bg-linear-to-r from-cyber-radar to-cyber-navy px-6 py-2.5 text-sm font-medium text-white shadow-md shadow-cyber-radar/25 transition-all hover:shadow-lg active:scale-[0.98] disabled:opacity-50"
